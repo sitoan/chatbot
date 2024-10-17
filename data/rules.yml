@@ -1,0 +1,9 @@
+version: "3.1"
+
+rules:
+
+  - rule: show list of tour to user
+    steps:
+    - intent: ask_tours
+    - action: action_ask_tours
+

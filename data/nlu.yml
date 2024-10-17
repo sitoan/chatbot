@@ -1,0 +1,10 @@
+version: "3.1"
+
+nlu:
+  - intent: ask_tours
+    examples: |
+      - tôi muốn tìm hiểu vầ các tour du lịch
+      - cho tôi tham khảo danh sách các tour du lịch
+      - tôi muốn tham khảo tour du lịch
+      - danh sách các tour du lịch
+      

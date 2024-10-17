@@ -1,0 +1,9 @@
+version: "3.1"
+
+stories:
+  - story: ask for a tours list
+    steps:
+    - intent: ask_tours
+    - action: action_ask_tours
+
+
