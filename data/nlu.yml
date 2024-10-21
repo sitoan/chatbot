@@ -1,10 +1,28 @@
 version: "3.1"
 
 nlu:
+  - regex: "[0-9]{1,2} tháng [0-9]{1,2} năm [0-9]{4}"  
   - intent: ask_tours
     examples: |
       - tôi muốn tìm hiểu vầ các tour du lịch
       - cho tôi tham khảo danh sách các tour du lịch
       - tôi muốn tham khảo tour du lịch
       - danh sách các tour du lịch
-      
+
+  - intent: provide_available_date
+    examples: |
+      - Tôi rảnh ngày [10 tháng 11 năm 2024](available_date)
+      - Tôi có thể đi vào ngày [5 tháng 12](available_date)
+      - Ngày [20 tháng 10](available_date) là tôi rảnh
+      - Tôi muốn đi vào ngày [15 tháng 9 năm 2024](available_date)
+      - Bạn có tour nào vào [22 tháng 10 năm 2024](available_date) không?
+      - Tôi có thể đặt tour từ [1 tháng 1](available_date) đến [5 tháng 1](available_date).
+
+  - intent: request_available_date
+    examples: |
+      - Tôi rảnh ngày [21 tháng 10 năm 2024](available_date)
+      - Ngày 21 tháng 10 năm 2024
+      - Tôi có thể đi vào [21 tháng 10 năm 2024](available_date)
+      - Tôi có thể đi ngày [5 tháng 12](available_date)
+      - Có tour nào vào ngày [10 tháng 11](available_date) không?
+      - Tôi muốn đặt tour từ ngày [15 tháng 9 năm 2024](available_date).

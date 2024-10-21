@@ -2,15 +2,47 @@ version: "3.1"
 
 intents:
   - ask_tours
+  - session_start
+  - provide_available_date
+  - request_available_date
 
-# entities:
-
-# slot:
+responses:
+  utter_greet:
+    - text: "Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn muốn tìm hiểu tour nào?"
 
 actions:
   - action_ask_tours
+  - action_session_start
+  - action_save_available_date
+  - action_confirm_date  
+  - action_ask_available_date
+  - action_show_tour_times 
 
+slots:
+  available_date:
+    type: text 
+    mappings:
+      - type: from_text
+  valid_date:
+    type: text
+    mappings:
+      - type: from_text
+  budget:
+    type: text
+    mappings:
+      - type: from_text
 
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+
+flows:
+  - name: request_available_date_flow
+    steps:
+      - intent: request_available_date
+      - action: action_save_available_date  
+      - slot_was_set:
+          - available_date:  
+          - valid_date:
+      - action: action_confirm_date
+      - action: action_show_tour_times

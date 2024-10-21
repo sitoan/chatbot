@@ -2,10 +2,10 @@ import pyodbc
 
 class DatabaseConnection:
     def __init__(self):
-        self.server = "localhost"
+        self.server = "VUONGTRAN\SQLEXPRESS"
         self.database = "TourFlow"
         self.user = "sa"
-        self.password = "qaz@zaq123"
+        self.password = "dockerStrongPwd123"
         self.connection_string = f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={self.server};DATABASE={self.database};UID={self.user};PWD={self.password};TrustServerCertificate=yes;"
         self.connection = None
         try:
