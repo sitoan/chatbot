@@ -1,9 +1,24 @@
 version: "3.1"
 
 stories:
-  - story: ask for a tours list
+  - story: greeting user
     steps:
-    - intent: ask_tours
-    - action: action_ask_tours
+      - intent: session_start
+      - action: action_session_start
+
+  - story: asking for tours
+    steps:
+      - intent: ask_tours
+      - action: action_ask_tours
+
+  - story: request available date
+    steps:
+    - intent: request_available_date
+    - action: action_save_available_date
+    - slot_was_set:
+        - available_date: "2024-11-10" 
+        - valid_date: "false"
+    - action: action_confirm_date
+    - action: action_show_tour_times
 
 

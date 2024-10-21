@@ -1,0 +1,20 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-available_date",
+      "2": "I-available_date",
+      "3": "L-available_date",
+      "4": "U-available_date",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-available_date": 1,
+      "I-available_date": 2,
+      "L-available_date": 3,
+      "U-available_date": 4,
+      "O": 0
+    },
+    "num_tags": 5
+  }
+]

@@ -1,16 +1,96 @@
-version: "3.1"
-
+version: '3.1'
 intents:
-  - ask_tours
+- ask_for_info
+- ask_tours
+- request_information_form
+- session_start
+- provide_available_date
+- request_available_date
 
-# entities:
+entities:
+- name
+- phonenumb
+- starpos
 
-# slot:
+forms:
+  information_form:
+    required_slots:
+    - name
+    - phonenumb
+    - starpos
+
+
+slots:
+  name:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: name
+  phonenumb:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: phonenumb
+  starpos:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: starpos
+  available_date:
+    type: text 
+    mappings:
+      - type: from_text
+  valid_date:
+    type: text
+    mappings:
+      - type: from_text
+  budget:
+    type: text
+    mappings:
+      - type: from_text
+
+responses:
+# utter_ask_<slot_name>
+  utter_ask_name:
+  - text: xin tên
+  utter_ask_phonenumb:
+  - text: xin sđt
+  utter_ask_starpos:
+  - text: xin điểm khởi hành
+  utter_confirm_info:
+  - text: bạn {name} số điện thoại {phonenumb} khởi hành từ {starpos}
+  utter_greet:
+    - text: "Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn muốn tìm hiểu tour nào?"
 
 actions:
-  - action_ask_tours
+- utter_confirm_info
+- action_ask_tours
+- validate_information_form
+
+# validate_<name of form>
+
+- action_session_start
+- action_save_available_date
+- action_confirm_date  
+- action_ask_available_date
+- action_show_tour_times 
+
 
 
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
+
+flows:
+  - name: request_available_date_flow
+    steps:
+      - intent: request_available_date
+      - action: action_save_available_date  
+      - slot_was_set:
+          - available_date:  
+          - valid_date:
+      - action: action_confirm_date
+      - action: action_show_tour_times
