@@ -8,8 +8,9 @@ import json
 import os
 from dotenv import load_dotenv
 load_dotenv()
-
+from datetime import datetime
 from actions import DatabaseConnection
+import re
 
 ai_server = os.getenv('AI_SERVER')
 
@@ -54,3 +55,126 @@ class ActionAskTours(Action):
         print(res.content.decode('utf-8'))
         dispatcher.utter_message(text=f"{res.content.decode('utf-8')}")
         return [] 
+    
+class ActionSessionStart(Action):
+    def name(self) -> str:
+        return "action_session_start"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: dict) -> list:
+
+        dispatcher.utter_message(text="Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn muốn tìm hiểu tour nào?")
+
+        return []
+    
+class ActionSaveAvailableDate(Action):
+    def name(self) -> str:
+        return "action_save_available_date"
+
+    def run(self, dispatcher: CollectingDispatcher,
+              tracker: Tracker,
+              domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+
+        message = tracker.latest_message['text']
+        today = datetime.now()
+
+        date_pattern = r'(\d{1,2})\s+tháng\s+(\d{1,2})(?:\s+năm\s+(\d{4}))?'
+        match = re.search(date_pattern, message)
+
+        day, month, year = None, None, None
+
+        if match:
+            day = int(match.group(1))
+            month = int(match.group(2))
+            year = int(match.group(3)) if match.group(3) else today.year
+        else:
+            month_pattern = r'tháng\s+(\d{1,2})'
+            month_match = re.search(month_pattern, message)
+            if month_match:
+                month = int(month_match.group(1))
+                day = today.day + 1  # Ngày hiện tại cộng thêm 1
+                year = today.year  # Năm hiện tại
+
+            day_pattern = r'(\d{1,2})'
+            day_match = re.search(day_pattern, message)
+            if day_match and month is None:
+                day = int(day_match.group(1))
+                month = today.month  # Tháng hiện tại
+                year = today.year    # Năm hiện tại
+
+        if day is None and month is None:
+            dispatcher.utter_message(text="Xin lỗi, bạn cần cung cấp ngày hoặc tháng.")
+            return [SlotSet("valid_date", "false")]
+
+        if month is not None and day is None:
+            day = today.day + 1  
+
+        try:
+            available_date = datetime(year, month, day)
+            if available_date < today:
+                dispatcher.utter_message(text="Ngày bạn chọn phải lớn hơn ngày hiện tại.")
+                return [SlotSet("valid_date", "false")]
+
+            available_date_str = f"{year}-{month:02d}-{day:02d}"
+            print(f"Available Date: {available_date_str}")
+            return [SlotSet("available_date", available_date_str), SlotSet("valid_date", "true")]
+        except ValueError:
+            dispatcher.utter_message(text="Ngày bạn nhập không hợp lệ.")
+            return [SlotSet("valid_date", "false")]
+
+class ActionConfirmDate(Action):
+    def name(self) -> str:
+        return "action_confirm_date"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: dict) -> list:
+        
+        if tracker.get_slot("valid_date") == "false":
+            dispatcher.utter_message(text="Vui lòng nhập một ngày hợp lệ trước khi xác nhận.")
+            return [] 
+
+        available_date = tracker.get_slot("available_date")
+        print(f"Ngày khởi hành bạn đã chọn là: {available_date}.")
+        dispatcher.utter_message(text=f"Ngày khởi hành bạn đã chọn là: {available_date}.")
+        
+        return []
+
+class ActionShowTourTimes(Action):
+    def name(self) -> str:
+        return "action_show_tour_times"
+
+    def __init__(self):
+        self.db = DatabaseConnection()
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        
+        available_date = tracker.get_slot("available_date")
+        
+        if available_date:
+            available_date = datetime.strptime(available_date, "%Y-%m-%d")
+            query = f"""
+            SELECT * FROM Tour
+            WHERE StartDate > '{available_date.strftime('%Y-%m-%d %H:%M:%S')}'
+            """
+            results = self.db.execute_query(query)
+            if results:
+                response = "Các tour có sẵn vào thời gian bạn yêu cầu:\n"
+                for row in results:
+                    response += (
+                        f"🔹 **Điểm đến**: {row.DepartureLocation}\n"
+                        f"🔹 **Thời gian**: {row.StartDate} - {row.EndDate}\n"
+                        f"🔹 **Giá**: {row.PRICE:.2f} VND\n"
+                        f"🔹 **Số lượng còn lại**: {row.AvailableSlots}\n"
+                        f"-------------------------\n"  # Ngăn cách giữa các tour
+                    )
+                dispatcher.utter_message(text=response)  # Chuyển tất cả response ra ngoài vòng lặp
+            else:
+                dispatcher.utter_message(text="Xin lỗi, không có tour nào có sẵn trong khoảng thời gian này.")
+        else:
+            dispatcher.utter_message(text="Xin lỗi, tôi không tìm thấy thông tin ngày bạn đã cung cấp.")
+        
+        return []
