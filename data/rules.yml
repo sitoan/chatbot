@@ -2,8 +2,24 @@ version: "3.1"
 
 rules:
 
-  - rule: show list of tour to user
+  # - rule: show list of tour to user
+  #   steps:
+  #   - intent: ask_tours
+  #   - action: action_ask_tours
+
+  - rule: activate information form
     steps:
     - intent: ask_tours
-    - action: action_ask_tours
+    - action: information_form
+    - active_loop: information_form
 
+  - rule:  submit information form
+    condition:
+    - active_loop: information_form
+    steps:
+    - action: information_form
+    - active_loop: null
+    - slot_was_set: 
+      - requested_slot: null
+    - action: utter_confirm_info
+    - action : action_ask_tours

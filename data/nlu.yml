@@ -1,10 +1,29 @@
 version: "3.1"
-
 nlu:
-  - intent: ask_tours
-    examples: |
-      - tôi muốn tìm hiểu vầ các tour du lịch
-      - cho tôi tham khảo danh sách các tour du lịch
-      - tôi muốn tham khảo tour du lịch
-      - danh sách các tour du lịch
-      
+- intent: ask_tours
+  examples: |
+    - tôi muốn tìm hiểu vầ các tour du lịch
+    - cho tôi tham khảo danh sách các tour du lịch
+    - tôi muốn tham khảo tour du lịch
+    - danh sách các tour du lịch
+    - danh sách tour
+    - cho tôi danh sách tour
+    - tôi muốn xem danh sách tour
+    - cho tôi xem danh sách các tour
+
+- intent: inform
+  examples: |
+    - tôi tên là [Toàn](name)
+    - [Nhật Toàn](name)
+    - số điện thoại là [1234567890](phonenumb)
+    - [0930445268](phonenumb)
+    - khởi hành ở [Hồ Chí Minh](starpos)
+    - bắt đầu từ [Hà Nội](starpos)
+    - [Phạm Quang Vinh](name)
+    - [0945737116](phonenumb)
+    - tôi tên [Toàn](name)
+    - Tôi tên là [Toàn](name)
+    - [Hồ Chí Minh](starpos)
+    - Tôi tên [Toàn](name)
+    - [0945737116](phonenumb)
+    - [Hà Nội](starpos)

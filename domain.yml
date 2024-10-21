@@ -1,14 +1,56 @@
-version: "3.1"
-
+version: '3.1'
 intents:
-  - ask_tours
+- ask_for_info
+- ask_tours
+- request_information_form
 
-# entities:
+entities:
+- name
+- phonenumb
+- starpos
 
-# slot:
+forms:
+  information_form:
+    required_slots:
+    - name
+    - phonenumb
+    - starpos
+slots:
+  name:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: name
+  phonenumb:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: phonenumb
+  starpos:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: starpos
+responses:
+# utter_ask_<slot_name>
+  utter_ask_name:
+  - text: xin tên
+  utter_ask_phonenumb:
+  - text: xin sđt
+  utter_ask_starpos:
+  - text: xin điểm khởi hành
+  utter_confirm_info:
+  - text: bạn {name} số điện thoại {phonenumb} khởi hành từ {starpos}
 
 actions:
-  - action_ask_tours
+- utter_confirm_info
+- action_ask_tours
+- validate_information_form
+
+# validate_<name of form>
 
 
 session_config:
