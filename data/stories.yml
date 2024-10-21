@@ -6,11 +6,6 @@ stories:
       - intent: session_start
       - action: action_session_start
 
-  - story: asking for tours
-    steps:
-      - intent: ask_tours
-      - action: action_ask_tours
-
   - story: request available date
     steps:
     - intent: request_available_date

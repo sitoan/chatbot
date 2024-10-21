@@ -29,12 +29,7 @@ nlu:
     - [Hà Nội](starpos)
 
 - regex: "[0-9]{1,2} tháng [0-9]{1,2} năm [0-9]{4}"  
-- intent: ask_tours
-  examples: |
-    - tôi muốn tìm hiểu vầ các tour du lịch
-    - cho tôi tham khảo danh sách các tour du lịch
-    - tôi muốn tham khảo tour du lịch
-    - danh sách các tour du lịch
+
 
 - intent: provide_available_date
   examples: |
