@@ -154,9 +154,9 @@ class ActionShowTourTimes(Action):
                         f"🔹 **Thời gian**: {row.StartDate} - {row.EndDate}\n"
                         f"🔹 **Giá**: {row.PRICE:.2f} VND\n"
                         f"🔹 **Số lượng còn lại**: {row.AvailableSlots}\n"
-                        f"-------------------------\n"  # Ngăn cách giữa các tour
+                        f"-------------------------\n"  
                     )
-                dispatcher.utter_message(text=response)  # Chuyển tất cả response ra ngoài vòng lặp
+                dispatcher.utter_message(text=response)  
             else:
                 dispatcher.utter_message(text="Xin lỗi, không có tour nào có sẵn trong khoảng thời gian này.")
         else:
