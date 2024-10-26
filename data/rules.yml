@@ -1,36 +1,51 @@
 version: "3.1"
 
 rules:
-  - rule: auto greet
+  - rule: respond to greet
     steps:
-      - intent: session_start
-      - action: action_session_start
+      - intent: greet
+      - action: utter_greet
 
-  - rule: activate information form
+  - rule: Activate tour form first
     steps:
-    - intent: ask_tours
-    - action: information_form
-    - active_loop: information_form
+      - intent: book_tour
+      - action: tour_form
+      - active_loop: tour_form
+        
+  - rule: Activate tour form first
+    steps:
+      - intent: inform
+      - action: tour_form
+      - active_loop: tour_form
+        
 
-  - rule:  submit information form
+  - rule: Submit tour form and activate customer form
     condition:
-    - active_loop: information_form
+      - active_loop: tour_form
     steps:
-    - action: information_form
-    - active_loop: null
-    - slot_was_set: 
-      - requested_slot: null
-    - action: utter_confirm_info
-    - action : action_ask_tours
+      - action: tour_form
+      - active_loop: null
+      - slot_was_set:
+        - requested_slot: null
+      - action: utter_confirm_tour_form
+      - action: customer_form
+      - active_loop: customer_form
 
-  - rule: Save available date
+
+  - rule: Submit customer form
+    condition:
+      - active_loop: customer_form
     steps:
-    - intent: provide_available_date
-    - action: action_save_available_date
-    - slot_was_set:
-        - available_date: "2024-10-12" 
-        - valid_date: "false"
-    - action: action_confirm_date
-    - action: action_show_tour_times
+      - action: customer_form
+      - active_loop: null
+      - slot_was_set:
+        - requested_slot: null
+      - action: utter_confirm_customer_form
+      - action: action_show_tours
+      - action: action_listen
 
-    
+  - rule: respond to price inquiry
+    steps:
+      - intent: ask_price
+      - action: action_show_price
+      - action: action_listen

@@ -1,50 +1,94 @@
 version: "3.1"
 nlu:
-- intent: ask_tours
-  examples: |
-    - tôi muốn tìm hiểu vầ các tour du lịch
-    - cho tôi tham khảo danh sách các tour du lịch
-    - tôi muốn tham khảo tour du lịch
-    - danh sách các tour du lịch
-    - danh sách tour
-    - cho tôi danh sách tour
-    - tôi muốn xem danh sách tour
-    - cho tôi xem danh sách các tour
+  - intent: greet
+    examples: |
+      - xin chào
+      - chào bạn
+      - hello
+      - hi
+      - hey
+      - có ai ở đây không
 
-- intent: inform
-  examples: |
-    - tôi tên là [Toàn](name)
-    - [Nhật Toàn](name)
-    - số điện thoại là [1234567890](phonenumb)
-    - [0930445268](phonenumb)
-    - khởi hành ở [Hồ Chí Minh](starpos)
-    - bắt đầu từ [Hà Nội](starpos)
-    - [Phạm Quang Vinh](name)
-    - [0945737116](phonenumb)
-    - tôi tên [Toàn](name)
-    - Tôi tên là [Toàn](name)
-    - [Hồ Chí Minh](starpos)
-    - Tôi tên [Toàn](name)
-    - [0945737116](phonenumb)
-    - [Hà Nội](starpos)
+  - intent: book_tour
+    examples: |
+      - tôi muốn đặt tour
+      - cho tôi xem các tour du lịch
+      - tôi cần tư vấn về tour
+      - có tour nào đi [Đà Lạt](destination) không
+      - tôi muốn đặt tour đi [Phú Quốc](destination)
 
-- regex: "[0-9]{1,2} tháng [0-9]{1,2} năm [0-9]{4}"  
+  - intent: inform
+    examples: |
+      - tôi tên là [Nguyễn Văn A](name)
+      - tên tôi [Trần Thị B](name)
+      - [Lê Văn C](name) ạ
+      - gọi tôi là [Phạm D](name)
+      - tên [Hoàng E](name)
+      - [Mai Văn F](name) là tên của tôi
+      - bạn có thể gọi tôi là [Thu G](name)
+      - số điện thoại của tôi là [0912345678](phone_number)
+      - [0987654321](phone_number)
+      - sđt [0923456789](phone_number)
+      - số của tôi [0898765432](phone_number)
+      - gọi cho tôi số [0865432198](phone_number)
+      - điện thoại [0934567891](phone_number)
+      - liên hệ [0976543210](phone_number)
+      - tôi muốn khởi hành từ [Hà Nội](departure_point)
+      - xuất phát tại [TP.HCM](departure_point)
+      - đi từ [Đà Nẵng](departure_point)
+      - điểm đón tại [Nha Trang](departure_point)
+      - khởi hành ở [Huế](departure_point)
+      - bắt đầu từ [Hải Phòng](departure_point)
+      - đón tôi tại [Cần Thơ](departure_point)
+      - tôi muốn đi lúc [8 giờ sáng](departure_time)
+      - khởi hành [2 giờ chiều](departure_time)
+      - đi vào [9h30](departure_time)
+      - bắt đầu [7 giờ tối](departure_time)
+      - xuất phát [10 giờ sáng](departure_time)
+      - đi lúc [3 giờ chiều](departure_time)
+      - khởi hành [6 giờ sáng](departure_time)
+      - tôi muốn đi [Đà Lạt](destination)
+      - đặt tour đi [Phú Quốc](destination)
+      - cho tôi tour [Sapa](destination)
+      - tôi định đi [Nha Trang](destination)
+      - muốn book tour [Hạ Long](destination)
+      - tôi đang tìm tour đi [Đà Nẵng](destination)
+      - dự định đi [Quy Nhơn](destination)
+      - có tour nào đi [Huế](destination) không
+      - tôi muốn đi tour [cá nhân](tour_type:individual)
+      - đi tour [gia đình](tour_type:family)
+      - tôi chọn tour [nhóm](tour_type:group)
+      - book tour [cá nhân](tour_type:individual)
+      - đặt tour [gia đình](tour_type:family) đi nghỉ dưỡng
+      - muốn đi theo [nhóm](tour_type:group)
+      - đi [2](number_of_people) người
+      - chúng tôi có [5](number_of_adult) người lớn
+      - tour cho [3](number_of_people) khách
+      - đoàn [10](number_of_people) người
+      - nhóm [15](number_of_people) người
+      - có [4](number_of_adult) người lớn [2](number_of_children) trẻ em
+      - Tôi đi cùng với [4](number_of_adult) người lớn và [0](number_of_children) trẻ em
+      - Có [3](number_of_adult) người lớn và [2](number_of_children) trẻ em tham gia
+      - Có [5](number_of_people), [3](number_of_adult) người lớn và [2](number_of_children) trẻ em 
+      - [4](number_of_people) người trong đó [1](number_of_children) trẻ em cùng với [3](number_of_adult) người lớn
+      - ngân sách khoảng [5 triệu](budget)
+      - tầm [3 triệu](budget) một người
+      - dự kiến chi [10 triệu](budget)
+      - budget [7 triệu](budget) /người
+      - tôi có thể chi [15 triệu](budget)
+      - tối đa [20 triệu](budget)
+      - muốn đi [3 ngày 2 đêm](duration)
+      - [2 ngày 1 đêm](duration)
+      - tour [2N1Đ](duration)
+      - đi [một tuần](duration)
+      - khoảng [5 ngày](duration)
+      - tour [4 ngày 3 đêm](duration)
+      - chuyến [3N2Đ](duration)
 
 
-- intent: provide_available_date
-  examples: |
-    - Tôi rảnh ngày [10 tháng 11 năm 2024](available_date)
-    - Tôi có thể đi vào ngày [5 tháng 12](available_date)
-    - Ngày [20 tháng 10](available_date) là tôi rảnh
-    - Tôi muốn đi vào ngày [15 tháng 9 năm 2024](available_date)
-    - Bạn có tour nào vào [22 tháng 10 năm 2024](available_date) không?
-    - Tôi có thể đặt tour từ [1 tháng 1](available_date) đến [5 tháng 1](available_date).
-
-- intent: request_available_date
-  examples: |
-    - Tôi rảnh ngày [21 tháng 10 năm 2024](available_date)
-    - Ngày 21 tháng 10 năm 2024
-    - Tôi có thể đi vào [21 tháng 10 năm 2024](available_date)
-    - Tôi có thể đi ngày [5 tháng 12](available_date)
-    - Có tour nào vào ngày [10 tháng 11](available_date) không?
-    - Tôi muốn đặt tour từ ngày [15 tháng 9 năm 2024](available_date).
+      
+  - intent: ask_price
+    examples: | 
+      - tour này giá bao nhiêu
+      - chi phí là bao nhiêu
+      - giá cả thế nào 

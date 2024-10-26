@@ -14,26 +14,62 @@ import re
 
 ai_server = os.getenv('AI_SERVER')
 
-class ValidateInformationForm(FormValidationAction):
+
+class ValidateCustomerForm(FormValidationAction):
     def name(self) -> Text:
-        return "validate_information_form"
-    
-    def validate_name(self, slot_value: Any, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
-        dispatcher.utter_message(text=f"Ghi nhận tên là {slot_value}")
+        return "validate_customer_form"
+
+    def validate_name(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # Validate name 
+        dispatcher.utter_message(text="Xác nhận tên của bạn là " + slot_value)
         return {"name": slot_value}
-
-    def validate_phonenumb(self, slot_value: Any, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
-        dispatcher.utter_message(text=f"Ghi nhận sđt là {slot_value}")
-        return {"phonenumb": slot_value}
     
-    def validate_starpos(self, slot_value: Any, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
-        dispatcher.utter_message(text=f"Ghi nhận điểm khỏi hành là {slot_value}")
-        return {"starpos": slot_value}
+    def validate_phone_number(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # Validate phone number format
+        if not slot_value.isdigit() or len(slot_value) != 10:
+            dispatcher.utter_message(text="Số điện thoại không hợp lệ. Vui lòng nhập 10 chữ số.")
+            return {"phone_number": None}
+        dispatcher.utter_message(text="Xác nhận số điện thoại " + slot_value)
+        return {"phone_number": slot_value}
+    
+    def validate_departure_point(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # Validate departure point format
+        dispatcher.utter_message(text= " Xác nhận điểm xuất phát " + slot_value)
+        return {"departure_point": slot_value}
+    
+    def validate_departure_time(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # Validate departure time format
+        dispatcher.utter_message(text= " Xác nhận giờ xuất phát " + slot_value)
+        return {"departure_time": slot_value}
 
-class ActionAskTours(Action):
+class ActionShowTours(Action):
 
     def name(self):
-        return "action_ask_tours"
+        return "action_show_tours"
 
     def run(self, dispatcher : CollectingDispatcher, tracker, domain) -> list:
         db = DatabaseConnection()
@@ -55,126 +91,78 @@ class ActionAskTours(Action):
         print(res.content.decode('utf-8'))
         dispatcher.utter_message(text=f"{res.content.decode('utf-8')}")
         return [] 
-    
-class ActionSessionStart(Action):
-    def name(self) -> str:
-        return "action_session_start"
 
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: dict) -> list:
+class ValidateTourForm(FormValidationAction):
 
-        dispatcher.utter_message(text="Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn muốn tìm hiểu tour nào?")
+    def name(self) -> Text:
+        return "validate_tour_form"
 
-        return []
-    
-class ActionSaveAvailableDate(Action):
-    def name(self) -> str:
-        return "action_save_available_date"
+    def validate_destination(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # validate destination
+        dispatcher.utter_message(text="Xác nhận điểm đến " + slot_value)
+        return {"destination": slot_value}
 
-    def run(self, dispatcher: CollectingDispatcher,
-              tracker: Tracker,
-              domain: Dict[str, Any]) -> List[Dict[str, Any]]:
-
-        message = tracker.latest_message['text']
-        today = datetime.now()
-
-        date_pattern = r'(\d{1,2})\s+tháng\s+(\d{1,2})(?:\s+năm\s+(\d{4}))?'
-        match = re.search(date_pattern, message)
-
-        day, month, year = None, None, None
-
-        if match:
-            day = int(match.group(1))
-            month = int(match.group(2))
-            year = int(match.group(3)) if match.group(3) else today.year
+    def validate_tour_type(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # validate tour type
+        tour_type = tracker.get_slot("tour_type")
+        valid_tour_types = ["individual", "family", "group"]
+        if tour_type not in valid_tour_types:
+            dispatcher.utter_message(text=f"Giá trị '{tour_type}' không hợp lệ. Vui lòng chọn giữa 'cá nhân', 'nhóm' hoặc 'gia đình'.")
+            return {"tour_type": None} 
         else:
-            month_pattern = r'tháng\s+(\d{1,2})'
-            month_match = re.search(month_pattern, message)
-            if month_match:
-                month = int(month_match.group(1))
-                day = today.day + 1  # Ngày hiện tại cộng thêm 1
-                year = today.year  # Năm hiện tại
+            dispatcher.utter_message(text=f"Bạn đã chọn tour loại '{tour_type}'.")
+        return {"tour_type": slot_value}
 
-            day_pattern = r'(\d{1,2})'
-            day_match = re.search(day_pattern, message)
-            if day_match and month is None:
-                day = int(day_match.group(1))
-                month = today.month  # Tháng hiện tại
-                year = today.year    # Năm hiện tại
+    def validate_number_of_people(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # Validate number of people
+        total_people = tracker.get_slot("number_of_people") or 0
+        if total_people == 0:
+            number_of_adult = tracker.get_slot("number_of_adult") or 0
+            number_of_children = tracker.get_slot("number_of_children") or 0
 
-        if day is None and month is None:
-            dispatcher.utter_message(text="Xin lỗi, bạn cần cung cấp ngày hoặc tháng.")
-            return [SlotSet("valid_date", "false")]
+        # Tính tổng số người
+            total_people = number_of_adult + number_of_children
 
-        if month is not None and day is None:
-            day = today.day + 1  
-
-        try:
-            available_date = datetime(year, month, day)
-            if available_date < today:
-                dispatcher.utter_message(text="Ngày bạn chọn phải lớn hơn ngày hiện tại.")
-                return [SlotSet("valid_date", "false")]
-
-            available_date_str = f"{year}-{month:02d}-{day:02d}"
-            print(f"Available Date: {available_date_str}")
-            return [SlotSet("available_date", available_date_str), SlotSet("valid_date", "true")]
-        except ValueError:
-            dispatcher.utter_message(text="Ngày bạn nhập không hợp lệ.")
-            return [SlotSet("valid_date", "false")]
-
-class ActionConfirmDate(Action):
-    def name(self) -> str:
-        return "action_confirm_date"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: dict) -> list:
-        
-        if tracker.get_slot("valid_date") == "false":
-            dispatcher.utter_message(text="Vui lòng nhập một ngày hợp lệ trước khi xác nhận.")
-            return [] 
-
-        available_date = tracker.get_slot("available_date")
-        print(f"Ngày khởi hành bạn đã chọn là: {available_date}.")
-        dispatcher.utter_message(text=f"Ngày khởi hành bạn đã chọn là: {available_date}.")
-        
-        return []
-
-class ActionShowTourTimes(Action):
-    def name(self) -> str:
-        return "action_show_tour_times"
-
-    def __init__(self):
-        self.db = DatabaseConnection()
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
-        
-        available_date = tracker.get_slot("available_date")
-        
-        if available_date:
-            available_date = datetime.strptime(available_date, "%Y-%m-%d")
-            query = f"""
-            SELECT * FROM Tour
-            WHERE StartDate > '{available_date.strftime('%Y-%m-%d %H:%M:%S')}'
-            """
-            results = self.db.execute_query(query)
-            if results:
-                response = "Các tour có sẵn vào thời gian bạn yêu cầu:\n"
-                for row in results:
-                    response += (
-                        f"🔹 **Điểm đến**: {row.DepartureLocation}\n"
-                        f"🔹 **Thời gian**: {row.StartDate} - {row.EndDate}\n"
-                        f"🔹 **Giá**: {row.PRICE:.2f} VND\n"
-                        f"🔹 **Số lượng còn lại**: {row.AvailableSlots}\n"
-                        f"-------------------------\n"  # Ngăn cách giữa các tour
-                    )
-                dispatcher.utter_message(text=response)  # Chuyển tất cả response ra ngoài vòng lặp
-            else:
-                dispatcher.utter_message(text="Xin lỗi, không có tour nào có sẵn trong khoảng thời gian này.")
-        else:
-            dispatcher.utter_message(text="Xin lỗi, tôi không tìm thấy thông tin ngày bạn đã cung cấp.")
-        
-        return []
+        dispatcher.utter_message(text="Xác nhận số người tham gia " + total_people)
+        # Cập nhật slot
+        return {"number_of_people": total_people}
+    
+    def validate_budget(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # Validate budget
+        dispatcher.utter_message(text="Xác nhận ngân sách " + slot_value)
+        return {"budget": slot_value}
+    
+    def validate_duration(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        # Validate duration
+        dispatcher.utter_message(text="Xác nhận thời gian tour này " + slot_value)
+        return {"duration": slot_value}

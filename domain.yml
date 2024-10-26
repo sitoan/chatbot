@@ -1,96 +1,152 @@
 version: '3.1'
 intents:
-- ask_for_info
-- ask_tours
-- request_information_form
-- session_start
-- provide_available_date
-- request_available_date
+- greet
+- inform
+- book_tour
+- ask_price
+- request_customer_form
+- request_tour_form 
+
+forms:
+  customer_form:
+    required_slots:
+      - name
+      - phone_number
+      - departure_point
+      - departure_time
+  tour_form:
+    required_slots:
+      - destination
+      - tour_type
+      - number_of_people
+      - budget
+      - duration
 
 entities:
 - name
-- phonenumb
-- starpos
-
-forms:
-  information_form:
-    required_slots:
-    - name
-    - phonenumb
-    - starpos
-
+- phone_number
+- departure_point
+- departure_time
+- destination
+- tour_type
+- number_of_people
+- number_of_children
+- number_of_adult
+- budget
+- duration
 
 slots:
   name:
     type: text
-    influence_conversation: true
     mappings:
     - type: from_entity
       entity: name
-  phonenumb:
+  phone_number:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: phone_number    
+  departure_point:
     type: text
     influence_conversation: true
     mappings:
     - type: from_entity
-      entity: phonenumb
-  starpos:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: starpos
-  available_date:
+      entity: departure_point
+  departure_time:
     type: text 
+    influence_conversation: true
     mappings:
-      - type: from_text
-  valid_date:
+    - type: from_entity
+      entity: departure_time
+  destination:
     type: text
+    influence_conversation: true
+    mappings: 
+    - type: from_entity
+      entity: destination
+  tour_type:
+    type: categorical
+    values:
+      - individual
+      - group
+      - family
+    influence_conversation: true
     mappings:
-      - type: from_text
+    - type: from_entity
+      entity: tour_type
+  number_of_adult:
+    type: float
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: number_of_adult
+  number_of_people:
+    type: float
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: number_of_people
+  number_of_children:
+    type: float
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: number_of_children
   budget:
     type: text
+    influence_conversation: true
     mappings:
-      - type: from_text
+    - type: from_entity
+      entity: budget
+  duration:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: duration
 
 responses:
 # utter_ask_<slot_name>
+  utter_ask_destination:
+  - text: "Bạn muốn đi du lịch ở đâu?"
+  utter_ask_tour_type:
+  - text: "Bạn muốn đi tour cá nhân, gia đình hay theo nhóm?"
+  utter_ask_number_of_people:
+  - text: "Chuyến đi của bạn có bao nhiêu người?" 
+  utter_ask_budget:
+  - text: "Ngân sách dự kiến của bạn là bao nhiêu?"
+  utter_ask_duration:
+  - text: "Bạn muốn đi trong bao lâu?"
   utter_ask_name:
-  - text: xin tên
-  utter_ask_phonenumb:
-  - text: xin sđt
-  utter_ask_starpos:
-  - text: xin điểm khởi hành
-  utter_confirm_info:
-  - text: bạn {name} số điện thoại {phonenumb} khởi hành từ {starpos}
+  - text: "Bạn vui lòng cho biết tên?"
+  - text: "Xin cho biết tên của bạn?"
+  - text: "Bạn tên là gì?"
+  utter_ask_phone:
+  - text: "Số điện thoại của bạn là gì?"
+  - text: "Vui lòng cung cấp số điện thoại liên hệ?"
+  - text: "Xin cho biết số điện thoại của bạn?"
+  utter_ask_departure_point:
+  - text: "Bạn muốn khởi hành từ đâu?"
+  - text: "Điểm xuất phát của bạn ở đâu?"
+  - text: "Bạn muốn được đón ở đâu?"
+  utter_ask_departure_time:
+  - text: "Bạn muốn khởi hành lúc mấy giờ?"
+  - text: "Thời gian khởi hành bạn mong muốn là?"
+  - text: "Bạn muốn đi vào lúc mấy giờ?"
+  utter_confirm_customer_form:
+  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nTên: {name}\nSố điện thoại: {phone_number}\nĐiểm đón: {departure_point}\nGiờ đón: {departure_time}"
   utter_greet:
-    - text: "Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn muốn tìm hiểu tour nào?"
+  - text: "Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn cần giúp gì"
+  utter_confirm_tour_form:
+  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nĐiểm đến: {destination}\nLoại tour: {tour_type}\nSố người tham gia: {number_of_people}\nNgân sách dự kiến: {budget}\nĐộ dài chuyến đi: {duration}."
 
 actions:
-- utter_confirm_info
-- action_ask_tours
-- validate_information_form
-
-# validate_<name of form>
-
-- action_session_start
-- action_save_available_date
-- action_confirm_date  
-- action_ask_available_date
-- action_show_tour_times 
-
+- action_show_tours
+- validate_customer_form
+- validate_tour_form
+- action_show_price
 
 
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
-
-flows:
-  - name: request_available_date_flow
-    steps:
-      - intent: request_available_date
-      - action: action_save_available_date  
-      - slot_was_set:
-          - available_date:  
-          - valid_date:
-      - action: action_confirm_date
-      - action: action_show_tour_times
