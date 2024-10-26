@@ -6,11 +6,6 @@ stories:
       - intent: session_start
       - action: action_session_start
 
-  - story: asking for tours
-    steps:
-      - intent: ask_tours
-      - action: action_ask_tours
-
   - story: request available date
     steps:
     - intent: request_available_date
@@ -21,4 +16,14 @@ stories:
     - action: action_confirm_date
     - action: action_show_tour_times
 
+  - story: User wants to find recent tours
+    steps:
+      - intent: find_recent_tours
+      - action: action_show_recent_tours
 
+  - story: User wants to find recent specific date tours
+    steps:
+      - intent: find_tours_by_specific_date
+      - slot_was_set:
+          - month: 11
+      - action: action_show_tours_by_specific_date

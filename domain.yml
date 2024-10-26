@@ -1,24 +1,47 @@
-version: "3.1"
-
+version: '3.1'
 intents:
-  - ask_tours
-  - session_start
-  - provide_available_date
-  - request_available_date
+- ask_for_info
+- ask_tours
+- request_information_form
+- session_start
+- provide_available_date
+- request_available_date
+- find_recent_tours
+- find_tours_by_specific_date
 
-responses:
-  utter_greet:
-    - text: "Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn muốn tìm hiểu tour nào?"
+entities:
+- name
+- phonenumb
+- starpos
+- month
 
-actions:
-  - action_ask_tours
-  - action_session_start
-  - action_save_available_date
-  - action_confirm_date  
-  - action_ask_available_date
-  - action_show_tour_times 
+forms:
+  information_form:
+    required_slots:
+    - name
+    - phonenumb
+    - starpos
+
 
 slots:
+  name:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: name
+  phonenumb:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: phonenumb
+  starpos:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: starpos
   available_date:
     type: text 
     mappings:
@@ -31,6 +54,55 @@ slots:
     type: text
     mappings:
       - type: from_text
+  month:
+    type: categorical
+    influence_conversation: false
+    values:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+    mappings:
+      - type: from_entity
+        entity: month
+
+
+responses:
+# utter_ask_<slot_name>
+  utter_ask_name:
+  - text: xin tên
+  utter_ask_phonenumb:
+  - text: xin sđt
+  utter_ask_starpos:
+  - text: xin điểm khởi hành
+  utter_confirm_info:
+  - text: bạn {name} số điện thoại {phonenumb} khởi hành từ {starpos}
+  utter_greet:
+    - text: "Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn muốn tìm hiểu tour nào?"
+
+actions:
+- utter_confirm_info
+- action_ask_tours
+- validate_information_form
+- action_show_recent_tours
+# validate_<name of form>
+
+- action_session_start
+- action_save_available_date
+- action_confirm_date  
+- action_ask_available_date
+- action_show_tour_times 
+- action_show_tours_by_specific_date
+
+
 
 session_config:
   session_expiration_time: 60
@@ -46,3 +118,15 @@ flows:
           - valid_date:
       - action: action_confirm_date
       - action: action_show_tour_times
+
+  - name: request_recent_tours_flow
+    steps:
+      - intent: find_recent_tours
+      - action: action_show_recent_tours
+
+  - name: request_specific_tour_flow
+    steps:
+      - intent: find_tours_by_specific_date
+      - slot_was_set:
+          - month
+      - action: action_show_tours_by_specific_date

@@ -1,28 +1,77 @@
 version: "3.1"
-
 nlu:
-  - regex: "[0-9]{1,2} tháng [0-9]{1,2} năm [0-9]{4}"  
-  - intent: ask_tours
-    examples: |
-      - tôi muốn tìm hiểu vầ các tour du lịch
-      - cho tôi tham khảo danh sách các tour du lịch
-      - tôi muốn tham khảo tour du lịch
-      - danh sách các tour du lịch
+- intent: ask_tours
+  examples: |
+    - tôi muốn tìm hiểu vầ các tour du lịch
+    - cho tôi tham khảo danh sách các tour du lịch
+    - tôi muốn tham khảo tour du lịch
+    - danh sách các tour du lịch
+    - danh sách tour
+    - cho tôi danh sách tour
+    - tôi muốn xem danh sách tour
+    - cho tôi xem danh sách các tour
 
-  - intent: provide_available_date
-    examples: |
-      - Tôi rảnh ngày [10 tháng 11 năm 2024](available_date)
-      - Tôi có thể đi vào ngày [5 tháng 12](available_date)
-      - Ngày [20 tháng 10](available_date) là tôi rảnh
-      - Tôi muốn đi vào ngày [15 tháng 9 năm 2024](available_date)
-      - Bạn có tour nào vào [22 tháng 10 năm 2024](available_date) không?
-      - Tôi có thể đặt tour từ [1 tháng 1](available_date) đến [5 tháng 1](available_date).
+- intent: inform
+  examples: |
+    - tôi tên là [Toàn](name)
+    - [Nhật Toàn](name)
+    - số điện thoại là [1234567890](phonenumb)
+    - [0930445268](phonenumb)
+    - khởi hành ở [Hồ Chí Minh](starpos)
+    - bắt đầu từ [Hà Nội](starpos)
+    - [Phạm Quang Vinh](name)
+    - [0945737116](phonenumb)
+    - tôi tên [Toàn](name)
+    - Tôi tên là [Toàn](name)
+    - [Hồ Chí Minh](starpos)
+    - Tôi tên [Toàn](name)
+    - [0945737116](phonenumb)
+    - [Hà Nội](starpos)
 
-  - intent: request_available_date
-    examples: |
-      - Tôi rảnh ngày [21 tháng 10 năm 2024](available_date)
-      - Ngày 21 tháng 10 năm 2024
-      - Tôi có thể đi vào [21 tháng 10 năm 2024](available_date)
-      - Tôi có thể đi ngày [5 tháng 12](available_date)
-      - Có tour nào vào ngày [10 tháng 11](available_date) không?
-      - Tôi muốn đặt tour từ ngày [15 tháng 9 năm 2024](available_date).
+- regex: "[0-9]{1,2} tháng [0-9]{1,2} năm [0-9]{4}"  
+
+
+- intent: provide_available_date
+  examples: |
+    - Tôi rảnh ngày [10 tháng 11 năm 2024](available_date)
+    - Tôi có thể đi vào ngày [5 tháng 12](available_date)
+    - Ngày [20 tháng 10](available_date) là tôi rảnh
+    - Tôi muốn đi vào ngày [15 tháng 9 năm 2024](available_date)
+    - Bạn có tour nào vào [22 tháng 10 năm 2024](available_date) không?
+    - Tôi có thể đặt tour từ [1 tháng 1](available_date) đến [5 tháng 1](available_date).
+
+- intent: request_available_date
+  examples: |
+    - Tôi rảnh ngày [21 tháng 10 năm 2024](available_date)
+    - Ngày 21 tháng 10 năm 2024
+    - Tôi có thể đi vào [21 tháng 10 năm 2024](available_date)
+    - Tôi có thể đi ngày [5 tháng 12](available_date)
+    - Có tour nào vào ngày [10 tháng 11](available_date) không?
+    - Tôi muốn đặt tour từ ngày [15 tháng 9 năm 2024](available_date).
+
+- intent: find_recent_tours
+  examples: |
+    - Các tour gần đây
+    - Tour trong 2 tháng qua
+    - Có tour nào khởi hành trong thời gian gần đây không?
+    - Tôi muốn tìm các tour trong 2 tháng trở lại
+    - Tìm tour gần đây nhất
+    - Bạn có thể cho tôi biết các tour gần đây không?
+    - Tour nào đang diễn ra trong tháng này?
+    - Tôi muốn biết về các tour sắp tới trong thời gian gần đây.
+    - Có bất kỳ tour nào vừa mới kết thúc không?
+    - Hãy cho tôi biết về các tour gần đây nhất trong tháng này.
+
+- intent: find_tours_by_specific_date
+  examples: |
+    - Tôi muốn tìm tour tháng [11](month)
+    - Có tour nào vào tháng [12](month) không?
+    - Tìm tour tháng [10](month)
+    - Cho tôi biết tour có sẵn tháng [1](month).
+    - Tôi muốn biết có tour nào trong tháng [8](month) không?
+    - Có tour gì tháng [5](month) không?
+    - Tìm các tour tháng [4](month).
+    - Tôi muốn đi tour tháng [9](month).
+    - Bạn có thông tin về tour tháng [2](month) không?
+    - Tôi cần tìm tour tháng [3](month) cho kỳ nghỉ.
+    - Xin hãy cho tôi biết tour tháng [6](month) có gì đặc biệt không?

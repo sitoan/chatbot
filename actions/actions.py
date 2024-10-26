@@ -1,19 +1,35 @@
-from rasa_sdk import Action, Tracker
+from typing import Dict, Text, List, Any
+from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
+from rasa_sdk.types import DomainDict
 import requests
 import json 
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from typing import Any, Text, Dict, List
-from datetime import datetime
+from datetime import datetime,timedelta
 from actions import DatabaseConnection
 import re
-import spacy
-from transformers import AutoTokenizer
+from dateutil.relativedelta import relativedelta  
 
 ai_server = os.getenv('AI_SERVER')
+
+class ValidateInformationForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_information_form"
+    
+    def validate_name(self, slot_value: Any, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
+        dispatcher.utter_message(text=f"Ghi nhận tên là {slot_value}")
+        return {"name": slot_value}
+
+    def validate_phonenumb(self, slot_value: Any, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
+        dispatcher.utter_message(text=f"Ghi nhận sđt là {slot_value}")
+        return {"phonenumb": slot_value}
+    
+    def validate_starpos(self, slot_value: Any, dispatcher: CollectingDispatcher, tracker: Tracker, domain: DomainDict) -> Dict[Text, Any]:
+        dispatcher.utter_message(text=f"Ghi nhận điểm khỏi hành là {slot_value}")
+        return {"starpos": slot_value}
 
 class ActionAskTours(Action):
 
@@ -161,5 +177,95 @@ class ActionShowTourTimes(Action):
                 dispatcher.utter_message(text="Xin lỗi, không có tour nào có sẵn trong khoảng thời gian này.")
         else:
             dispatcher.utter_message(text="Xin lỗi, tôi không tìm thấy thông tin ngày bạn đã cung cấp.")
+        
+        return []
+    
+class ActionShowRecentTours(Action):
+    def name(self) -> str:
+        return "action_show_recent_tours"
+
+    def __init__(self):
+        self.db = DatabaseConnection()
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        today = datetime.now()
+        two_months_from_now = today + relativedelta(months=2)  # Lấy ngày hiện tại cộng thêm 2 tháng
+
+        query = f"""
+        SELECT * FROM Tour
+        WHERE StartDate BETWEEN '{today.strftime('%Y-%m-%d %H:%M:%S')}' 
+                             AND '{two_months_from_now.strftime('%Y-%m-%d %H:%M:%S')}'
+        """
+        results = self.db.execute_query(query)
+
+        if results:
+            response = "Các tour có sẵn trong 2 tháng tới:\n"
+            for row in results:
+                response += (
+                    f"🔹 **Điểm đến**: {row.DepartureLocation}\n"
+                    f"🔹 **Thời gian**: {row.StartDate.strftime('%Y-%m-%d %H:%M:%S')} - {row.EndDate.strftime('%Y-%m-%d %H:%M:%S')}\n"
+                    f"🔹 **Giá**: {row.PRICE:.2f} VND\n"
+                    f"🔹 **Số lượng còn lại**: {row.AvailableSlots}\n"
+                    f"-------------------------\n"
+                )
+            dispatcher.utter_message(text=response)
+        else:
+            dispatcher.utter_message(text="Không có tour nào trong 2 tháng tới.")
+        
+        return []
+    
+class ActionShowToursBySpecificDate(Action):
+    def name(self) -> str:
+        return "action_show_tours_by_specific_date"
+
+    def __init__(self):
+        self.db = DatabaseConnection()
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        
+        # Lấy giá trị tháng từ slot và chuyển sang số nguyên
+        month = tracker.get_slot("month")
+        if month is None:
+            dispatcher.utter_message(text="Xin lỗi, bạn cần cung cấp tháng.")
+            return []
+        
+        try:
+            month = int(month)  # Chuyển đổi tháng sang số nguyên
+        except ValueError:
+            dispatcher.utter_message(text="Tháng không hợp lệ.")
+            return []
+
+        year = datetime.now().year  # Lấy năm hiện tại
+        
+        # Xác định ngày bắt đầu và ngày kết thúc của tháng
+        start_date = datetime(year, month, 1)
+        end_date = (start_date + timedelta(days=31)).replace(day=1) - timedelta(days=1)
+        
+        # Xây dựng query để tìm tour trong tháng
+        query = f"""
+        SELECT * FROM Tour
+        WHERE StartDate BETWEEN '{start_date.strftime('%Y-%m-%d')}' 
+                             AND '{end_date.strftime('%Y-%m-%d')}'
+        """
+        results = self.db.execute_query(query)
+
+        if results:
+            response = f"Các tour có sẵn trong tháng {month}:\n"
+            for row in results:
+                response += (
+                    f"🔹 **Điểm đến**: {row.DepartureLocation}\n"
+                    f"🔹 **Thời gian**: {row.StartDate.strftime('%Y-%m-%d %H:%M:%S')} - {row.EndDate.strftime('%Y-%m-%d %H:%M:%S')}\n"
+                    f"🔹 **Giá**: {row.PRICE:.2f} VND\n"
+                    f"🔹 **Số lượng còn lại**: {row.AvailableSlots}\n"
+                    f"-------------------------\n"
+                )
+            dispatcher.utter_message(text=response)
+        else:
+            dispatcher.utter_message(text=f"Xin lỗi, không có tour nào có sẵn trong tháng {month}.")
         
         return []
