@@ -146,9 +146,6 @@ class ActionShowTourTimes(Action):
     def name(self) -> str:
         return "action_show_tour_times"
 
-    def __init__(self):
-        self.db = DatabaseConnection()
-
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -157,115 +154,277 @@ class ActionShowTourTimes(Action):
         
         if available_date:
             available_date = datetime.strptime(available_date, "%Y-%m-%d")
-            query = f"""
-            SELECT * FROM Tour
-            WHERE StartDate > '{available_date.strftime('%Y-%m-%d %H:%M:%S')}'
-            """
-            results = self.db.execute_query(query)
-            if results:
-                response = "Các tour có sẵn vào thời gian bạn yêu cầu:\n"
-                for row in results:
-                    response += (
-                        f"🔹 **Điểm đến**: {row.DepartureLocation}\n"
-                        f"🔹 **Thời gian**: {row.StartDate} - {row.EndDate}\n"
-                        f"🔹 **Giá**: {row.PRICE:.2f} VND\n"
-                        f"🔹 **Số lượng còn lại**: {row.AvailableSlots}\n"
-                        f"-------------------------\n"  
-                    )
-                dispatcher.utter_message(text=response)  
+            response = requests.get("http://localhost:5175/api/tour")
+            
+            if response.status_code == 200:
+                tours = response.json()
+                filtered_tours = [
+                    tour for tour in tours 
+                    if datetime.fromisoformat(tour["startDate"]) > available_date
+                ]
+                
+                if filtered_tours:
+                    response_text = "Các tour có sẵn vào thời gian bạn yêu cầu:\n"
+                    for tour in filtered_tours:
+                        response_text += (
+                            f"🔹 **Điểm đến**: {tour['destination']}\n"
+                            f"🔹 **Nơi khởi hành**: {tour['departureLocation']}\n"
+                            f"🔹 **Thời gian**: {tour['startDate']} - {tour['endDate']}\n"
+                            f"🔹 **Giá**: {tour['price']:.2f} VND\n"
+                            f"🔹 **Số lượng còn lại**: {tour['availableSlots']}\n"
+                            f"-------------------------\n"  
+                        )
+                    dispatcher.utter_message(text=response_text)
+                else:
+                    dispatcher.utter_message(text="Xin lỗi, không có tour nào có sẵn trong khoảng thời gian này.")
             else:
-                dispatcher.utter_message(text="Xin lỗi, không có tour nào có sẵn trong khoảng thời gian này.")
+                dispatcher.utter_message(text="Lỗi khi truy xuất dữ liệu tour.")
         else:
             dispatcher.utter_message(text="Xin lỗi, tôi không tìm thấy thông tin ngày bạn đã cung cấp.")
         
         return []
-    
+
 class ActionShowRecentTours(Action):
     def name(self) -> str:
         return "action_show_recent_tours"
-
-    def __init__(self):
-        self.db = DatabaseConnection()
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         today = datetime.now()
-        two_months_from_now = today + relativedelta(months=2)  # Lấy ngày hiện tại cộng thêm 2 tháng
+        two_months_from_now = today + relativedelta(months=2)
 
-        query = f"""
-        SELECT * FROM Tour
-        WHERE StartDate BETWEEN '{today.strftime('%Y-%m-%d %H:%M:%S')}' 
-                             AND '{two_months_from_now.strftime('%Y-%m-%d %H:%M:%S')}'
-        """
-        results = self.db.execute_query(query)
+        response = requests.get("http://localhost:5175/api/tour")
+        
+        if response.status_code == 200:
+            tours = response.json()
+            recent_tours = [
+                tour for tour in tours
+                if today <= datetime.fromisoformat(tour["startDate"]) <= two_months_from_now
+            ]
 
-        if results:
-            response = "Các tour có sẵn trong 2 tháng tới:\n"
-            for row in results:
-                response += (
-                    f"🔹 **Điểm đến**: {row.DepartureLocation}\n"
-                    f"🔹 **Thời gian**: {row.StartDate.strftime('%Y-%m-%d %H:%M:%S')} - {row.EndDate.strftime('%Y-%m-%d %H:%M:%S')}\n"
-                    f"🔹 **Giá**: {row.PRICE:.2f} VND\n"
-                    f"🔹 **Số lượng còn lại**: {row.AvailableSlots}\n"
-                    f"-------------------------\n"
-                )
-            dispatcher.utter_message(text=response)
+            if recent_tours:
+                response_text = "Các tour có sẵn trong 2 tháng tới:\n"
+                for tour in recent_tours:
+                    response_text += (
+                        f"🔹 **Điểm đến**: {tour['destination']}\n"
+                        f"🔹 **Nơi khởi hành**: {tour['departureLocation']}\n"
+                        f"🔹 **Thời gian**: {tour['startDate']} - {tour['endDate']}\n"
+                        f"🔹 **Giá**: {tour['price']:.2f} VND\n"
+                        f"🔹 **Số lượng còn lại**: {tour['availableSlots']}\n"
+                        f"-------------------------\n"
+                    )
+                dispatcher.utter_message(text=response_text)
+            else:
+                dispatcher.utter_message(text="Không có tour nào trong 2 tháng tới.")
         else:
-            dispatcher.utter_message(text="Không có tour nào trong 2 tháng tới.")
+            dispatcher.utter_message(text="Lỗi khi truy xuất dữ liệu tour.")
         
         return []
-    
+
 class ActionShowToursBySpecificDate(Action):
     def name(self) -> str:
         return "action_show_tours_by_specific_date"
-
-    def __init__(self):
-        self.db = DatabaseConnection()
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         
-        # Lấy giá trị tháng từ slot và chuyển sang số nguyên
         month = tracker.get_slot("month")
         if month is None:
             dispatcher.utter_message(text="Xin lỗi, bạn cần cung cấp tháng.")
             return []
         
         try:
-            month = int(month)  # Chuyển đổi tháng sang số nguyên
+            month = int(month)
         except ValueError:
             dispatcher.utter_message(text="Tháng không hợp lệ.")
             return []
 
-        year = datetime.now().year  # Lấy năm hiện tại
-        
-        # Xác định ngày bắt đầu và ngày kết thúc của tháng
+        year = datetime.now().year
         start_date = datetime(year, month, 1)
         end_date = (start_date + timedelta(days=31)).replace(day=1) - timedelta(days=1)
-        
-        # Xây dựng query để tìm tour trong tháng
-        query = f"""
-        SELECT * FROM Tour
-        WHERE StartDate BETWEEN '{start_date.strftime('%Y-%m-%d')}' 
-                             AND '{end_date.strftime('%Y-%m-%d')}'
-        """
-        results = self.db.execute_query(query)
 
-        if results:
-            response = f"Các tour có sẵn trong tháng {month}:\n"
-            for row in results:
-                response += (
-                    f"🔹 **Điểm đến**: {row.DepartureLocation}\n"
-                    f"🔹 **Thời gian**: {row.StartDate.strftime('%Y-%m-%d %H:%M:%S')} - {row.EndDate.strftime('%Y-%m-%d %H:%M:%S')}\n"
-                    f"🔹 **Giá**: {row.PRICE:.2f} VND\n"
-                    f"🔹 **Số lượng còn lại**: {row.AvailableSlots}\n"
-                    f"-------------------------\n"
-                )
-            dispatcher.utter_message(text=response)
-        else:
-            dispatcher.utter_message(text=f"Xin lỗi, không có tour nào có sẵn trong tháng {month}.")
+        response = requests.get("http://localhost:5175/api/tour")
         
+        if response.status_code == 200:
+            tours = response.json()
+            specific_tours = [
+                tour for tour in tours
+                if start_date <= datetime.fromisoformat(tour["startDate"]) <= end_date
+            ]
+
+            if specific_tours:
+                response_text = f"Các tour có sẵn trong tháng {month}:\n"
+                for tour in specific_tours:
+                    response_text += (
+                        f"🔹 **Điểm đến**: {tour['destination']}\n"
+                        f"🔹 **Nơi khởi hành**: {tour['departureLocation']}\n"
+                        f"🔹 **Thời gian**: {tour['startDate']} - {tour['endDate']}\n"
+                        f"🔹 **Giá**: {tour['price']:.2f} VND\n"
+                        f"🔹 **Số lượng còn lại**: {tour['availableSlots']}\n"
+                        f"-------------------------\n"
+                    )
+                dispatcher.utter_message(text=response_text)
+            else:
+                dispatcher.utter_message(text=f"Xin lỗi, không có tour nào có sẵn trong tháng {month}.")
+        else:
+            dispatcher.utter_message(text="Lỗi khi truy xuất dữ liệu tour.")
+        
+        return []
+    
+class ActionShowToursByBudget(Action):
+    def name(self) -> str:
+        return "action_show_tours_by_budget"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+
+        # Lấy ngân sách từ tin nhắn khách hàng
+        message = tracker.latest_message['text']
+        
+        # Cập nhật regex để nhận diện cả số nguyên và số có phần nghìn
+        budget_pattern = r'(\d{1,3}(?:\.\d{3})*|\d+)\s*(triệu|ngàn)?'
+        match = re.search(budget_pattern, message)
+
+        if match:
+            budget_str = match.group(1).replace('.', '')  
+            unit = match.group(2)  
+            
+            if unit == "triệu":
+                budget = int(budget_str) * 1000000  
+            elif unit == "ngàn":
+                budget = int(budget_str) * 1000  
+            else:
+                budget = int(budget_str)  
+
+            display_budget = budget
+
+            if budget < 10000:  # Ngân sách tối thiểu đề xuất
+                dispatcher.utter_message(text="Xin lỗi, hiện không có tour nào phù hợp với ngân sách của bạn.")
+                return []
+
+        else:
+            dispatcher.utter_message(text="Xin lỗi, bạn vui lòng cung cấp ngân sách cụ thể để tìm tour phù hợp.")
+            return []
+
+        try:
+            response = requests.get(f"http://localhost:5175/api/tour?max_price={budget}")
+            response.raise_for_status()  
+            tours = response.json()  
+
+            if tours:
+                response_text = f"Các tour phù hợp với ngân sách của bạn ({display_budget} VND):\n"
+                found_tours = False  # Biến để theo dõi có tour nào hợp lệ không
+                for tour in tours:
+                    if tour['price'] <= budget:  # Chỉ hiển thị tour nếu giá <= ngân sách
+                        found_tours = True
+                        response_text += (
+                            f"🔹 **Điểm đến**: {tour['destination']}\n"
+                            f"🔹 **Nơi khởi hành**: {tour['departureLocation']}\n"
+                            f"🔹 **Thời gian**: {tour['startDate']} - {tour['endDate']}\n"
+                            f"🔹 **Giá**: {tour['price']:.2f} VND\n"
+                            f"🔹 **Số lượng còn lại**: {tour['availableSlots']}\n"
+                            f"-------------------------\n"
+                        )
+
+                if not found_tours:
+                    additional_budget = budget + 1000  # Ngân sách thêm 1000 VND
+                    response = requests.get(f"http://localhost:5175/api/tour?min_price={budget}&max_price={additional_budget}")
+                    response.raise_for_status()
+                    alternative_tours = response.json()
+
+                    if alternative_tours:
+                        response_text += (
+                            f"Không tìm thấy tour nào trong ngân sách {display_budget} VND của bạn. "
+                            f"Nhưng đây là một số tour trong tầm giá hơn {display_budget} VND một chút:\n"
+                        )
+                        for tour in alternative_tours:
+                            response_text += (
+                                f"🔹 **Điểm đến**: {tour['destination']}\n"
+                                f"🔹 **Nơi khởi hành**: {tour['departureLocation']}\n"
+                                f"🔹 **Thời gian**: {tour['startDate']} - {tour['endDate']}\n"
+                                f"🔹 **Giá**: {tour['price']:.2f} VND\n"
+                                f"🔹 **Số lượng còn lại**: {tour['availableSlots']}\n"
+                                f"-------------------------\n"
+                            )
+                    else:
+                        dispatcher.utter_message(text="Xin lỗi, hiện không có tour nào phù hợp với ngân sách của bạn.")
+                else:
+                    dispatcher.utter_message(text=response_text)
+            else:
+                dispatcher.utter_message(text="Xin lỗi, hiện không có tour nào phù hợp với ngân sách của bạn.")
+
+        except requests.exceptions.RequestException as e:
+            dispatcher.utter_message(text="Xin lỗi, đã xảy ra lỗi khi kết nối với hệ thống. Vui lòng thử lại sau.")
+            print(f"API request error: {e}")
+
+        return []
+
+class ActionShowToursBySpecificDuration(Action):
+    def name(self) -> str:
+        return "action_show_tours_by_specific_duration"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+
+        message = tracker.latest_message['text']
+        duration_pattern = r'(\d+)\s*ngày\s*(\d+)\s*đêm'
+        match = re.search(duration_pattern, message)
+
+        if match:
+            num_days = int(match.group(1))
+            num_nights = int(match.group(2))
+            
+            if num_days != num_nights + 1:
+                dispatcher.utter_message(text="Số ngày không đúng với số đêm. Vui lòng kiểm tra lại.")
+                return []
+
+            # Gọi API để lấy danh sách tour
+            response = requests.get("http://localhost:5175/api/tour")
+            if response.status_code == 200:
+                tours = response.json()
+            else:
+                dispatcher.utter_message(text="Xin lỗi, không thể lấy dữ liệu tour từ hệ thống.")
+                return []
+
+            found_tours = []
+            for tour in tours:
+                start_date = datetime.fromisoformat(tour['startDate'])
+                end_date = datetime.fromisoformat(tour['endDate'])
+                duration_days = (end_date - start_date).days
+
+                if duration_days == num_days:
+                    found_tours.append(tour)
+
+            if found_tours:
+                response_text = f"Các tour phù hợp với yêu cầu của bạn ({num_days} ngày, {num_nights} đêm):\n"
+                for tour in found_tours:
+                    response_text += (
+                        f"🔹 **Điểm đến**: {tour['destination']}\n"
+                        f"🔹 **Nơi khởi hành**: {tour['departureLocation']}\n"
+                        f"🔹 **Thời gian**: {tour['startDate']} - {tour['endDate']}\n"
+                        f"🔹 **Giá**: {tour['price']:.2f} VND\n"
+                        f"🔹 **Số lượng còn lại**: {tour['availableSlots']}\n"
+                        f"-------------------------\n"
+                    )
+                dispatcher.utter_message(text=response_text)
+            else:
+                response_text = "Xin lỗi, hiện không có tour nào phù hợp với yêu cầu của bạn. Đây là một số tour khác:\n"
+                for tour in tours[:5]:  # Lấy tối đa 5 tour từ danh sách tour
+                    response_text += (
+                        f"🔹 **Điểm đến**: {tour['destination']}\n"
+                        f"🔹 **Nơi khởi hành**: {tour['departureLocation']}\n"
+                        f"🔹 **Thời gian**: {tour['startDate']} - {tour['endDate']}\n"
+                        f"🔹 **Giá**: {tour['price']:.2f} VND\n"
+                        f"🔹 **Số lượng còn lại**: {tour['availableSlots']}\n"
+                        f"-------------------------\n"
+                    )
+                dispatcher.utter_message(text=response_text)
+        else:
+            dispatcher.utter_message(text="Xin lỗi, bạn vui lòng cung cấp thông tin ngày và đêm cụ thể.")
+
         return []

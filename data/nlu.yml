@@ -75,3 +75,20 @@ nlu:
     - Bạn có thông tin về tour tháng [2](month) không?
     - Tôi cần tìm tour tháng [3](month) cho kỳ nghỉ.
     - Xin hãy cho tôi biết tour tháng [6](month) có gì đặc biệt không?
+
+- intent: find_tour_by_budget
+  examples: |
+    - Tôi có [5 triệu] để tìm tour, có tour nào phù hợp không?
+    - Tìm tour trong khoảng [10 triệu]
+    - Có tour nào dưới [7 triệu] không?
+    - Tôi muốn tìm tour với ngân sách [3 triệu]
+
+- intent: ask_tour_duration
+  examples: |
+    - Tôi muốn tour 2 ngày 3 đêm
+    - Tìm cho tôi tour 3 ngày 2 đêm
+    - Tôi muốn đi tour 5 ngày 4 đêm
+    - Có tour nào 1 ngày 1 đêm không?
+    - Giúp tôi tìm tour 7 ngày 6 đêm
+    - Tôi muốn đặt tour 4 ngày 3 đêm
+    - Tìm tour cho 10 ngày 9 đêm

@@ -166,10 +166,6 @@ cython_debug/
 models/
 # Temporary training files
 tmp/
-<<<<<<< HEAD
-# Log files
-*.log
-=======
 # End-to-end testing results
 results/
 
@@ -182,4 +178,3 @@ rasa_core*.log
 
 # Docker
 docker-compose.override.yml
->>>>>>> 8f49b556fe923f3dec9a6fcd4b30b59fca20a511

@@ -8,6 +8,8 @@ intents:
 - request_available_date
 - find_recent_tours
 - find_tours_by_specific_date
+- find_tour_by_budget
+- ask_tour_duration
 
 entities:
 - name
@@ -101,8 +103,8 @@ actions:
 - action_ask_available_date
 - action_show_tour_times 
 - action_show_tours_by_specific_date
-
-
+- action_show_tours_by_budget
+- action_show_tours_by_specific_duration
 
 session_config:
   session_expiration_time: 60

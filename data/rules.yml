@@ -44,3 +44,13 @@ rules:
       - slot_was_set:
           - month: 11
       - action: action_show_tours_by_specific_date
+  
+  - rule: Find tour budget Customer
+    steps:
+      - intent: find_tour_by_budget
+      - action: action_show_tours_by_budget
+
+  - rule: Find durations for customer
+    steps:
+    - intent: ask_tour_duration
+    - action: action_show_tours_by_specific_duration 

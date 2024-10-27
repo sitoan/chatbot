@@ -27,3 +27,13 @@ stories:
       - slot_was_set:
           - month: 11
       - action: action_show_tours_by_specific_date
+
+  - story: find tour by budget
+    steps:
+      - intent: find_tour_by_budget
+      - action: action_show_tours_by_budget
+
+  - story: ask for  days  nights tour
+    steps:
+    - intent: ask_tour_duration
+    - action: action_show_tours_by_specific_duration
