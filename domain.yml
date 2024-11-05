@@ -1,23 +1,26 @@
 version: '3.1'
 intents:
 - greet
-- inform
+- customer_inform
+- tour_inform
 - book_tour
 - ask_price
 - request_customer_form
 - request_tour_form 
+- show_tours
+- ask_tour
 
 forms:
   customer_form:
     required_slots:
       - name
       - phone_number
-      - departure_point
-      - departure_time
+
   tour_form:
     required_slots:
+      - departure_point
+      - departure_date
       - destination
-      - tour_type
       - number_of_people
       - budget
       - duration
@@ -26,14 +29,12 @@ entities:
 - name
 - phone_number
 - departure_point
-- departure_time
+- departure_date
 - destination
-- tour_type
 - number_of_people
-- number_of_children
-- number_of_adult
 - budget
 - duration
+
 
 slots:
   name:
@@ -52,46 +53,24 @@ slots:
     mappings:
     - type: from_entity
       entity: departure_point
-  departure_time:
+  departure_date:
     type: text 
     influence_conversation: true
     mappings:
     - type: from_entity
-      entity: departure_time
+      entity: departure_date
   destination:
     type: text
     influence_conversation: true
     mappings: 
     - type: from_entity
       entity: destination
-  tour_type:
-    type: categorical
-    values:
-      - individual
-      - group
-      - family
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: tour_type
-  number_of_adult:
-    type: float
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: number_of_adult
   number_of_people:
-    type: float
+    type: text
     influence_conversation: true
     mappings:
     - type: from_entity
       entity: number_of_people
-  number_of_children:
-    type: float
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: number_of_children
   budget:
     type: text
     influence_conversation: true
@@ -105,12 +84,12 @@ slots:
     - type: from_entity
       entity: duration
 
+
+
 responses:
 # utter_ask_<slot_name>
   utter_ask_destination:
   - text: "Bạn muốn đi du lịch ở đâu?"
-  utter_ask_tour_type:
-  - text: "Bạn muốn đi tour cá nhân, gia đình hay theo nhóm?"
   utter_ask_number_of_people:
   - text: "Chuyến đi của bạn có bao nhiêu người?" 
   utter_ask_budget:
@@ -121,7 +100,7 @@ responses:
   - text: "Bạn vui lòng cho biết tên?"
   - text: "Xin cho biết tên của bạn?"
   - text: "Bạn tên là gì?"
-  utter_ask_phone:
+  utter_ask_phone_number:
   - text: "Số điện thoại của bạn là gì?"
   - text: "Vui lòng cung cấp số điện thoại liên hệ?"
   - text: "Xin cho biết số điện thoại của bạn?"
@@ -129,23 +108,41 @@ responses:
   - text: "Bạn muốn khởi hành từ đâu?"
   - text: "Điểm xuất phát của bạn ở đâu?"
   - text: "Bạn muốn được đón ở đâu?"
-  utter_ask_departure_time:
-  - text: "Bạn muốn khởi hành lúc mấy giờ?"
+  utter_ask_departure_date:
+  - text: "Bạn muốn khởi hành lúc nào?"
   - text: "Thời gian khởi hành bạn mong muốn là?"
-  - text: "Bạn muốn đi vào lúc mấy giờ?"
+  - text: "Bạn muốn đi vào lúc ngày bao nhiêu?"
   utter_confirm_customer_form:
-  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nTên: {name}\nSố điện thoại: {phone_number}\nĐiểm đón: {departure_point}\nGiờ đón: {departure_time}"
+  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nTên: {name}\nSố điện thoại: {phone_number}\nĐiểm đón: {departure_point}\nGiờ đón: {departure_date}"
   utter_greet:
-  - text: "Xin chào! Chào mừng bạn đến với dịch vụ tour du lịch của chúng tôi. Bạn cần giúp gì"
+  - text: "Xin chào! Tôi là trợ lý du lịch của bạn."
+  utter_choices:
+  - text: "Tôi có thể giúp bạn?"
+    buttons:
+    - title: "Đặt tour"
+      payload: "/book_tour"
+    - title: "Xem tour phổ biến"
+      payload: "/show_tours"
+    - title: "Hỏi đáp"
+      payload: "/customer_inform"
   utter_confirm_tour_form:
-  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nĐiểm đến: {destination}\nLoại tour: {tour_type}\nSố người tham gia: {number_of_people}\nNgân sách dự kiến: {budget}\nĐộ dài chuyến đi: {duration}."
+  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nĐiểm đến: {destination}\nSố người tham gia: {number_of_people}\nNgân sách dự kiến: {budget}\nĐộ dài chuyến đi: {duration}."
+  utter_qna:
+  - text: "Bạn muốn hỏi gì?"
+  utter_ask_for_book_tour:
+  - text: bạn có muốn chọn đặt tour luôn không?
+    buttons:
+    - title: "ok"
+      payload: "/customer_inform"
+    - title: "không"
+      payload: "/show_tours"
 
 actions:
 - action_show_tours
 - validate_customer_form
 - validate_tour_form
 - action_show_price
-
+- action_ask_tour
 
 session_config:
   session_expiration_time: 60

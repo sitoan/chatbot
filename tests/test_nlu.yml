@@ -1,0 +1,324 @@
+version: "3.1"
+nlu:
+  
+  # Regex cho phone_number
+  - regex: phone_number
+    examples: |
+      - (0|\\+84)[-.]?(3|5|7|8|9)[-.]?[0-9]{3}[-.]?[0-9]{4}[-.]?[0-9]{3}
+
+  # Regex cho duration
+  - regex: duration
+    examples: |
+      - ([0-9]+)\s*(ngày|đêm|N|Đ|tuần|tháng|năm)
+      - (một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*(ngày|đêm|tuần|tháng)
+
+  # Regex cho number_of_people
+  - regex: number_of_people
+    examples: |
+      - \b([0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*(người|khách)\b
+
+  # Regex cho budget
+  - regex: budget
+    examples: |
+      - \b\d+(\.\d+)?\s*(triệu|nghìn|đ|vnđ|usd|k|m|b)\b
+
+  # Regex cho departure_date
+  - regex: departure_date
+    examples: |
+      - \b\d{1,2}[/-]\d{1,2}([/-]\d{4})?\b
+
+  # Synonym cho Hà Nội
+  - synonym: Hà Nội
+    examples: |
+      - ha noi
+      - HÀ NỘI
+      - Hanoi
+      - hn
+      - hà nội
+
+  # Synonym cho TP.HCM
+  - synonym: TP.HCM
+    examples: |
+      - thành phố hồ chí minh
+      - tp ho chi minh
+      - sài gòn
+      - sai gon
+      - tphcm
+      - hcm
+      - thành phố hcm
+      - tp.hcm
+
+  # Intent: greet
+  - intent: greet
+    examples: |
+      - xin chào
+      - chào bạn
+      - hello
+      - hi
+      - hey
+      - có ai ở đây không
+      - chào ad
+      - chào admin
+      - chào tour du lịch
+      - hi, bên đó có tư vấn không?
+      - hello mọi người
+      - xin chào bạn ơi
+      - chào mừng bạn
+      - hello anh chị
+      - chào ad ơi
+      - hi admin
+      - hey, có ai ở đây không?
+      - xin chào bạn nhé
+      - hello, có ai rảnh không?
+
+  # Intent: book_tour
+  - intent: book_tour
+    examples: |
+      - tôi muốn đặt tour
+      - cho tôi xem các tour du lịch
+      - tôi cần tư vấn về tour
+      - có tour nào đi [Đà Lạt](destination) không
+      - tôi muốn đặt tour đi [Phú Quốc](destination)
+      - đăng ký tour [Đà Nẵng](destination)
+      - tìm tour đi [Sa Pa](destination)
+      - tôi cần một tour đi [Hà Nội](destination)
+      - bạn có tour nào đến [Tokyo](destination) không
+      - cho tôi một gợi ý tour đi [London](destination)
+      - tour du lịch đến [Hạ Long](destination) hiện có không?
+      - book tour đi [nha trang](destination)
+      - tôi muốn đặt một tour
+      - bạn có thể tư vấn giúp tôi về các tour không?
+      - có thể giúp tôi đặt tour được không?
+      - tôi đang tìm tour đến [Hạ Long](destination)
+      - bạn có tour nào đến [Paris](destination) không?
+      - tour đi [Phú Quốc](destination) vào tháng 12 có không?
+      - tôi muốn đặt tour từ [Hà Nội](departure_point) vào ngày [25/12](departure_date)
+
+  # Intent: customer_inform
+  - intent: customer_inform
+    examples: |
+      - tôi tên là [Nguyễn Văn A](name)
+      - tên tôi là [Trần Văn H](name)
+      - số điện thoại của tôi là [0912345678](phone_number)
+      - bạn có thể gọi cho tôi qua số [0987654321](phone_number)
+      - tôi tên là [Lê Thị B](name), số điện thoại [0909090909](phone_number)
+      - [Phạm Văn C](name) đây
+      - tôi là [Nguyễn Thị D](name), bạn có thể liên lạc với tôi qua số [0911111111](phone_number)
+      - tên tôi là [Hoàng Văn E](name), số điện thoại của tôi là [0922222222](phone_number)
+      - bạn có thể gọi tôi qua số [0933333333](phone_number), tôi là [Phạm Thị F](name)
+      - xin chào, tôi là [Trần Văn G](name) và số điện thoại của tôi là [0944444444](phone_number)
+      - tên của tôi là [Lê Văn H](name), hãy gọi cho tôi theo số [0955555555](phone_number)
+      - số điện thoại của tôi là [0966666666](phone_number), và tôi tên là [Nguyễn Văn I](name)
+      - [Trần Thị J](name) đây, bạn có thể liên hệ với tôi qua số [0977777777](phone_number)
+      - tôi tên là [Hoàng Văn K](name), số liên lạc của tôi là [0988888888](phone_number)
+      - [Nguyễn Văn L](name) đang nghe, số điện thoại của tôi là [0999999999](phone_number)
+      - bạn có thể gọi tôi qua số [0908080808](phone_number), tôi là [Lê Thị M](name)
+      - [Trần Văn N](name), số điện thoại của tôi là [0907070707](phone_number)
+      - xin chào, tôi là [Phạm Văn O](name), số điện thoại của tôi là [0910101010](phone_number)
+      - tên tôi là [Lê Thị P](name), hãy gọi cho tôi theo số [0912121212](phone_number)
+      - tôi là [Hoàng Văn Q](name), số liên lạc của tôi là [0914141414](phone_number)
+      - [Nguyễn Thị R](name) đây, bạn có thể liên hệ với tôi qua số [0916161616](phone_number)
+      - số điện thoại của tôi là [0918181818](phone_number), và tên tôi là [Phạm Văn S](name)
+      - [Lê Văn T](name) đang nghe, số điện thoại của tôi là [0920202020](phone_number)
+      - xin chào, bạn có thể gọi tôi qua số [0922222222](phone_number), tôi là [Trần Văn U](name)
+      - tôi tên là [Hoàng Thị V](name), số điện thoại của tôi là [0924242424](phone_number)
+      - [Phạm Văn W](name), hãy gọi tôi theo số [0926262626](phone_number)
+      - [Nguyễn Văn A](name) đây
+      - tôi tên [Hoàng Thị B](name)
+      - chỉ cần gọi tôi là [Trần Văn C](name)
+      - bạn có thể liên hệ với [Lê Thị D](name)
+      - [Phạm Văn E](name) ở đây
+      - số điện thoại của tôi là [0901234567](phone_number)
+      - hãy gọi vào số [0912345678](phone_number)
+      - bạn có thể gọi số [0923456789](phone_number) của tôi
+      - liên lạc qua [0934567890](phone_number)
+      - đây là số của tôi [0945678901](phone_number)
+      - số máy của tôi là [0956789012](phone_number)
+      - tôi tên là [Nguyễn Thị F](name) và số liên lạc của tôi là [0967890123](phone_number)
+      - chỉ cần gọi cho tôi qua [0978901234](phone_number)
+      - xin chào, tôi là [Trần Văn G](name)
+      - bạn có thể tìm tôi theo tên [Hoàng Văn H](name)
+      - tôi thường được gọi là [Phạm Thị I](name)
+      - [Lê Văn J](name) đây, rất vui được gặp bạn
+      - liên lạc với [Nguyễn Văn K](name) theo số [0989012345](phone_number)
+      - nếu cần, hãy gọi số [0990123456](phone_number)
+      - tôi là [Trần Thị L](name), số điện thoại [0911123456](phone_number)
+      - gọi [Hoàng Văn M](name) qua số [0922234567](phone_number)
+      - xin chào, đây là [Nguyễn Thị N](name)
+      - [Trần Văn O](name) xin chào
+      - tôi là [Lê Thị P](name), liên hệ qua số [0901010101](phone_number)
+      - chỉ cần gọi số [0912020202](phone_number)
+      - bạn có thể gọi tôi qua số này [0923030303](phone_number)
+      - đây là số của tôi: [0934040404](phone_number)
+      - [Nguyễn Văn Q](name) ở đây
+      - bạn có thể liên hệ với tôi qua [0945050505](phone_number)
+      - tôi tên là [Hoàng Thị R](name), bạn có thể gọi tôi
+      - hãy tìm [Lê Văn S](name) theo số [0956060606](phone_number)
+      - [Phạm Văn T](name) đang nghe
+      - số của tôi là [0967070707](phone_number), hãy gọi bất cứ khi nào
+      - bạn có thể liên hệ với [Nguyễn Thị U](name)
+      - đây là [Trần Văn V](name), tôi ở đây
+      - liên hệ số [0978080808](phone_number) của tôi
+      - [Lê Văn W](name) đang chờ bạn gọi
+      - bạn có thể tìm thấy tôi qua tên [Hoàng Văn X](name)
+      - tôi tên là [Nguyễn Văn Y](name), gọi cho tôi qua số [0989090909](phone_number)
+      - [Phạm Thị Z](name) xin chào, số điện thoại là [0990101010](phone_number)
+      - nếu cần liên lạc, hãy gọi tôi qua số [0909090909](phone_number)
+      - xin chào, đây là [Lê Thị A](name)
+      - [Trần Văn B](name) xin chào, đây là [Nguyễn Thị C](name)
+      - tôi tên là [Hoàng Thị D](name), hãy gọi cho tôi qua so [0911111111](phone_number)- bạn cứ gọi tôi là [Nguyễn Văn A](name)
+      - [Hoàng Thị B](name), số điện thoại của tôi không cần thiết lắm
+      - nếu cần gọi tôi, bạn có thể tìm [Trần Văn C](name)
+      - tên tôi là [Lê Thị D](name), liên hệ qua số điện thoại [0911231234](phone_number)
+      - số của tôi là [0933211234](phone_number), tên [Phạm Văn E](name)
+      - hãy gọi số này [0921123456](phone_number)
+      - [Nguyễn Thị F](name), rất vui được gặp bạn
+      - không cần biết số, chỉ cần biết tôi là [Lê Văn G](name)
+      - muốn gặp [Trần Văn H](name) thì gọi số [0987654321](phone_number)
+      - số máy [0941234321](phone_number), người sử dụng là [Hoàng Văn I](name)
+      - nếu không tiện gọi điện, bạn cứ tìm tôi qua tên [Nguyễn Thị J](name)
+      - tên của tôi đơn giản là [Lê Thị K](name), số điện thoại của tôi không quan trọng lắm
+      - cứ gọi [Phạm Văn L](name) nếu có chuyện gì cần
+      - xin chào, đây là số của tôi [0954321234](phone_number)
+      - tôi là [Hoàng Thị M](name), không tiện chia sẻ số điện thoại bây giờ
+      - gọi cho [Nguyễn Văn N](name) qua số [0901012345](phone_number)
+      - [Lê Văn O](name), bạn có thể liên hệ bất cứ khi nào
+      - số điện thoại của tôi đã thay đổi, nhưng tên tôi vẫn là [Trần Văn P](name)
+      - [Phạm Thị Q](name), tôi không có số điện thoại nào
+      - tên tôi là [Hoàng Văn R](name), gọi số [0914141414](phone_number)
+      - tôi không tiện cho số, nhưng tên là [Nguyễn Thị S](name)
+      - cứ liên lạc với [Trần Văn T](name) qua email hoặc số điện thoại [0929292929](phone_number)
+      - tên của tôi là [Hoàng Thị U](name), bạn sẽ thấy số điện thoại trong danh bạ
+      - tôi không muốn cho biết số điện thoại, nhưng tên là [Lê Văn V](name)
+      - [Phạm Văn W](name) xin chào, bạn cần gì?
+      - số điện thoại cũ của tôi là [0938383838](phone_number), nhưng bạn có thể gọi số mới
+      - bạn hãy thử gọi tên [Nguyễn Văn X](name) nếu muốn liên hệ với tôi
+      - liên lạc qua số này [0949494949](phone_number) và hỏi tôi [Lê Thị Y](name)
+      - [Trần Văn Z](name), tôi ở đây nếu bạn cần
+      - số điện thoại này [0910102020](phone_number) là của tôi, [Nguyễn Thị AA](name)
+      - không tiện nói nhiều, cứ gọi số [0909092929](phone_number)
+      - nếu tìm thấy số này [0929291010](phone_number), bạn sẽ gặp tôi, [Lê Văn BB](name)
+      - tên tôi là [Hoàng Thị CC](name), bạn muốn liên lạc qua số nào?
+      - tôi đổi số điện thoại, nhưng tên vẫn là [Phạm Văn DD](name)
+      - bạn có thể gọi tôi [Nguyễn Văn EE](name), số điện thoại [0933939393](phone_number)
+      - tôi tên là [Trần Văn FF](name), chỉ cần nhớ như vậy thôi
+      - số của tôi là [0919192929](phone_number), nhớ hỏi [Lê Thị GG](name)
+      - gọi số này [0928282828](phone_number) sẽ gặp tôi, [Hoàng Văn HH](name)
+
+
+  # Intent: tour_inform
+  - intent: tour_inform
+    examples: |
+      - tôi sẽ đi vào [ngày 20/11/2024](departure_date)
+      - đi từ [Huế](departure_point) vào ngày [01/01/2025](departure_date)
+      - tôi sẽ xuất phát từ [Đà Nẵng](departure_point)
+      - khởi hành từ [Hà Nội](departure_point)
+      - xuất phát từ [Hồ Chí Minh](departure_point)
+      - bắt đầu từ [Đà Nẵng](departure_point)
+      - xuất phát ngày [14/10/2024](departure_date)
+      - tôi muốn đi vào ngày [25/12/2024](departure_date)
+      - khởi hành vào [01/01/2025](departure_date)
+      - chuyến đi bắt đầu vào [20/11/2024](departure_date)
+      - tôi đi [Hồ Chí Minh](destination)
+      - đi [Đà Nẵng](destination)
+      - tôi muốn đi [2 người lớn](number_of_people)
+      - đi [3 khách](number_of_people)
+      - ngân sách khoảng [10 triệu](budget)
+      - chi phí tối đa là [50 triệu](budget)
+      - tour kéo dài [3 ngày 2 đêm](duration)
+      - chuyến đi [2 tuần](duration)
+      - thời gian khoảng [5 ngày](duration)
+      - đi [Hạ Long](destination)
+      - chúng tôi đi [2 người lớn](number_of_people)
+      - nhóm mình có [4 khách](number_of_people)
+      - ngân sách khoảng [10 triệu](budget)
+      - chi phí tối đa khoảng [50 triệu](budget)
+      - đi khoảng [3 ngày](duration)
+      - tour kéo dài [5 ngày 4 đêm](duration)
+      - [một tuần](duration) du lịch
+      - tour cho [3 người](number_of_people)
+      - tôi sẽ đi vào [05/12/2024](departure_date)
+      - khởi hành vào ngày [30/11/2024](departure_date)
+      - tôi sẽ đi từ [Huế](departure_point) vào ngày [15/02/2025](departure_date)
+      - chuyến đi bắt đầu từ [Hà Nội](departure_point) vào ngày [12/01/2025](departure_date)
+      - tôi sẽ xuất phát từ [Đà Nẵng](departure_point)
+      - khởi hành từ [Hải Phòng](departure_point) vào ngày [22/03/2025](departure_date)
+      - xuất phát từ [Cần Thơ](departure_point) vào [01/04/2025](departure_date)
+      - tôi muốn khởi hành từ [Quảng Ninh](departure_point)
+      - đi vào ngày [27/12/2024](departure_date)
+      - tôi muốn đi vào ngày [10/01/2025](departure_date)
+      - chúng tôi sẽ xuất phát ngày [18/11/2024](departure_date)
+      - chuyến đi bắt đầu vào [02/12/2024](departure_date)
+      - đi [Hồ Chí Minh](destination)
+      - điểm đến là [Đà Lạt](destination)
+      - tôi đi [Phú Quốc](destination)
+      - tôi muốn đến [Hạ Long](destination)
+      - chúng tôi dự định đi [Nha Trang](destination)
+      - du lịch đến [Huế](destination)
+      - điểm đến của tôi là [Đà Nẵng](destination)
+      - tôi muốn khám phá [Hội An](destination)
+      - đi [2 người lớn](number_of_people)
+      - nhóm gồm [4 người](number_of_people)
+      - chúng tôi có [3 khách](number_of_people)
+      - số lượng là [5 người](number_of_people)
+      - đi [6 người lớn](number_of_people)
+      - đi tour cho [3 người cả lớn nhỏ](number_of_people)
+      - có [7 khách](number_of_people)
+      - ngân sách khoảng [15 triệu](budget)
+      - chi phí tối đa là [30 triệu](budget)
+      - tôi muốn chi khoảng [20 triệu](budget)
+      - ngân sách của tôi là [5 triệu](budget)
+      - ngân sách không quá [40 triệu](budget)
+      - tour kéo dài [4 ngày 3 đêm](duration)
+      - chuyến đi trong [10 ngày](duration)
+      - thời gian khoảng [1 tuần](duration)
+      - kéo dài [2 tuần](duration)
+      - tour [5 ngày 4 đêm](duration)
+      - đi khoảng [8 ngày](duration)
+      - tôi muốn đi vào ngày [01/12/2024](departure_date), xuất phát từ [Đà Nẵng](departure_point)
+      - chúng tôi dự định đi [Hạ Long](destination) vào ngày [15/12/2024](departure_date)
+      - chuyến đi của tôi bắt đầu từ [Hà Nội](departure_point) vào [20/11/2024](departure_date)
+      - khởi hành vào ngày [28/02/2025](departure_date) từ [Hồ Chí Minh](departure_point)
+      - đi từ [Huế](departure_point) đến [Đà Lạt](destination) vào ngày [25/03/2025](departure_date)
+      - tôi sẽ đi [Phú Quốc](destination) từ [Hải Phòng](departure_point) vào ngày [10/04/2025](departure_date)
+      - chuyến đi sẽ bắt đầu vào ngày [30/12/2024](departure_date), khởi hành từ [Cần Thơ](departure_point)
+      - tôi muốn xuất phát từ [Quảng Ninh](departure_point), đi vào ngày [05/01/2025](departure_date)
+      - tôi muốn đi [3 người lớn](number_of_people) 
+      - nhóm của tôi gồm [2 người lớn](number_of_people) 
+      - chuyến đi này sẽ có [5 người lớn](number_of_people) tham gia
+      - chúng tôi có tổng cộng [6 khách](number_of_people), trong đó có 2 trẻ em
+      - tôi đi với [7 người lớn](number_of_people), trong đó có một người cao tuổi
+      - ngân sách khoảng [12 triệu](budget)
+      - chi phí tối đa là [25 triệu](budget), ưu tiên gần bãi biển
+      - tôi muốn chi khoảng [18 triệu](budget) cho chuyến đi này
+      - ngân sách của chúng tôi không quá [35 triệu](budget), muốn có spa
+      - chi phí tầm [8 triệu](budget), đi lại thoải mái là ưu tiên của tôi
+      - tour kéo dài [2 ngày 1 đêm](duration), chủ yếu để thư giãn
+      - chuyến đi [1 tuần](duration), kết hợp làm việc và du lịch
+      - thời gian dự kiến là [10 ngày](duration), tham quan nhiều địa điểm
+      - đi trong khoảng [5 ngày 4 đêm](duration), muốn tham gia lặn biển
+      - tôi muốn chuyến đi [3 ngày](duration), ghé thăm các khu bảo tồn thiên nhiên
+      - chuyến đi [Đà Lạt](destination)
+      - tour sẽ đến [Hồ Chí Minh](destination)
+      - chúng tôi muốn đi đến là [Nha Trang](destination)
+      - chuyến đi khám phá [Phú Quốc](destination)
+      - tour dành cho tôi muốn đến [Hội An](destination)
+
+
+
+
+  # Intent: ask_price
+  - intent: ask_price
+    examples: |
+      - tour này giá bao nhiêu?
+      - chi phí tour là bao nhiêu?
+      - giá của tour này là bao nhiêu?
+      - cho tôi biết giá tour
+      - phí đi tour là bao nhiêu
+      - tour có giá bao nhiêu vậy?
+      - chi phí trọn gói của tour là bao nhiêu?
+      - bạn có thể cho tôi biết giá của tour này không?
+      - giá tour này như thế nào?
+      - chi phí tour là bao nhiêu?
+      - tour có giá như thế nào?
+      - phí đi tour khoảng bao nhiêu?

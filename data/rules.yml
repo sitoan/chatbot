@@ -5,6 +5,7 @@ rules:
     steps:
       - intent: greet
       - action: utter_greet
+      - action: utter_choices
 
   - rule: Activate tour form first
     steps:
@@ -14,12 +15,18 @@ rules:
         
   - rule: Activate tour form first
     steps:
-      - intent: inform
+      - intent: tour_inform
       - action: tour_form
       - active_loop: tour_form
+    
+  - rule: Activate tour form first
+    steps:
+      - intent: customer_inform
+      - action: customer_form
+      - active_loop: customer_form
         
 
-  - rule: Submit tour form and activate customer form
+  - rule: Submit tour form 
     condition:
       - active_loop: tour_form
     steps:
@@ -28,8 +35,9 @@ rules:
       - slot_was_set:
         - requested_slot: null
       - action: utter_confirm_tour_form
-      - action: customer_form
-      - active_loop: customer_form
+      - action: action_show_tours
+      - action: utter_ask_for_book_tour
+
 
 
   - rule: Submit customer form
@@ -41,11 +49,24 @@ rules:
       - slot_was_set:
         - requested_slot: null
       - action: utter_confirm_customer_form
-      - action: action_show_tours
+      - action: utter_qna
       - action: action_listen
+
 
   - rule: respond to price inquiry
     steps:
       - intent: ask_price
       - action: action_show_price
       - action: action_listen
+
+  - rule: show tours
+    steps: 
+    - intent: show_tours
+    - action: action_show_tours
+    - action: utter_choices
+
+  - rule: ask tour information
+    steps:
+    - intent: ask_tour
+    - action: action_ask_tour 
+    - action: utter_choices
