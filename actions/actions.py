@@ -22,13 +22,13 @@ class ActionCleanSlots(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        return [
-            SlotSet("departure_point", None), 
-            SlotSet("destination", None), 
-            SlotSet("number_of_people", None), 
-            SlotSet("departure_date", None), 
-            SlotSet("budget", None), 
-            SlotSet("duration", None)]
+        return { "depature_point": None,
+                "destination": None,
+                "departure_date": None,
+                "duration": None,
+                "budget": None,
+                "number_of_people": None
+                }
 class ValidateCustomerForm(FormValidationAction):
 
     PHONE_PATTERN = r"(0|\+84)[-.]?(3|5|7|8|9)[-.]?[0-9]{3}[-.]?[0-9]{4}[-.]?[0-9]{3}"

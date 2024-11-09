@@ -135,7 +135,7 @@ responses:
   - text: "Bạn muốn tìm hiểu thêm gì ở tour số {tour_number} "
     buttons:
       - title: "tôi muốn đặt tour"
-        payload: "request_customer_form"
+        payload: "/request_customer_form"
 
 actions:
 - action_show_tours
