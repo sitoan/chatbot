@@ -72,28 +72,115 @@ nlu:
       - xin chào bạn nhé
       - hello, có ai rảnh không?
 
-  # Intent: book_tour
-  - intent: book_tour
+  # Intent: find_tour
+  - intent: find_tour
     examples: |
-      - tôi muốn đặt tour
-      - cho tôi xem các tour du lịch
-      - tôi cần tư vấn về tour
-      - có tour nào đi [Đà Lạt](destination) không
-      - tôi muốn đặt tour đi [Phú Quốc](destination)
-      - đăng ký tour [Đà Nẵng](destination)
-      - tìm tour đi [Sa Pa](destination)
-      - tôi cần một tour đi [Hà Nội](destination)
-      - bạn có tour nào đến [Tokyo](destination) không
-      - cho tôi một gợi ý tour đi [London](destination)
-      - tour du lịch đến [Hạ Long](destination) hiện có không?
-      - book tour đi [nha trang](destination)
-      - tôi muốn đặt một tour
-      - bạn có thể tư vấn giúp tôi về các tour không?
-      - có thể giúp tôi đặt tour được không?
-      - tôi đang tìm tour đến [Hạ Long](destination)
-      - bạn có tour nào đến [Paris](destination) không?
-      - tour đi [Phú Quốc](destination) vào tháng 12 có không?
-      - tôi muốn đặt tour từ [Hà Nội](departure_point) vào ngày [25/12](departure_date)
+      - Có tour nào đi [Đà Lạt](destination) không?
+      - Tôi muốn đặt tour đi [Phú Quốc](destination).
+      - Đăng ký tour [Đà Nẵng](destination).
+      - Muốn tìm tour đi [Sa Pa](destination).
+      - Tôi cần một tour đi [Hà Nội](destination).
+      - Bạn có tour nào đến [Tokyo](destination) không?
+      - Cho tôi một gợi ý tour đi [London](destination).
+      - Tour du lịch đến [Hạ Long](destination) hiện có không?
+      - Book tour đi [Nha Trang](destination).
+      - Tôi đang tìm tour đến [Hạ Long](destination) trong [tháng 12](departure_date).
+      - Bạn có tour nào đến [Paris](destination) không?
+      - Tour đi [Phú Quốc](destination) vào [tháng 6](departure_date) có không?
+      - Muốn đi [Bali](destination), có tour nào không?
+      - Tìm tour đến [New York](destination).
+      - Có tour du lịch nào đến [Rome](destination) không?
+      - Tôi muốn đặt tour từ [Hà Nội](departure_point) vào ngày [25/12](departure_date).
+      - Bạn có tour nào khởi hành từ [Hải Phòng](departure_point) vào [tháng 7](departure_date) không?
+      - Tour từ [Hồ Chí Minh](departure_point) đi [Đà Lạt](destination) có vào ngày [15/8](departure_date) không?
+      - Có chuyến đi từ [Đà Nẵng](departure_point) đến [Phú Quốc](destination) trong [tháng 10](departure_date) không?
+      - Tôi muốn đi từ [Cần Thơ](departure_point) vào [tháng 3](departure_date).
+      - Đặt tour cho [2 người](number_of_people) đến Paris.
+      - Tour đi Tokyo cho [4 người](number_of_people) có không?
+      - Tôi muốn đăng ký tour đi [Nha Trang](destination) cho [5 người](number_of_people).
+      - Cần tour đi [Sa Pa](destination) cho [3 người](number_of_people).
+      - Có tour nào cho nhóm [6 người](number_of_people) đến [Đà Lạt](destination) không?
+      - Tour đi [Paris](destination) với ngân sách khoảng [20 triệu](budget) có không?
+      - Tìm tour đi [Hạ Long](destination) trong tầm [10 triệu](budget).
+      - Bạn có tour nào đến [Nha Trang](destination) với giá dưới [15 triệu](budget) không?
+      - Cần tour đi [Đà Nẵng](destination) khoảng [5 triệu](budget).
+      - Có tour nào đi [Sa Pa](destination) tầm giá [8 triệu](budget) không?
+      - Tìm tour đi [Phú Quốc](destination) trong [3 tuần](duration).
+      - Bạn có tour nào đến [Hạ Long](destination) trong [5 ngày](duration) không?
+      - Muốn tìm tour đi [Đà Lạt](destination) dài [7 ngày](duration).
+      - Tour đi [Tokyo](destination) trong [1 tháng](duration) có không?
+      - Cần tour du lịch đến [Bali](destination) kéo dài [10 ngày](duration).
+      - Tôi muốn tour đi [Đà Lạt](destination) vào ngày [20/11](departure_date) từ [Hà Nội](departure_point).
+      - Có tour nào từ [Hải Phòng](departure_point) đi [Tokyo](destination) vào [tháng 12](departure_date) cho [2 người](number_of_people) không?
+      - Book tour đi [Paris](destination) vào ngày [10/10](departure_date) với ngân sách [20 triệu](budget).
+      - Tour đi [Đà Nẵng](destination) từ [Hồ Chí Minh](departure_point) trong [5 tuần](duration) có không?
+      - Đặt tour đi [Hạ Long](destination) từ [Cần Thơ](departure_point) cho [4 người](number_of_people) vào [tháng 6](departure_date).
+      - Tìm tour đi [Sa Pa](destination) từ [Đà Nẵng](departure_point) trong khoảng [15 triệu](budget).
+      - Tour đi [Tokyo](destination) vào ngày [15/1](departure_date) cho [3 người](number_of_people) khoảng [30 triệu](budget).
+      - Đặt tour từ [Hà Nội](departure_point) đến [Phú Quốc](destination) vào [tháng 5](departure_date) cho [2 người](number_of_people).
+      - Có tour nào từ [Hồ Chí Minh](departure_point) đi [Bali](destination) với ngân sách [10 triệu](budget) không?
+      - Muốn đặt tour đi [Rome](destination) vào [tháng 8](departure_date) cho [5 người](number_of_people) kéo dài [7 ngày](duration).
+      - Bạn có chuyến nào đi [Nhật Bản](destination) không?
+      - Tôi muốn biết có tour nào đến [Hàn Quốc](destination) không?
+      - Có tour nào tổ chức đến [Trung Quốc](destination) không?
+      - Tour đi [An Giang](destination) hiện có không?
+      - Bạn có thể tìm giúp tour nào đi [Hà Tĩnh](destination) không?
+      - Tôi muốn book tour đến [Quảng Nam](destination).
+      - Đặt giúp tôi tour đi [Vũng Tàu](destination).
+      - Tôi muốn chọn một tour đến [Mỹ](destination).
+      - Có thể đặt tour đi [New York](destination) không?
+      - Tôi đang cần tour đi [Tokyo](destination), có không?
+      - Book giúp tôi tour đi [Kon Tum](destination).
+      - Tôi muốn đăng ký tour du lịch đến [Huế](destination).
+      - Đặt cho tôi tour đến [Hà Giang](destination).
+      - Cần đăng ký một tour đi [Bắc Cạn](destination).
+      - Tour nào có thể đăng ký đi [Vinh](destination)?
+      - Tìm tour đến [Phú Quốc](destination) giúp tôi.
+      - Có tour nào đang đi [Phú Yên](destination) không?
+      - Cần tìm tour du lịch đến [Lạng Sơn](destination).
+      - Tìm một tour đến [Quảng Nam](destination).
+      - Cho tôi thông tin tour nào đi [Côn Đảo](destination).      
+      - Tôi muốn tìm một tour đến [Hà Giang](destination).
+      - Có tour nào đi đến [Cao Bằng](destination) không?
+      - Tôi đang tìm một chuyến đi [Thái Lan](destination).
+      - Bạn có thể giới thiệu tour đi [Kuala Lumpur](destination) không?
+      - Đang cần tour đến [Thượng Hải](destination), bạn có gợi ý nào không?
+      - Có chuyến nào đi từ [Hải Phòng](departure_point) vào [tháng 7](departure_date) không?
+      - Tôi muốn biết có tour nào khởi hành từ [Hồ Chí Minh](departure_point) trong [tháng 9](departure_date).
+      - Tìm giúp tôi tour từ [Phú Quốc](departure_point) vào [tháng 1](departure_date).
+      - Có tour nào từ [Buôn Mê Thuộc](departure_point) vào [tháng 3](departure_date) không?
+      - Cần tìm một tour xuất phát từ [Vũng Tàu](departure_point) vào [tháng 8](departure_date).
+      - Bạn có tour nào đi từ [Phú Yên](departure_point) đến [Hồ Chí Minh](destination) vào ngày [2/8](departure_date) không?
+      - Có chuyến nào từ [Nha Trang](departure_point) đi [Thái Lan](destination) vào [30/7](departure_date) không?
+      - Tìm giúp tôi một tour từ [Vũng Tàu](departure_point) đến [Cao Bằng](destination) vào ngày [14/9](departure_date).
+      - Có tour nào đi từ [Thủ Đức](departure_point) đến [Vũng Tàu](destination) trong ngày [20/11](departure_date) không?
+      - Cần book tour từ [Tiền Giang](departure_point) đến [Hải Phòng](destination) vào ngày [6/5](departure_date).
+      - Bạn có tour nào từ [Cần Thơ](departure_point) đến [Trung Quốc](destination) vào [tháng 8](departure_date) không?
+      - Tôi cần tìm tour đi từ [Hồ Chí Minh](departure_point) đến [Phú Quốc](destination) trong [tháng 2](departure_date).
+      - Có chuyến nào từ [Hà Giang](departure_point) đến [An Giang](destination) trong [tháng 11](departure_date) không?
+      - Bạn có thể tìm giúp chuyến đi từ [Đà Nẵng](departure_point) đến [Phú Quốc](destination) trong [tháng 10](departure_date) không?
+      - Tìm tour đi từ [Phú Yên](departure_point) đến [Phú Quốc](destination) trong [tháng 5](departure_date).
+      - Bạn có tour nào khởi hành từ [Cần Thơ](departure_point) vào [tháng 3](departure_date) không?
+      - Cần book tour khởi hành từ [Vũng Tàu](departure_point) trong [tháng 8](departure_date).
+      - Có tour nào đi từ [Long An](departure_point) vào [tháng 10](departure_date) không?
+      - Bạn có thể tìm giúp tôi chuyến đi từ [Đà Lạt](departure_point) trong [tháng 9](departure_date) không?
+      - Có chuyến nào xuất phát từ [Tokyo](departure_point) vào [tháng 11](departure_date) không? 
+      - Book giúp tôi tour cho [2 người](number_of_people) đi [Paris](destination).
+      - Tôi muốn tìm tour cho [2 người](number_of_people) đến [Brazil](destination).
+      - Có tour nào đi [Pháp](destination) dành cho [10 người](number_of_people) không?
+      - Tôi cần đăng ký tour đến [Đài Loan](destination) cho [3 người](number_of_people).
+      - Có chuyến nào đi [Paris](destination) cho [2 người](number_of_people) không? 
+      - Tôi đang tìm một tour đi [Đà Nẵng](destination) với chi phí khoảng [11 triệu](budget).
+      - Có tour nào đến [Đà Nẵng](destination) dưới [20 triệu](budget) không?
+      - Bạn có gợi ý tour nào đến [Vũng Tàu](destination) với ngân sách dưới [22 triệu](budget)?
+      - Tôi muốn tìm một chuyến đi [Phú Quốc](destination) dưới [39 triệu](budget).
+      - Có thể tìm giúp tôi tour đến [Phan Thiết](destination) dưới [2 triệu](budget) không? 
+      - Có tour nào đến [Bangkok](destination) trong [10 ngày](duration) không?
+      - Tôi muốn đăng ký một tour đi [Taipei](destination) kéo dài [2 tuần](duration).
+      - Bạn có chuyến nào đi [Tokyo](destination) với lịch trình khoảng [3 tuần](duration) không?
+      - Cần tìm tour đến [Phú Quốc](destination) trong vòng [1 tháng](duration).
+      - Đặt giúp tôi tour đi [Vũng Tàu](destination) kéo dài [2 tuần](duration).   
+
 
   # Intent: customer_inform
   - intent: customer_inform
@@ -210,7 +297,9 @@ nlu:
   # Intent: tour_inform
   - intent: tour_inform
     examples: |
-      - tôi sẽ đi vào [ngày 20/11/2024](departure_date)
+      - [Vũng Tàu](departure_point)
+      - [An Giang](departure_point)
+      - tôi sẽ đi vào ngày [20/11/2024](departure_date)
       - đi từ [Huế](departure_point) vào ngày [01/01/2025](departure_date)
       - tôi sẽ xuất phát từ [Đà Nẵng](departure_point)
       - khởi hành từ [Hà Nội](departure_point)
@@ -258,12 +347,12 @@ nlu:
       - du lịch đến [Huế](destination)
       - điểm đến của tôi là [Đà Nẵng](destination)
       - tôi muốn khám phá [Hội An](destination)
-      - đi [2 người lớn](number_of_people)
+      - đi [2 người] lớn(number_of_people)
       - nhóm gồm [4 người](number_of_people)
       - chúng tôi có [3 khách](number_of_people)
       - số lượng là [5 người](number_of_people)
-      - đi [6 người lớn](number_of_people)
-      - đi tour cho [3 người cả lớn nhỏ](number_of_people)
+      - đi [6 người] lớn(number_of_people)
+      - đi tour cho [3 người] cả lớn nhỏ(number_of_people)
       - có [7 khách](number_of_people)
       - ngân sách khoảng [15 triệu](budget)
       - chi phí tối đa là [30 triệu](budget)
@@ -305,27 +394,56 @@ nlu:
       - chuyến đi khám phá [Phú Quốc](destination)
       - tour dành cho tôi muốn đến [Hội An](destination)
 
-  # - intent: ask_tour
-  #   examples: |
-  #     - tôi muốn hỏi lịch trình     
+
 
   # Intent: ask_price
   - intent: ask_price
     examples: |
       - tour này giá bao nhiêu?
       - chi phí tour là bao nhiêu?
-      - giá của tour này là bao nhiêu?
-      - cho tôi biết giá tour
+      - giá của tour [11](tour_number) này là bao nhiêu?
+      - cho tôi biết giá tour [12](tour_number) này
+      - phí đi tour [2](tour_number) là bao nhiêu
       - phí đi tour là bao nhiêu
       - tour có giá bao nhiêu vậy?
-      - chi phí trọn gói của tour là bao nhiêu?
+      - chi phí trọn gói của tour [7](tour_number) là bao nhiêu?
       - bạn có thể cho tôi biết giá của tour này không?
       - giá tour này như thế nào?
-      - chi phí tour là bao nhiêu?
+      - chi phí tour [8](tour_number) là bao nhiêu?
       - tour có giá như thế nào?
-      - phí đi tour khoảng bao nhiêu?
+      - phí đi tour [5](tour_number) khoảng bao nhiêu?
+      - tour số [6](tour_number) có chi phí như thế nào?
+      - tour [3](tour_number) có chi phí như thế nào?
+
+  - intent: ask_plan
+    examples: |
+      - tôi muốn tìm hiểu lịch trình của tour [6](tour_number)
+      - tôi muốn xem lịch trình của tour [1](tour_number)
+      - tour này có lịch trình như nào?
+      - lịch trình của tour [9](tour_number) là gì?
+      - lịch trình của tour này như thế nào?
+      - tôi muốn biết thêm về lịch trình của tour [4](tour_number)
+      - hãy cho tôi biết về lịch trình của tour
+      - tour [3](tour_number) này có lịch trình như thế nào?
+      - lịch trình của tour [8](tour_number) là gì?
+      - tôi đang quan tâm đến lịch trình của tour số [2](tour_number)
+      - tour số [5](tour_number) có lịch trình như thế nào?
+      - lịch trình của tour [7](tour_number) là gì?
+      - lịch trình của tour này như thế nào?
+      - lịch trình của tour [10](tour_number) là gì?
+      - lịch trình của tour này có gì đặc biệt?
 
 
-  # - intent: ask_tour
-  #   examples: |
-  #     - tôi muốn hỏi lịch trình của tour 
+  - intent: choose_tour
+    examples: |
+      - tôi muốn hỏi tour số [9](tour_number)
+      - Tôi muốn tìm hiểu tour số [1](tour_number).
+      - Bạn có thể cung cấp thông tin của tour [5](tour_number) được không?
+      - Tôi quan tâm đến tour [12](tour_number).
+      - tour số [7](tour_number).
+      - Cho tôi biết thông tin về lịch trình tour [3](tour_number) nhé.
+      - Tour [10](tour_number).
+      - Bạn có thể cho thông tin tour [6](tour_number) được không?
+      - Tôi muốn tìm hiểu về tour [8](tour_number).
+      - tour số [4](tour_number) có điểm gì đặc biệt không?
+      - Tôi có thể tham khảo tour [2](tour_number) được không?

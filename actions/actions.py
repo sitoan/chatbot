@@ -15,6 +15,20 @@ ai_server = os.getenv('AI_SERVER')
 be_server = os.getenv('BE_SERVER')
 
 
+class ActionCleanSlots(Action):
+    def name(self) -> Text:
+        return "action_clean_slots"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        return [
+            SlotSet("departure_point", None), 
+            SlotSet("destination", None), 
+            SlotSet("number_of_people", None), 
+            SlotSet("departure_date", None), 
+            SlotSet("budget", None), 
+            SlotSet("duration", None)]
 class ValidateCustomerForm(FormValidationAction):
 
     PHONE_PATTERN = r"(0|\+84)[-.]?(3|5|7|8|9)[-.]?[0-9]{3}[-.]?[0-9]{4}[-.]?[0-9]{3}"
@@ -225,7 +239,7 @@ class ActionShowTours(Action):
             ai_response.raise_for_status()
 
             # Send response to user
-            dispatcher.utter_message(text=ai_response.content.decode('utf-8'))
+            dispatcher.utter_message(text=f"một số tour gợi ý dựa theo yêu cầu của bạn: \n {ai_response.content.decode('utf-8')}")
             return []
 
         except requests.RequestException as e:
@@ -391,12 +405,10 @@ class ValidateTourForm(FormValidationAction):
         # Chuyển đổi các đơn vị về VNĐ
         if 'k' in budget_text:
             amount *= 1000
-        elif 'm' in budget_text or 'triệu' in budget_text:
+        elif 'm' in budget_text or 'triệu' in budget_text or 'tr' in budget_text:
             amount *= 1000000
-        elif 'b' in budget_text:
+        elif 'b' in budget_text or 'tỷ' in budget_text:
             amount *= 1000000000
-        elif 'usd' in budget_text:
-            amount *= 23000  # Tỉ giá USD tương đối
         print(f"budget: {amount}")
         print(type(amount))
         dispatcher.utter_message(text=f"Xác nhận ngân sách {amount} VND")
@@ -490,18 +502,4 @@ class ValidateTourForm(FormValidationAction):
 
         return {"duration": days}
 
-class AskTour(Action):
-    def name(self) -> Text:
-        return "action_ask_tour"
 
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict[Text, Any]]:
-        tour_departture = tracker.get_slot("departure_point")
-        tour_destination = tracker.get_slot("destination")
-
-        print(tour_departture)
-        print(tour_destination)

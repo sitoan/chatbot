@@ -3,12 +3,13 @@ intents:
 - greet
 - customer_inform
 - tour_inform
-- book_tour
+- find_tour
 - ask_price
 - request_customer_form
 - request_tour_form 
 - show_tours
-- ask_tour
+- choose_tour
+- ask_plan
 
 forms:
   customer_form:
@@ -34,6 +35,7 @@ entities:
 - number_of_people
 - budget
 - duration
+- tour_number
 
 
 slots:
@@ -83,6 +85,11 @@ slots:
     mappings:
     - type: from_entity
       entity: duration
+  tour_number:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: tour_number
 
 
 
@@ -113,36 +120,30 @@ responses:
   - text: "Thời gian khởi hành bạn mong muốn là?"
   - text: "Bạn muốn đi vào lúc ngày bao nhiêu?"
   utter_confirm_customer_form:
-  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nTên: {name}\nSố điện thoại: {phone_number}\nĐiểm đón: {departure_point}\nGiờ đón: {departure_date}"
+  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nTên: {name}\nSố điện thoại: {phone_number}\n sẽ có nhân viên liện hệ để xác nhận trong vòng 24 giờ."
   utter_greet:
-  - text: "Xin chào! Tôi là trợ lý du lịch của bạn."
-  utter_choices:
-  - text: "Tôi có thể giúp bạn?"
-    buttons:
-    - title: "Đặt tour"
-      payload: "/book_tour"
-    - title: "Xem tour phổ biến"
-      payload: "/show_tours"
-    - title: "Hỏi đáp"
-      payload: "/customer_inform"
+  - text: "Xin chào! Tôi là trợ lý du lịch của bạn. Tôi có thể giúp gì cho bạn?"
+  - text: "Kính chào quý khách! Tôi là trợ lý ảo chuyên hỗ trợ tìm kiếm tour du lịch. Quý khách có nhu cầu gì không ạ?"
+  - text: "Chào mừng bạn đến với dịch vụ tìm kiếm tour của chúng tôi. Tôi có thể giúp gì cho chuyến đi sắp tới của bạn?"
   utter_confirm_tour_form:
   - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nĐiểm đến: {destination}\nSố người tham gia: {number_of_people}\nNgân sách dự kiến: {budget}\nĐộ dài chuyến đi: {duration}."
   utter_qna:
   - text: "Bạn muốn hỏi gì?"
-  utter_ask_for_book_tour:
-  - text: bạn có muốn chọn đặt tour luôn không?
+  utter_ask_for_choose_tour:
+  - text: "Bạn có quan tâm đến tour nào bên trên không? hãy cho tôi biết số hiệu của tour đó nếu có để được tư vấn thêm"
+  utter_confirm_choices:
+  - text: "Bạn muốn tìm hiểu thêm gì ở tour số {tour_number} "
     buttons:
-    - title: "ok"
-      payload: "/customer_inform"
-    - title: "không"
-      payload: "/show_tours"
+      - title: "tôi muốn đặt tour"
+        payload: "request_customer_form"
 
 actions:
 - action_show_tours
 - validate_customer_form
 - validate_tour_form
 - action_show_price
-- action_ask_tour
+- action_clean_slots
+- action_show_plan
 
 session_config:
   session_expiration_time: 60
