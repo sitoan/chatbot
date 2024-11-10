@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Dict, Optional, Text, List, Any, Union
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
@@ -14,10 +15,105 @@ import re
 ai_server = os.getenv('AI_SERVER')
 be_server = os.getenv('BE_SERVER')
 
+VN_NUMBERS = {
+        'một': '1', 'hai': '2', 'ba': '3', 'bốn': '4', 'năm': '5',
+        'sáu': '6', 'bảy': '7', 'tám': '8', 'chín': '9', 'mười': '10'
+    }
+    
+BUDGET_MULTIPLIERS = {
+    'k': 1000,
+    'm': 1000000,
+    'triệu': 1000000,
+    'tr': 1000000,
+    'tỷ': 1000000000
+}
 
-class ActionCleanSlots(Action):
+def clean_vietnamese_numbers( text: str) -> str:
+    """Convert Vietnamese number words to digits."""
+    result = text.lower()
+    for vn_num, num in VN_NUMBERS.items():
+        result = result.replace(vn_num, num)
+    return result
+
+def clean_date(date_text: str) -> Optional[str]:
+    """Clean and validate date string."""
+    parts = re.split(r'[/-]', date_text)
+    current_date = datetime.now()
+    
+    try:
+        day = int(parts[0])
+        month = int(parts[1]) if len(parts) > 1 else current_date.month
+        year = int(parts[2]) if len(parts) > 2 else current_date.year
+        
+        formatted_date = datetime(year, month, day)
+        print(f"{formatted_date} : {type(formatted_date)}")
+        return formatted_date.strftime("%d-%m-%Y")
+        
+    except ValueError:
+        return None
+
+def clean_people_count(people_text: str) -> Optional[int]:
+    """Clean and convert people count to integer."""
+    if not people_text:
+        return None
+        
+    cleaned_text = clean_vietnamese_numbers(people_text)
+    match = re.search(r'\d+', cleaned_text)
+    print(f"{match.group()} : {type(match.group())}")
+    return int(match.group()) if match else None
+
+def clean_budget(budget_text: str) -> Optional[float]:
+    """Clean and normalize budget to VND."""
+    if not budget_text:
+        return None
+        
+    budget_text = budget_text.lower()
+    amount_match = re.search(r'\d+(\.\d+)?', budget_text)
+    if not amount_match:
+        return None
+        
+    amount = float(amount_match.group())
+    
+    for unit, multiplier in BUDGET_MULTIPLIERS.items():
+        if unit in budget_text:
+            print(f"{amount * multiplier} : {type(amount * multiplier)}")
+            return amount * multiplier
+
+    print(f"{amount} : {type(amount)}")
+    return amount
+
+def clean_duration(duration_text: str) -> Optional[int]:
+    """Clean and normalize duration to number of days."""
+    if not duration_text:
+        return None
+
+    duration = duration_text.lower()
+    # Remove prefix words
+    prefixes = ['kéo dài', 'khoảng', 'trong']
+    for prefix in prefixes:
+        duration = duration.replace(prefix, '').strip()
+
+    duration = clean_vietnamese_numbers(duration)
+        
+    # Convert different formats to days
+    patterns = {
+        r'(\d+)\s*ngày\s*(\d+)\s*đêm': lambda x: int(x.group(1)),
+        r'(\d+)\s*ngày(?!\s*\d+\s*đêm)': lambda x: int(x.group(1)),
+        r'(\d+)\s*tuần': lambda x: int(x.group(1)) * 7,
+        r'(\d+)\s*tháng': lambda x: int(x.group(1)) * 30
+    }
+    
+    for pattern, converter in patterns.items():
+        match = re.search(pattern, duration)
+        if match:
+            print(f"{converter(match)} : {type(converter(match))}")
+            return converter(match)
+
+    return None
+
+class ActionClearSlots(Action):
     def name(self) -> Text:
-        return "action_clean_slots"
+        return "action_clear_slots"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
@@ -29,20 +125,30 @@ class ActionCleanSlots(Action):
         budget = tracker.get_slot("budget")
         duration = tracker.get_slot("duration")
 
-        if departure_point:
-            departure_point = None
-        if destination:
-            destination = None
-        if number_of_people:
-            number_of_people = None
-        if departure_date:
-            departure_date = None
-        if budget:
-            budget = None
-        if duration:
-            duration = None
+        print(f"{departure_point} : {type(departure_point)}")
+        print(f"{destination} : {type(destination)}")
+        print(f"{number_of_people} : {type(number_of_people)}")
+        print(f"{departure_date} : {type(departure_date)}")
+        print(f"{budget} : {type(budget)}")
+        print(f"{duration} : {type(duration)}")
 
-        return []
+
+        events = []
+
+        if departure_point is not None:
+            events.append(SlotSet("departure_point", None))
+        if destination is not None:
+            events.append(SlotSet("destination", None))
+        if number_of_people is not None:
+            events.append(SlotSet("number_of_people", None))
+        if departure_date is not None:
+            events.append(SlotSet("departure_date", None))
+        if budget is not None:
+            events.append(SlotSet("budget", None))
+        if duration is not None:
+            events.append(SlotSet("duration", None))
+
+        return events
 class ValidateCustomerForm(FormValidationAction):
 
     PHONE_PATTERN = r"(0|\+84)[-.]?(3|5|7|8|9)[-.]?[0-9]{3}[-.]?[0-9]{4}[-.]?[0-9]{3}"
@@ -93,9 +199,10 @@ class ActionShowTours(Action):
         departure: Optional[str] = None,
         destination: Optional[str] = None,
         start_date: Optional[str] = None,
-        duration: Optional[int] = None,
-        price: Optional[float] = None,
-        available_slot: Optional[int] = None
+        duration: Optional[Union[str, int]] = None,
+        price: Optional[Union[str, float]] = None,
+        available_slot: Optional[Union[str, int]] = None,
+        intent: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         try:
             # Parse tours data from JSON string if needed
@@ -103,11 +210,40 @@ class ActionShowTours(Action):
                 suitable_tours = json.loads(tours_data)
             else:
                 suitable_tours = tours_data
+            
+            print(f"{departure} : {type(departure)}")
+            print(f"{destination} : {type(destination)}")
+            print(f"{start_date} : {type(start_date)}")
+            print(f"{duration} : {type(duration)}")
+            print(f"{price} : {type(price)}")
+            print(f"{available_slot} : {type(available_slot)}")
+
+
+
+            if intent == "find_tour":
+                if isinstance(start_date, str):
+                    start_date = clean_date(start_date)
+                if isinstance(duration, str):
+                    duration = clean_duration(duration)
+                if isinstance(price, str):
+                    price = clean_budget(price)
+                if isinstance(available_slot, str):
+                    available_slot = clean_people_count(available_slot)
+
+            
+            print(f"{departure} : {type(departure)}")
+            print(f"{destination} : {type(destination)}")
+            print(f"{start_date} : {type(start_date)}")
+            print(f"{duration} : {type(duration)}")
+            print(f"{price} : {type(price)}")
+            print(f"{available_slot} : {type(available_slot)}")
+            
 
             print(f"base: {suitable_tours}")
 
             # Filter by departure location if specified
-            if departure:
+            if departure and isinstance(departure, str):
+                
                 suitable_tours = [
                     tour for tour in suitable_tours 
                     if tour["departureLocation"].lower().strip() == departure.lower().strip()
@@ -116,7 +252,7 @@ class ActionShowTours(Action):
             print(f"filter departureLocation: {suitable_tours}")
             
             # Filter by destination (city or country) if specified
-            if destination:
+            if destination and isinstance(destination, str):
                 destination = destination.lower().strip()
                 suitable_tours = [
                     tour for tour in suitable_tours 
@@ -208,7 +344,8 @@ class ActionShowTours(Action):
             response.raise_for_status()
             tours_data = response.content.decode('utf-8')
 
-            # Get slots from tracker
+            
+            
             slots = {
                 "departure": tracker.get_slot("departure_point"),
                 "destination": tracker.get_slot("destination"),
@@ -218,11 +355,13 @@ class ActionShowTours(Action):
                 "available_slot": tracker.get_slot("number_of_people")
             }
 
-            # Remove None values from slots
-            slots = {k: v for k, v in slots.items() if v is not None}
+            intent = tracker.latest_message.get("intent").get("name")
 
+            # Remove None values from slots                    
+            slots = {k: v for k, v in slots.items() if v is not None}
+            print(slots)
             # Filter tours based on criteria
-            suitable_tours = self.filter_tours(tours_data=tours_data, **slots)
+            suitable_tours = self.filter_tours(tours_data=tours_data, **slots, intent=intent)
             
             print(suitable_tours)
 
@@ -253,7 +392,7 @@ class ActionShowTours(Action):
             ai_response.raise_for_status()
 
             # Send response to user
-            dispatcher.utter_message(text=f"một số tour gợi ý dựa theo yêu cầu của bạn: \n {ai_response.content.decode('utf-8')}")
+            dispatcher.utter_message(text=f"một số tour gợi ý dựa theo yêu cầu của bạn {', '.join(str(v) for v in slots.values())}: \n {ai_response.content.decode('utf-8')}")
             return []
 
         except requests.RequestException as e:
@@ -266,32 +405,99 @@ class ActionShowTours(Action):
             print(error_message)
             dispatcher.utter_message(text="Xin lỗi, đã có lỗi xảy ra khi xử lý yêu cầu của bạn.")
             return []
-class ValidateTourForm(FormValidationAction):
-    
-    PEOPLE_PATTERN = r"\b([0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*(người|khách)?\b"
-    BUDGET_PATTERN = r"\b\d+(\.\d+)?\s*(triệu|nghìn|đ|vnđ|usd|k|m|b)\b"
-    DATE_PATTERN = r"\b\d{1,2}[/-]\d{1,2}([/-]\d{4})?\b"
 
-    DURATION_PATTERN = r"""(?x)
-    (?:
-        # Match X ngày Y đêm pattern
-        \b(?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*ngày\s*
-        (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*đêm
-    )|
-    (?:
-        # Match simple duration pattern
-        \b(?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*
-        (?:ngày|tuần|tháng|năm)
-    )
-"""    
-    # Vietnamese number mapping
-    VN_NUMBERS = {
-        'một': '1', 'hai': '2', 'ba': '3', 'bốn': '4', 'năm': '5',
-        'sáu': '6', 'bảy': '7', 'tám': '8', 'chín': '9', 'mười': '10'
-    }
+@dataclass
+class ValidationPatterns:
+    """Constants for validation patterns."""
+    PEOPLE = r"""(?ix)
+        \b
+        (?:
+            (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)  # Numbers
+            \s*
+            (?:người|khách)?   # Optional person indicator
+            |
+            (?:cặp\s*đôi)     # Special case for couples
+        )
+        \b
+    """
+    BUDGET = r"""(?ix)
+        \b
+        (?:
+            \d+(?:\.\d+)?     # Number part
+            \s*               # Optional space
+            (?:              # Units
+                k|triệu|tr|tỷ|nghìn|đ|vnđ|usd|vnd
+                |
+                (?:đồng|dollars?)?  # Optional currency words
+            )?
+        )
+        \b
+    """
+    DATE = r"""(?ix)
+        (?:
+            (?:tháng\s+(?:1[0-2]|[1-9]))  # "tháng X" format
+            |
+            (?:
+                (?:[0-2]?[0-9]|3[01])      # Day: 1-31
+                [/-]
+                (?:1[0-2]|[1-9])           # Month: 1-12
+                (?:
+                    [/-]
+                    (?:19|20)\d{2}         # Optional year: 1900-2099
+                )?
+            )
+        )
+    """
+    DURATION = r"""(?ix)
+        \b
+        (?:
+            # X ngày Y đêm pattern
+            (?:
+                (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)
+                \s*ngày\s*
+                (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)
+                \s*đêm
+            )
+            |
+            # Simple duration pattern
+            (?:
+                (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)
+                \s*
+                (?:ngày|tuần|tháng|năm)
+            )
+        )
+        \b
+    """
+
+
+class ValidateTourForm(FormValidationAction):
+    """Form validation action for tour booking."""
+    
+    def __init__(self):
+        self.patterns = ValidationPatterns()
+        
     def name(self) -> Text:
         return "validate_tour_form"
-    
+
+    def _confirm_and_return(self, slot_name: str, value: Any, 
+                           dispatcher: CollectingDispatcher) -> Dict[Text, Any]:
+        if not value:
+            dispatcher.utter_message(text=f"Vui lòng cho biết {slot_name}.")
+        
+            return {slot_name: None}
+        response_text = {
+            "departure_point": "điểm xuất phát",
+            "destination": "điểm đến",
+            "departure_date": "ngày xuất phát",
+            "duration": "thời gian chuyến đi",
+            "budget": "giá tour",
+            "number_of_people": "số khách"
+        }
+        dispatcher.utter_message(text=f"Xác nhận {response_text[slot_name]}: {value}")
+        print(slot_name)
+        print(f"{value} : {type(value)}")
+        return {slot_name: value}
+
     def validate_departure_point(
         self,
         slot_value: Any,
@@ -299,14 +505,8 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        # Validate departure point format
-        
-        print(f"departure: {slot_value} ")
-        print(type(slot_value))
+        return self._confirm_and_return("departure_point", slot_value, dispatcher)
 
-        dispatcher.utter_message(text= " Xác nhận điểm xuất phát " + slot_value)
-        return {"departure_point": slot_value, }
-    
     def validate_departure_date(
         self,
         slot_value: Any,
@@ -314,37 +514,19 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        # Validate departure time format
-
-        if not slot_value:
-            dispatcher.utter_message(text="Vui lòng cho biết ngày khởi hành.")
-            return {"departure_date": None}
-        
-        if not re.match(self.DATE_PATTERN, slot_value):
+        if not re.match(self.patterns.DATE, slot_value):
             dispatcher.utter_message(
-                text="Ngày không hợp lệ. Vui lòng nhập theo định dạng: DD/MM hoặc DD/MM/YYYY."
+                text="Ngày không hợp lệ. Vui lòng cho biết thời điểm xuất phát."
             )
             return {"departure_date": None}
         
-        # Chuẩn hóa ngày
-        parts = re.split(r'[/-]', slot_value)
-        day = int(parts[0])
-        month = int(parts[1])  if len(parts) > 1 else datetime.now().month # Mặc định tháng hiện tại
-        year = int(parts[2]) if len(parts) > 2 else datetime.now().year  # Mặc định năm hiện tại
-        
-        # Kiểm tra tính hợp lệ của ngày
-        if not (1 <= month <= 12 and 1 <= day <= 31):
+        cleaned_date = clean_date(slot_value)
+        print(slot_value +" : "+ cleaned_date)
+        if not cleaned_date:
             dispatcher.utter_message(text="Ngày tháng không hợp lệ.")
             return {"departure_date": None}
-        
-        date = f"{day:02d}-{month:02d}-{year}"
-
-        dispatcher.utter_message(text= f" Xác nhận ngày xuất phát {date}")
-        print(f"departure_date: {date}")
-        print(type(date))
-        
-        return {"departure_date": date}
-        
+            
+        return self._confirm_and_return("departure_date", cleaned_date, dispatcher)
 
     def validate_destination(
         self,
@@ -353,11 +535,7 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        # validate destination
-        dispatcher.utter_message(text="Xác nhận điểm đến " + slot_value)
-        print(f"destination: {slot_value}")
-        print(type(slot_value))
-        return {"destination": slot_value}
+        return self._confirm_and_return("destination", slot_value, dispatcher)
 
     def validate_number_of_people(
         self,
@@ -366,33 +544,23 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        # Validate number of people
-        
         if not slot_value:
             dispatcher.utter_message(text="Vui lòng cho biết số người tham gia.")
             return {"number_of_people": None}
         
-        if not re.match(self.PEOPLE_PATTERN, slot_value.lower()):
+        if not re.match(self.patterns.PEOPLE, slot_value.lower()):
             dispatcher.utter_message(
                 text="Số người không hợp lệ. Vui lòng nhập theo định dạng: số + người/khách (VD: 2 người, ba khách)."
             )
             return {"number_of_people": None}
         
-        # Chuẩn hóa số người
-        people_text = slot_value.lower()
-        for vn_num, num in self.VN_NUMBERS.items():
-            if vn_num in people_text:
-                return {"number_of_people": num}
-                
-        # Nếu là số
-        num = int(re.search(r'\d+', people_text).group())
+        num_people = clean_people_count(slot_value)
+        if not num_people:
+            dispatcher.utter_message(text="Số người không hợp lệ.")
+            return {"number_of_people": None}
+        
+        return self._confirm_and_return("number_of_people", num_people, dispatcher)
 
-        dispatcher.utter_message(text=f"Xác nhận số người tham gia {num}")
-        print(f"number_of_people: {num}")
-        print(type(num))
-        # Cập nhật slot
-        return {"number_of_people": num}
-    
     def validate_budget(
         self,
         slot_value: Any,
@@ -400,78 +568,23 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        # Validate budget
-
         if not slot_value:
             dispatcher.utter_message(text="Vui lòng cho biết ngân sách của bạn.")
             return {"budget": None}
         
-        if not re.match(self.BUDGET_PATTERN, slot_value.lower()):
+        if not re.match(self.patterns.BUDGET, slot_value.lower()):
             dispatcher.utter_message(
                 text="Ngân sách không hợp lệ. Vui lòng nhập theo định dạng: số + đơn vị (VD: 5 triệu, 500k, 2m)."
             )
             return {"budget": None}
         
-        # Chuẩn hóa budget  
-        budget_text = slot_value.lower()
-        amount = float(re.search(r'\d+(\.\d+)?', budget_text).group())
-        
-        # Chuyển đổi các đơn vị về VNĐ
-        if 'k' in budget_text:
-            amount *= 1000
-        elif 'm' in budget_text or 'triệu' in budget_text or 'tr' in budget_text:
-            amount *= 1000000
-        elif 'b' in budget_text or 'tỷ' in budget_text:
-            amount *= 1000000000
-        print(f"budget: {amount}")
-        print(type(amount))
-        dispatcher.utter_message(text=f"Xác nhận ngân sách {amount} VND")
-        return {"budget": amount}
-    
-    def _normalize_duration(self, duration_text: str) -> str:
+        amount = clean_budget(slot_value)
+        if not amount:
+            dispatcher.utter_message(text="Ngân sách không hợp lệ.")
+            return {"budget": None}
+        print(f"{amount:,.0f} :")
+        return self._confirm_and_return("budget", f'{amount:,.0f}', dispatcher)
 
-
-        # Loại bỏ các từ khóa phụ
-        duration = duration_text.lower()
-        for prefix in ['kéo dài', 'khoảng', 'trong']:
-            duration = duration.replace(prefix, '').strip()
-
-        # Chuyển đổi số từ chữ sang số
-        for vn_num, num in self.VN_NUMBERS.items():
-            duration = duration.replace(vn_num, num)
-            
-    # Pattern cho các format khác nhau
-        patterns = [
-            # X ngày Y đêm
-            r'(\d+)\s*ngày\s*(\d+)\s*đêm',
-            # X ngày
-            r'(\d+)\s*ngày(?!\s*\d+\s*đêm)',  
-            # X tuần
-            r'(\d+)\s*tuần',
-            # X tháng
-            r'(\d+)\s*tháng'
-        ]
-        
-        for pattern in patterns:
-            match = re.search(pattern,  duration)
-            if match:
-                if len(match.groups()) == 2:  # X ngày Y đêm
-                    days, nights = match.groups()
-                    return f"{days} ngày {nights} đêm"
-                elif pattern == r'(\d+)\s*ngày(?!\s*\d+\s*đêm)':
-                    days = match.group(1)
-                    return f"{days} ngày"
-                elif 'tuần' in pattern:
-                    weeks = int(match.group(1))
-                    days = weeks * 7
-                    return f"{days} ngày"
-                elif 'tháng' in pattern:
-                    months = int(match.group(1))
-                    days = months * 30
-                    return f"{days} ngày"
-
-        return duration
-        
     def validate_duration(
         self,
         slot_value: Any,
@@ -479,14 +592,11 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        # Validate duration
         if not slot_value:
             dispatcher.utter_message(text="Vui lòng cho biết thời gian chuyến đi của bạn.")
             return {"duration": None}
 
-        # Kiểm tra định dạng bằng regex
-        duration_text = slot_value.strip().lower()
-        if not re.findall(self.DURATION_PATTERN, duration_text):
+        if not re.findall(self.patterns.DURATION, slot_value.lower()):
             dispatcher.utter_message(
                 text="Thời gian không hợp lệ. Vui lòng nhập theo một trong các định dạng sau:\n"
                 "- X ngày (VD: 3 ngày)\n"
@@ -495,25 +605,9 @@ class ValidateTourForm(FormValidationAction):
             )
             return {"duration": None}
 
-        # Chuẩn hóa duration
-        normalized_duration = self._normalize_duration(duration_text)
-
-       # Extract số ngày
-        days = 0
-        day_match = re.search(r'(\d+)\s*ngày', normalized_duration)
-        if day_match:
-            days = int(day_match.group(1))
-        
-        if days < 1 or days > 90:
+        days = clean_duration(slot_value)
+        if not days or not 1 <= days <= 90:
             dispatcher.utter_message(text="Thời gian tour phải từ 1 đến 90 ngày.")
             return {"duration": None}
         
-        dispatcher.utter_message(text="Xác nhận thời gian tour này " + normalized_duration)
-        print(f"normalized_duration: {normalized_duration}")
-        print(type(normalized_duration))
-        print(f"days: {days}")
-        print(type(days))
-
-        return {"duration": days}
-
-
+        return self._confirm_and_return("duration", f"{days} ngày", dispatcher)

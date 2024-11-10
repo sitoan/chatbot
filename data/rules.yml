@@ -17,7 +17,7 @@ rules:
   - rule: Activate tour form first
     steps:
       - intent: request_tour_form
-      - action: action_clean_slots
+      - action: action_clear_slots
       - action: tour_form
       - active_loop: tour_form
     

@@ -142,7 +142,7 @@ actions:
 - validate_customer_form
 - validate_tour_form
 - action_show_price
-- action_clean_slots
+- action_clear_slots
 - action_show_plan
 
 session_config:
