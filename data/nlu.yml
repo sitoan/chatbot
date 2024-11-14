@@ -396,26 +396,10 @@ nlu:
 
 
 
-  # Intent: ask_price
-  - intent: ask_price
-    examples: |
-      - tour này giá bao nhiêu?
-      - chi phí tour là bao nhiêu?
-      - giá của tour [11](tour_number) này là bao nhiêu?
-      - cho tôi biết giá tour [12](tour_number) này
-      - phí đi tour [2](tour_number) là bao nhiêu
-      - phí đi tour là bao nhiêu
-      - tour có giá bao nhiêu vậy?
-      - chi phí trọn gói của tour [7](tour_number) là bao nhiêu?
-      - bạn có thể cho tôi biết giá của tour này không?
-      - giá tour này như thế nào?
-      - chi phí tour [8](tour_number) là bao nhiêu?
-      - tour có giá như thế nào?
-      - phí đi tour [5](tour_number) khoảng bao nhiêu?
-      - tour số [6](tour_number) có chi phí như thế nào?
-      - tour [3](tour_number) có chi phí như thế nào?
 
-  - intent: ask_plan
+
+
+  - intent: ask_tour_details
     examples: |
       - tôi muốn tìm hiểu lịch trình của tour [6](tour_number)
       - tôi muốn xem lịch trình của tour [1](tour_number)
@@ -432,6 +416,24 @@ nlu:
       - lịch trình của tour này như thế nào?
       - lịch trình của tour [10](tour_number) là gì?
       - lịch trình của tour này có gì đặc biệt?
+      - tour này giá bao nhiêu?
+      - chi phí tour là bao nhiêu?
+      - giá của tour [11](tour_number) này là bao nhiêu?
+      - cho tôi biết giá tour [12](tour_number) này
+      - phí đi tour [2](tour_number) là bao nhiêu
+      - phí đi tour là bao nhiêu
+      - tour có giá bao nhiêu vậy?
+      - chi phí trọn gói của tour [7](tour_number) là bao nhiêu?
+      - bạn có thể cho tôi biết giá của tour này không?
+      - giá tour này như thế nào?
+      - chi phí tour [8](tour_number) là bao nhiêu?
+      - tour có giá như thế nào?
+      - phí đi tour [5](tour_number) khoảng bao nhiêu?
+      - tour số [6](tour_number) có chi phí như thế nào?
+      - tour [3](tour_number) có chi phí như thế nào?
+      - Cho tôi biết thông tin về lịch trình tour [3](tour_number) nhé.
+      - tour số [4](tour_number) có điểm gì đặc biệt không?
+
 
 
   - intent: choose_tour
@@ -441,9 +443,9 @@ nlu:
       - Bạn có thể cung cấp thông tin của tour [5](tour_number) được không?
       - Tôi quan tâm đến tour [12](tour_number).
       - tour số [7](tour_number).
-      - Cho tôi biết thông tin về lịch trình tour [3](tour_number) nhé.
       - Tour [10](tour_number).
       - Bạn có thể cho thông tin tour [6](tour_number) được không?
       - Tôi muốn tìm hiểu về tour [8](tour_number).
-      - tour số [4](tour_number) có điểm gì đặc biệt không?
       - Tôi có thể tham khảo tour [2](tour_number) được không?
+
+

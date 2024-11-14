@@ -4,12 +4,11 @@ intents:
 - customer_inform
 - tour_inform
 - find_tour
-- ask_price
 - request_customer_form
 - request_tour_form 
 - show_tours
 - choose_tour
-- ask_plan
+- ask_tour_details
 
 forms:
   customer_form:
@@ -130,7 +129,7 @@ responses:
   utter_qna:
   - text: "Bạn muốn hỏi gì?"
   utter_ask_for_choose_tour:
-  - text: "Bạn có quan tâm đến tour nào bên trên không? hãy cho tôi biết số hiệu của tour đó nếu có để được tư vấn thêm"
+  - text: "Bạn có quan tâm đến tour nào bên trên không? hãy cho tôi biết số hiệu của tour đó để có để được tư vấn thêm"
   utter_confirm_choices:
   - text: "Bạn muốn tìm hiểu thêm gì ở tour số {tour_number} "
     buttons:
@@ -141,9 +140,8 @@ actions:
 - action_show_tours
 - validate_customer_form
 - validate_tour_form
-- action_show_price
 - action_clear_slots
-- action_show_plan
+- action_answer_tour
 
 session_config:
   session_expiration_time: 60

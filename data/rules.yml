@@ -38,6 +38,7 @@ rules:
         - requested_slot: null
       - action: utter_confirm_tour_form
       - action: action_show_tours
+      - action: action_clear_slots
       - action: utter_ask_for_choose_tour
       - action: action_listen
 
@@ -54,18 +55,14 @@ rules:
       - action: action_listen
 
 
-  - rule: respond to price of tour
-    steps:
-      - intent: ask_price
-      - action: action_show_price
-      - action: action_listen
-
   - rule: show tours
     steps: 
     - intent: show_tours
+    - action: action_clear_slots
     - action: action_show_tours
     - action: utter_ask_for_choose_tour
     - action: action_listen
+
 
   - rule: ask tour information
     steps:
@@ -75,6 +72,7 @@ rules:
 
   - rule: response to plan of tour
     steps:
-    - intent: ask_plan
-    - action: action_show_plan
+    - intent: ask_tour_details
+    - action: action_answer_tour
+    - action: utter_confirm_choices
     - action: action_listen

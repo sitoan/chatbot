@@ -12,8 +12,9 @@ load_dotenv()
 from datetime import datetime
 import re
 
-ai_server = os.getenv('AI_SERVER')
-be_server = os.getenv('BE_SERVER')
+ai_server =os.getenv('AI_SERVER')
+be_server =os.getenv('BE_SERVER')
+
 
 VN_NUMBERS = {
         'một': '1', 'hai': '2', 'ba': '3', 'bốn': '4', 'năm': '5',
@@ -243,12 +244,13 @@ class ActionShowTours(Action):
 
             # Filter by departure location if specified
             if departure and isinstance(departure, str):
-                
+                departure = departure.lower().strip()
                 suitable_tours = [
                     tour for tour in suitable_tours 
-                    if tour["departureLocation"].lower().strip() == departure.lower().strip()
+                    if departure in tour["departureLocation"].lower().strip() 
                 ]
             
+            print(suitable_tours)
             print(f"filter departureLocation: {suitable_tours}")
             
             # Filter by destination (city or country) if specified
@@ -261,6 +263,7 @@ class ActionShowTours(Action):
                 ]
             
             print(f"filter destination: {suitable_tours}")
+            print(suitable_tours)
 
             # Filter by start date if specified
             if start_date:
@@ -274,7 +277,6 @@ class ActionShowTours(Action):
                 except ValueError as e:
                     print(f"Invalid date format: {start_date}. Error: {str(e)}")
             
-            print(suitable_tours)
 
 
             # Filter by duration if specified
@@ -332,7 +334,7 @@ class ActionShowTours(Action):
             print(f"Error filtering tours: {str(e)}")
             return []
 
-    async def run(
+    def run(
         self,
         dispatcher: CollectingDispatcher,
         tracker: Tracker,
@@ -340,12 +342,10 @@ class ActionShowTours(Action):
     ) -> List[Dict[Text, Any]]:
         try:
             # Get tour data from backend server
-            response = requests.get(f"{be_server}")
+            response = requests.get(f"{be_server}/getallforai")
             response.raise_for_status()
             tours_data = response.content.decode('utf-8')
 
-            
-            
             slots = {
                 "departure": tracker.get_slot("departure_point"),
                 "destination": tracker.get_slot("destination"),
@@ -361,45 +361,45 @@ class ActionShowTours(Action):
             slots = {k: v for k, v in slots.items() if v is not None}
             print(slots)
             # Filter tours based on criteria
-            suitable_tours = self.filter_tours(tours_data=tours_data, **slots, intent=intent)
+            suitable_tours = self.filter_tours(
+                tours_data=tours_data, 
+                departure=slots.get("departure"),
+                destination=slots.get("destination"),
+                start_date=slots.get("start_date"),
+                duration=slots.get("duration"),
+                price=slots.get("price"),
+                available_slot=slots.get("available_slot"), 
+                intent=intent
+                )
             
-            print(suitable_tours)
+            print(type(suitable_tours), suitable_tours)
 
             if not suitable_tours:
                 dispatcher.utter_message(text="Xin lỗi, không tìm thấy tour phù hợp với yêu cầu của bạn.")
                 return []
 
-            # Prepare prompt for AI server
-            prompt = '''
-            Dựa vào dữ liệu trên, hãy đưa ra các thông tin cơ bản về tour theo định dạng sau:
+            dispatcher.utter_message(text=f"một số tour gợi ý dựa theo yêu cầu của bạn {', '.join(str(v) for v in slots.values())}:")
 
-            Tour {id} - {city}:
-            * Điểm khởi hành: {departureLocation}
-            * Điểm đến: {city}, {country}
-            * Thời gian: {startDate} - {endDate} ({days} ngày)
-            * Giá tour: {price:,.0f} VND
-            * Số chỗ còn trống: {availableSlots}
-            '''
+            for tour in suitable_tours:
+                dispatcher.utter_message(text=
+f'''
+Tour {tour['id']} - {tour['city']}:
+* Điểm khởi hành: {tour['departureLocation']}
+* Điểm đến: {tour['city']}, {tour['country']}
+* Thời gian: {tour['startDate']} - {tour['endDate']} ({tour['duration']} ngày)
+* Giá tour: {tour['price']:,.0f} VND
+* Số chổ còn trống: {tour['availableSlots']}
+''')
+                dispatcher.utter_message(text=f"{tour['id']}")
 
-            # Send request to AI server
-            ai_response = requests.post(
-                f"{ai_server}/post",
-                json={
-                    "data": str(suitable_tours),
-                    "prompt": prompt
-                }
-            )
-            ai_response.raise_for_status()
-
-            # Send response to user
-            dispatcher.utter_message(text=f"một số tour gợi ý dựa theo yêu cầu của bạn {', '.join(str(v) for v in slots.values())}: \n {ai_response.content.decode('utf-8')}")
             return []
-
+        
         except requests.RequestException as e:
             error_message = f"Lỗi kết nối với server: {str(e)}"
             print(error_message)
             dispatcher.utter_message(text="Xin lỗi, không thể lấy thông tin tour lúc này. Vui lòng thử lại sau.")
             return []
+        
         except Exception as e:
             error_message = f"Lỗi không xác định: {str(e)}"
             print(error_message)
@@ -409,17 +409,7 @@ class ActionShowTours(Action):
 @dataclass
 class ValidationPatterns:
     """Constants for validation patterns."""
-    PEOPLE = r"""(?ix)
-        \b
-        (?:
-            (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)  # Numbers
-            \s*
-            (?:người|khách)?   # Optional person indicator
-            |
-            (?:cặp\s*đôi)     # Special case for couples
-        )
-        \b
-    """
+    PEOPLE = r"""(?ix)\b(?:(?:[0-9]|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*(?:người|khách))\b"""
     BUDGET = r"""(?ix)
         \b
         (?:
@@ -433,41 +423,8 @@ class ValidationPatterns:
         )
         \b
     """
-    DATE = r"""(?ix)
-        (?:
-            (?:tháng\s+(?:1[0-2]|[1-9]))  # "tháng X" format
-            |
-            (?:
-                (?:[0-2]?[0-9]|3[01])      # Day: 1-31
-                [/-]
-                (?:1[0-2]|[1-9])           # Month: 1-12
-                (?:
-                    [/-]
-                    (?:19|20)\d{2}         # Optional year: 1900-2099
-                )?
-            )
-        )
-    """
-    DURATION = r"""(?ix)
-        \b
-        (?:
-            # X ngày Y đêm pattern
-            (?:
-                (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)
-                \s*ngày\s*
-                (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)
-                \s*đêm
-            )
-            |
-            # Simple duration pattern
-            (?:
-                (?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)
-                \s*
-                (?:ngày|tuần|tháng|năm)
-            )
-        )
-        \b
-    """
+    DATE = r"""(?ix)(?:(?:tháng\s+(?:1[0-2]|[1-9]))|(?:(?:[0-2]?[0-9]|3[01])[/-](?:1[0-2]|[1-9])(?:[/-](?:19|20)\d{2})?))"""
+    DURATION = r"""(?ix)\b(?:(?:(?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*ngày\s*(?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*đêm)|(?:(?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*(?:ngày|tuần|tháng|năm)))\b"""
 
 
 class ValidateTourForm(FormValidationAction):
@@ -544,10 +501,7 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        if not slot_value:
-            dispatcher.utter_message(text="Vui lòng cho biết số người tham gia.")
-            return {"number_of_people": None}
-        
+
         if not re.match(self.patterns.PEOPLE, slot_value.lower()):
             dispatcher.utter_message(
                 text="Số người không hợp lệ. Vui lòng nhập theo định dạng: số + người/khách (VD: 2 người, ba khách)."
@@ -568,9 +522,6 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        if not slot_value:
-            dispatcher.utter_message(text="Vui lòng cho biết ngân sách của bạn.")
-            return {"budget": None}
         
         if not re.match(self.patterns.BUDGET, slot_value.lower()):
             dispatcher.utter_message(
@@ -592,9 +543,6 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        if not slot_value:
-            dispatcher.utter_message(text="Vui lòng cho biết thời gian chuyến đi của bạn.")
-            return {"duration": None}
 
         if not re.findall(self.patterns.DURATION, slot_value.lower()):
             dispatcher.utter_message(
@@ -611,3 +559,38 @@ class ValidateTourForm(FormValidationAction):
             return {"duration": None}
         
         return self._confirm_and_return("duration", f"{days} ngày", dispatcher)
+    
+
+class ActionShowPlan(Action):
+    def name(self) -> Text:
+        return "action_answer_tour"
+    
+    def run(self, dispatcher, tracker, domain) -> Dict[Text, Any]:
+        tour_number = tracker.get_slot("tour_number")
+        if tour_number is None:
+            dispatcher.utter_message(text="Vui lòng chọn số hiệu của tour.")
+            return {"tour_number": None}
+        
+        user_question = tracker.latest_message.get("text")
+        response = requests.get(f"{be_server}/{tour_number}")
+        response.raise_for_status()
+        tours_data = response.content.decode('utf-8')
+        print(f"{user_question}")
+    # Prepare prompt for AI server
+        prompt = f'''
+        Bạn trong vai trò 1 nhân viên tư vấn tour du lịch, dựa vào tour bên trên hãy giải đáp các thắc mắc một cách tự nhiên, thoải mái, chi tiết từng mốc thời gian và cung cấp thêm các thông tin về các địa điểm tham quan để lôi cuốn khách hàng nhưng các thông tin đưa ra phải đảm bảo độ chính xác.
+        thắc mắc của user: {user_question}
+        '''
+
+        # Send request to AI server
+        ai_response = requests.post(
+            f"{ai_server}/post",
+            json={
+                "data": str(tours_data),
+                "prompt": prompt
+            }
+        )
+        ai_response.raise_for_status()
+
+        dispatcher.utter_message(text=ai_response.content.decode('utf-8'))
+        return {}
