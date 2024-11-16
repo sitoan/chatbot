@@ -1,0 +1,60 @@
+
+- story: interactive_story_1
+  steps:
+  - intent: find_tour
+    entities:
+    - budget: 30tr
+  - slot_was_set:
+    - budget: 30tr
+  - action: action_show_tours
+  - action: utter_ask_for_choose_tour
+  - intent: choose_tour
+    entities:
+    - tour_number: '9'
+  - slot_was_set:
+    - tour_number: '9'
+  - action: utter_confirm_choices
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - intent: ask_tour_details
+    entities:
+    - tour_number: '3'
+  - slot_was_set:
+    - tour_number: '3'
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - intent: request_customer_form
+  - action: customer_form
+  - active_loop: customer_form
+  - slot_was_set:
+    - requested_slot: name
+  - intent: customer_inform
+    entities:
+    - name: Nhật Toàn
+  - slot_was_set:
+    - name: Nhật Toàn
+  - action: customer_form
+  - slot_was_set:
+    - name: Nhật Toàn
+  - slot_was_set:
+    - requested_slot: phone_number
+  - intent: customer_inform
+    entities:
+    - phone_number: '0909009090'
+  - slot_was_set:
+    - phone_number: '0909009090'
+  - action: customer_form
+  - slot_was_set:
+    - phone_number: '0909009090'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_confirm_customer_form

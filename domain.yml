@@ -2,7 +2,7 @@ version: '3.1'
 intents:
 - greet
 - customer_inform
-- tour_inform
+# - tour_inform
 - find_tour
 - request_customer_form
 - request_tour_form 
@@ -15,7 +15,7 @@ forms:
     required_slots:
       - name
       - phone_number
-
+  
   tour_form:
     required_slots:
       - departure_point
@@ -126,8 +126,6 @@ responses:
   - text: "Chào mừng bạn đến với dịch vụ tìm kiếm tour của chúng tôi. Tôi có thể giúp gì cho chuyến đi sắp tới của bạn?"
   utter_confirm_tour_form:
   - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nĐiểm đến: {destination}\nSố người tham gia: {number_of_people}\nNgân sách dự kiến: {budget}\nĐộ dài chuyến đi: {duration}."
-  utter_qna:
-  - text: "Bạn muốn hỏi gì?"
   utter_ask_for_choose_tour:
   - text: "Bạn có quan tâm đến tour nào bên trên không? hãy cho tôi biết số hiệu của tour đó để có để được tư vấn thêm"
   utter_confirm_choices:

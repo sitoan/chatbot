@@ -51,8 +51,7 @@ rules:
       - slot_was_set:
         - requested_slot: null
       - action: utter_confirm_customer_form
-      - action: utter_qna
-      - action: action_listen
+
 
 
   - rule: show tours

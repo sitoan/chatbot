@@ -395,10 +395,6 @@ nlu:
       - tour dành cho tôi muốn đến [Hội An](destination)
 
 
-
-
-
-
   - intent: ask_tour_details
     examples: |
       - tôi muốn tìm hiểu lịch trình của tour [6](tour_number)
