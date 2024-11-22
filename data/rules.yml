@@ -28,6 +28,11 @@ rules:
       - active_loop: customer_form
         
 
+  - rule: clean slots
+    steps:
+      - intent: clean_slots
+      - action: action_clear_slots
+
   - rule: Submit tour form 
     condition:
       - active_loop: tour_form

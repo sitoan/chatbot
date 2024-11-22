@@ -109,10 +109,9 @@ nlu:
     - [Seoul](departure_point) [Busan](destination)
     - [Melbourne](departure_point) [Sydney](destination)
     - [London](departure_point) [Paris](destination)
-    - [Nha Trang](destination)
     - [Hải Phòng](departure_point)
     - [Huế](departure_point)
-    - [Cần Thơ](destination)
+    - [Cần Thơ](departure_point)
     - [3 ngày](duration)
     - [2 ngày](duration)
     - [5 ngày](duration)
@@ -135,17 +134,16 @@ nlu:
     - [30 triệu](budget)
     - Khoảng [15 triệu](budget)
     - [5.5 tr](budget)
-    - [Bangkok](departure_point)
+    - [Bangkok](destination)
     - [Tokyo](destination)
-    - [Seoul](departure_point)
-    - [Kuala Lumpur](departure_point)
+    - [Seoul](destination)
+    - [Kuala Lumpur](destination)
     - [Bali](destination)
     - Ngân sách là [15 triệu](budget), chuyến đi kéo dài [5 ngày 4 đêm](duration)
     - [Phú Quốc](departure_point)
     - [Sapa](destination)
     - [Đà Lạt](destination)
     - [Côn Đảo](departure_point)
-    - [Tokyo](departure_point)
     - [Paris](destination)
     - [5 khách](number_of_people)
     - [10 khách](number_of_people)
@@ -153,7 +151,6 @@ nlu:
     - [3 người](number_of_people)
     - [6 khách](number_of_people)
     - [Singapore](departure_point)
-    - [Bangkok](destination)
     - [Melbourne](destination)
     - [Hà Nội](destination), [20/11](departure_date), [2 người](number_of_people), [10 triệu](budget), [3 ngày](duration)
     - [TP.HCM](destination), [tháng 12](departure_date), [5 người](number_of_people), [15 triệu](budget), [1 tuần](duration)
@@ -164,7 +161,6 @@ nlu:
     - [Sydney](destination)
     - [Dubai](departure_point)
     - [London](destination)
-    - [Seoul](destination)
     - [New York](departure_point)
     - [Rome](destination)
     - Bạn có tour giá dưới [5 triệu](budget) trong [2 ngày](duration) không
@@ -173,6 +169,7 @@ nlu:
     - [Ngày 19](departure_date)
     - [tháng 5](departure_date)
     - [Tháng 9](departure_date)
+    - [France](destination)
     - [15](departure_date)
     - [8](departure_date)
     - [Tháng 12](departure_date)
@@ -194,6 +191,12 @@ nlu:
     - Xuất phát từ [Nha Trang](departure_point) được không
     - Tôi cần đi từ [Hải Phòng](departure_point)
     - có tour nào khoảng [30tr](budget) không
+    - [Sài Gòn]{"entity": "departure_point", "value": "Ho Chi Minh City"}
+    - [1/1/2025](departure_date)
+    - [France](destination)
+    - [10 người](number_of_people)
+    - khoảng [25 triệu](budget)
+    - [5 ngày 4 đêm](duration)
 - intent: customer_inform
   examples: |
     - tôi tên là [Nguyễn Văn A](name)
@@ -339,6 +342,8 @@ nlu:
     - gọi số này [0928282828](phone_number) sẽ gặp tôi, [Hoàng Văn HH](name)
     - [Nhật Toàn](name)
     - [0909009090](phone_number)
+    - [Quang Vinh](name)
+    - [0913997275](phone_number)
 - intent: ask_tour_details
   examples: |
     - Tour [9](tour_number) có bao gồm ăn uống không?
@@ -458,6 +463,9 @@ nlu:
     - ngày thứ 3 tour có thăm quan những điểm nào
     - chi phí cụ thể của tour này là bao nhiêu
     - chi phí này bao gồm những gi
+    - tour số [7](tour_number) này có gì
+    - tour này có những điểm tham quan nào liên quan đến tôn giáo không
+    - tổng giá tour này cho 10 người là bao nhiêu
 - intent: choose_tour
   examples: |
     - tôi muốn hỏi tour số [9](tour_number)
@@ -499,4 +507,4 @@ nlu:
     - \b(?:(?:\d+(?:\.\d+)?|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*(?:người|khách))\b
 - regex: phone_number
   examples: |
-    - (0|\\+84)[-.]?(3|5|7|8|9)[-.]?[0-9]{3}[-.]?[0-9]{4}[-.]?[0-9]{3}
+    - (0|\\+84)[-.]?(3|5|7|8|9)[-.]?[0-9]{3}[-.]?[0-9]{3}[-.]?[0-9]{3}

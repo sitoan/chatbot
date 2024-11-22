@@ -20,7 +20,7 @@ class Config:
     """Configuration settings."""
     AI_SERVER = os.getenv('AI_SERVER')
     BE_SERVER = os.getenv('BE_SERVER')
-    SHORT_DATE_FORMAT = "%d-%m-%y"
+    SHORT_DATE_FORMAT = "%d-%m-%Y"
 
 class NumberMapping(TypedDict):
     """Type definition for number mappings."""
@@ -43,10 +43,10 @@ NUMBERS: NumberMapping = {
 
 class ValidationPatterns:
     """Regex patterns for form validation."""
-    PHONE = r"(0|\+84)(3|5|7|8|9)[0-9]{8}"
+    PHONE = r"(0|\\+84)[-.]?(3|5|7|8|9)[-.]?[0-9]{3}[-.]?[0-9]{3}[-.]?[0-9]{3}"
     PEOPLE = r"""(?ix)\b(?:(?:\d+(?:\.\d+)?|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*(?:người|khách))\b"""
     BUDGET = r"""(?ix)\b(?:\d+(?:\.\d+)?|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười|mươi|trăm|nghìn|triệu|tỷ)\s*(?:k|triệu|tr|tỷ|nghìn|đ|vnđ|usd|vnd|đồng|dollars?)?\b"""
-    DATE = r"""(?ix)(?:(?:tháng|ngày|năm\s+(?:1[0-2]|[1-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười(?:\s+một|\s+hai|)))|(?:(?:[0-2]?[0-9]|3[01])[/-](?:1[0-2]|[1-9])(?:[/-](?:19|20)\d{2})?))"""
+    DATE = r"""(?ix)\b((ngày\s([1-9]|[12][0-9]|3[01])(?:[/-][1-9]|1[0-2])?(?:[/-]\d{4})?)|(tháng\s([1-9]|1[0-2])(?:[/-]\d{4})?)|([0-3]?[0-9][/-][0-1]?[0-9](?:[/-]\d{4})?))\b"""
     DURATION = r"""(?ix)\b(?:(?:(?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*ngày\s*(?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*đêm)|(?:(?:[0-9]+|một|hai|ba|bốn|năm|sáu|bảy|tám|chín|mười)\s*(?:ngày|tuần|tháng|năm)))\b"""
 
 @dataclass
@@ -78,17 +78,20 @@ class TextCleaner:
     def clean_date(date_text: str) -> Optional[str]:
         """Clean and validate date string."""
         date_text = date_text.lower()
-        date_text = date_text.replace('tháng', '/').replace('ngày', '').strip()
+        print(f"Original date: {date_text}")
+        date_text = date_text.replace('tháng', '/').replace('ngày', '').replace(' ', '')
+        print(f"Cleaned date 1: {date_text}")
         
         parts = re.split(r'[/-]', date_text)
+        print(f"Parts: {parts}")
         current_date = datetime.now()
         
         try:
-            day = int(parts[0]) if len(parts) > 0 else current_date.day
+            day = int(parts[0]) if parts[0] != '' else 1
             month = int(parts[1]) if len(parts) > 1 else current_date.month
             year = int(parts[2]) if len(parts) > 2 else current_date.year
             
-            print(f"Cleaned date: {datetime(year, month, day).strftime(Config.SHORT_DATE_FORMAT)}")
+            print(f"Cleaned date 2: {datetime(year, month, day).strftime(Config.SHORT_DATE_FORMAT)}")
             return datetime(year, month, day).strftime(Config.SHORT_DATE_FORMAT)
         except (ValueError, IndexError):
             return None
@@ -115,7 +118,7 @@ class TextCleaner:
         if not amount_match:
             return None
             
-        amount = float(amount_match.group().replace(',','.'))
+        amount = float(amount_match.group().replace(',',''))
         
         for unit, multiplier in NUMBERS["budget_multipliers"].items():
             if unit in budget_text:
@@ -166,6 +169,8 @@ class TourManager:
                 print(f"Filtered filters: {filters}")
             
             suitable_tours = TourManager._apply_filters(suitable_tours, filters)
+
+            print(f"Overall: {suitable_tours}")
             
             return sorted(
                 suitable_tours,
@@ -196,12 +201,16 @@ class TourManager:
         """Apply filters to tours list."""
         filtered_tours = tours
 
+        print(f"Base: {filtered_tours}")
+
         if departure := filters.get("departure"):
             print(f"Departure filter: {departure}")
             filtered_tours = [
                 tour for tour in filtered_tours 
                 if departure.lower().strip() in tour["departureLocation"].lower().strip()
             ]
+        
+        print(f"After filter departure: {filtered_tours}")
 
         if destination := filters.get("destination"):
             print(f"Destination filter: {destination}")
@@ -210,6 +219,8 @@ class TourManager:
                 if destination.lower().strip() in tour["city"].lower().strip() or 
                    destination.lower().strip() in tour["country"].lower().strip()
             ]
+
+        print(f"After filter destination: {filtered_tours}")
 
         if start_date := filters.get("start_date"):
             print(f"Start date filter: {start_date}")
@@ -222,12 +233,16 @@ class TourManager:
             except ValueError:
                 pass
 
+        print(f"After filter start date: {filtered_tours}")
+
         if duration := filters.get("duration"):
             print(f"Duration filter: {duration}")
             filtered_tours = [
                 tour for tour in filtered_tours 
                 if int(tour["duration"]) <= int(duration)
             ]
+
+        print(f"After filter duration: {filtered_tours}")
 
         if price := filters.get("price"):
             print(f"Price filter: {price}")
@@ -236,12 +251,16 @@ class TourManager:
                 if float(tour["price"]) <= float(price)
             ]
 
+        print(f"After filter price: {filtered_tours}")
+
         if available_slot := filters.get("available_slot"):
             print(f"Available slot filter: {available_slot}")
             filtered_tours = [
                 tour for tour in filtered_tours 
                 if int(tour["availableSlots"]) >= int(available_slot)
             ]
+
+        print(f"After filter available slot: {filtered_tours}")
 
         return filtered_tours
 
@@ -337,6 +356,8 @@ class ActionShowTours(Action):
                 action=action
             )
 
+            print(f"After sort: {suitable_tours}")
+
             if not suitable_tours:
                 dispatcher.utter_message(text="Xin lỗi, không tìm thấy tour phù hợp với yêu cầu của bạn.")
                 return []
@@ -361,8 +382,9 @@ class ActionShowTours(Action):
         ) -> None:
             """Display formatted tour information."""
             dispatcher.utter_message(
-                text=f"Tour gợi ý dựa theo yêu cầu của bạn {', '.join(str(v) for v in filters.values())}:"
+                text=f"Tour gợi ý dựa theo yêu cầu của bạn: "
             )
+            print(filters)
 
             for tour in tours:
                 dispatcher.utter_message(text=f"""
@@ -492,8 +514,8 @@ class ActionShowTours(Action):
                     return {"budget": None}
                 
                 budget = TextCleaner.clean_budget(slot_value)
-                if budget:
-                    budget = f"{budget:,.0f}"
+                # if budget:
+                #     budget = f"{budget:,.0f}"
                     
                 return self._validate_and_confirm("budget", budget, dispatcher)
             return {}

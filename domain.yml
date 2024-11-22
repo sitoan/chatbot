@@ -9,6 +9,7 @@ intents:
 - show_tours
 - choose_tour
 - ask_tour_details
+- clean_slots
 
 forms:
   customer_form:
@@ -117,7 +118,7 @@ responses:
   utter_ask_departure_date:
   - text: "Bạn muốn khởi hành lúc nào?"
   - text: "Thời gian khởi hành bạn mong muốn là?"
-  - text: "Bạn muốn đi vào lúc ngày bao nhiêu?"
+  - text: "Bạn muốn đi vào ngày bao nhiêu?"
   utter_confirm_customer_form:
   - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nTên: {name}\nSố điện thoại: {phone_number}\n sẽ có nhân viên liện hệ để xác nhận trong vòng 24 giờ."
   utter_greet:
