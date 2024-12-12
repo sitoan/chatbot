@@ -60,6 +60,7 @@ stories:
     - requested_slot: null
   - active_loop: null
   - action: utter_confirm_customer_form
+  - action: action_post_user_answer
 
 - story: interactive_story_2
   steps:
@@ -190,3 +191,4 @@ stories:
     - requested_slot: null
   - active_loop: null
   - action: utter_confirm_customer_form
+  - action: action_post_user_answer
