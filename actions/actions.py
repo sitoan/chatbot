@@ -177,12 +177,15 @@ class ActionPostUserAnswer(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
-        
+        print("-"*50)
 
         print(f"User ID: {tracker.sender_id}") 
+        
         start_date = tracker.get_slot("departure_date")
-        start_date = datetime.strptime(start_date, Config.DATE_FORMAT)
-        start_date = start_date.strftime("%Y-%m-%d")
+        if start_date:  # Kiểm tra nếu có giá trị
+            start_date = datetime.strptime(start_date, Config.DATE_FORMAT)
+            start_date = start_date.strftime("%Y-%m-%d")
+  
 
         data = {
             'userId': tracker.sender_id,
@@ -196,11 +199,13 @@ class ActionPostUserAnswer(Action):
             'AvailableSlot': tracker.get_slot("number_of_people")
         }
 
-        data = {k: v for k, v in data.items() if v is not None}
+        print(data)
 
-        response = requests.post(f"{Config.BE_SERVER}/userdatacollection", json=data)
+        try:
+            response = requests.post(f"{Config.BE_SERVER}/userdatacollection", json=data)
+            response.raise_for_status()  # Raise exception cho các mã lỗi HTTP
+            print('Success:', response.text)
+        except requests.exceptions.RequestException as e:
+            print('Failed to post data:', e)
 
-        if response.status_code == 200:
-            print('Success:', response.text)  
-        else:
-            print('Failed to post data:', response.status_code, response.text)
+        return []
