@@ -1,0 +1,81 @@
+version: "3.1"
+
+rules:
+  - rule: respond to greet
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: action_listen
+
+  - rule: find tour
+    steps:
+      - intent: find_tour
+      - action: action_show_tours
+      - action: utter_ask_for_choose_tour
+      - action: action_listen
+        
+  - rule: Activate tour form first
+    steps:
+      - intent: request_tour_form
+      - action: action_clear_slots
+      - action: tour_form
+      - active_loop: tour_form
+    
+  - rule: Activate tour form first
+    steps:
+      - intent: request_customer_form
+      - action: customer_form
+      - active_loop: customer_form
+        
+
+  - rule: clean slots
+    steps:
+      - intent: clean_slots
+      - action: action_clear_slots
+
+  - rule: Submit tour form 
+    condition:
+      - active_loop: tour_form
+    steps:
+      - action: tour_form
+      - active_loop: null
+      - slot_was_set:
+        - requested_slot: null
+      - action: utter_confirm_tour_form
+      - action: action_show_tours
+      - action: utter_ask_for_choose_tour
+      - action: action_listen
+
+  - rule: Submit customer form
+    condition:
+      - active_loop: customer_form
+    steps:
+      - action: customer_form
+      - active_loop: null
+      - slot_was_set:
+        - requested_slot: null
+      - action: utter_confirm_customer_form
+      - action: action_post_user_answer
+
+
+
+  - rule: show tours
+    steps: 
+    - intent: show_tours
+    - action: action_show_tours
+    - action: utter_ask_for_choose_tour
+    - action: action_listen
+
+
+  - rule: ask tour information
+    steps:
+    - intent: choose_tour
+    - action: utter_confirm_choices
+    - action: action_listen
+
+  - rule: response to plan of tour
+    steps:
+    - intent: ask_tour_details
+    - action: action_answer_tour
+    - action: utter_confirm_choices
+    - action: action_listen

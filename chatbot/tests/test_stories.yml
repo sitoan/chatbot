@@ -1,0 +1,195 @@
+version: "3.1"
+stories:
+- story: interactive_story_1
+  steps:
+  - intent: find_tour
+    entities:
+    - budget: 30tr
+  - slot_was_set:
+    - budget: 30tr
+  - action: action_show_tours
+  - action: utter_ask_for_choose_tour
+  - action: action_listen
+  - intent: choose_tour
+    entities:
+    - tour_number: '9'
+  - slot_was_set:
+    - tour_number: '9'
+  - action: utter_confirm_choices
+  - action: action_listen
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - action: action_listen
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - action: action_listen
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - action: action_listen
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - action: action_listen
+  - intent: request_customer_form
+  - action: customer_form
+  - active_loop: customer_form
+  - slot_was_set:
+    - requested_slot: name
+  - intent: customer_inform
+    entities:
+    - name: Nhật Toàn
+  - slot_was_set:
+    - name: Nhật Toàn
+  - action: customer_form
+  - slot_was_set:
+    - name: Nhật Toàn
+  - slot_was_set:
+    - requested_slot: phone_number
+  - intent: customer_inform
+    entities:
+    - phone_number: '0909009090'
+  - slot_was_set:
+    - phone_number: '0909009090'
+  - action: customer_form
+  - slot_was_set:
+    - phone_number: '0909009090'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_confirm_customer_form
+  - action: action_post_user_answer
+
+
+- story: interactive_story_2
+  steps:
+  - intent: request_tour_form
+  - action: action_clear_slots
+  - action: tour_form
+  - active_loop: tour_form
+  - slot_was_set:
+    - requested_slot: departure_point
+  - intent: find_tour
+    entities:
+    - departure_point: Ho Chi Minh City
+  - slot_was_set:
+    - departure_point: Ho Chi Minh City
+  - action: tour_form
+  - slot_was_set:
+    - departure_point: Ho Chi Minh City
+  - slot_was_set:
+    - requested_slot: departure_date
+  - intent: find_tour
+    entities:
+    - departure_date: 1/1/2025
+  - slot_was_set:
+    - departure_date: 1/1/2025
+  - action: tour_form
+  - slot_was_set:
+    - departure_date: 01-01-2025
+  - slot_was_set:
+    - requested_slot: destination
+  - intent: find_tour
+    entities:
+    - destination: Mũi Né
+  - slot_was_set:
+    - destination: Mũi Né
+  - action: tour_form
+  - slot_was_set:
+    - destination: Mũi Né
+  - slot_was_set:
+    - requested_slot: number_of_people
+  - intent: find_tour
+    entities:
+    - number_of_people: 10 người
+  - slot_was_set:
+    - number_of_people: 10 người
+  - action: tour_form
+  - slot_was_set:
+    - number_of_people: 10
+  - slot_was_set:
+    - requested_slot: budget
+  - intent: find_tour
+    entities:
+    - budget: 25 triệu
+  - slot_was_set:
+    - budget: 25 triệu
+  - action: tour_form
+  - slot_was_set:
+    - budget: 25,000,000
+  - slot_was_set:
+    - requested_slot: duration
+  - intent: find_tour
+    entities:
+    - duration: 5 ngày 4 đêm
+  - slot_was_set:
+    - duration: 5 ngày 4 đêm
+  - action: tour_form
+  - slot_was_set:
+    - duration: 5
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_confirm_tour_form
+  - action: action_show_tours
+  - slot_was_set:
+    - departure_point: null
+  - slot_was_set:
+    - destination: null
+  - slot_was_set:
+    - number_of_people: null
+  - slot_was_set:
+    - departure_date: null
+  - slot_was_set:
+    - budget: null
+  - slot_was_set:
+    - duration: null
+  - action: utter_ask_for_choose_tour
+  - action: action_listen
+  - intent: ask_tour_details
+    entities:
+    - tour_number: '7'
+  - slot_was_set:
+    - tour_number: '7'
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - action: action_listen
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - action: action_listen
+  - intent: ask_tour_details
+  - action: action_answer_tour
+  - action: utter_confirm_choices
+  - action: action_listen
+  - intent: request_customer_form
+  - action: customer_form
+  - active_loop: customer_form
+  - slot_was_set:
+    - requested_slot: name
+  - intent: customer_inform
+    entities:
+    - name: Quang Vinh
+  - slot_was_set:
+    - name: Quang Vinh
+  - action: customer_form
+  - slot_was_set:
+    - name: Quang Vinh
+  - slot_was_set:
+    - requested_slot: phone_number
+  - intent: customer_inform
+    entities:
+    - phone_number: '0913997275'
+  - slot_was_set:
+    - phone_number: '0913997275'
+  - action: customer_form
+  - slot_was_set:
+    - phone_number: '0913997275'
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_confirm_customer_form
+  - action: action_post_user_answer
+
