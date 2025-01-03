@@ -1,0 +1,28 @@
+@font-face {
+  font-family: "Bold";
+  src: local("Bold"),
+    url(src/assets/SpotifyMixUIBold/SpotifyMixUIBold.ttf) format("truetype");
+}
+@font-face {
+  font-family: "Regular";
+  src: local("Regular"),
+    url(src/assets/SpotifyMixUIBold/SpotifyMixUIRegular.ttf) format("truetype");
+}
+@font-face {
+  font-family: "TitleBold";
+  src: local("TitleBold"),
+    url(src/assets/SpotifyMixUIBold/SpotifyMixUITitleBold.ttf)
+      format("truetype");
+}
+/* @font-face {
+  font-family: "TitleExtraBold";
+  src: local("TitleExtraBold"),
+    url(ssrc/assets/SpotifyMixUIBold/SpotifyMixUITitleExtrabold.ttf)
+      format("truetype");
+} */
+@font-face {
+  font-family: "TitleVariable";
+  src: local("TitleVariable"),
+    url(src/assets/SpotifyMixUIBold/SpotifyMixUITitleVariable.ttf)
+      format("truetype");
+}

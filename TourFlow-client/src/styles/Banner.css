@@ -1,0 +1,138 @@
+#banner-container {
+  display: flex;
+  width: 100vw; /* Chiếm toàn bộ chiều rộng */
+}
+
+.banner-item-1 {
+  flex: 1;
+  display: flex;
+  width: 100%;
+}
+.sub-nav-item-1 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
+
+.sub-nav-item-2 {
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "TitleBold";
+  font-size: 4.5vw;
+  color: var(--black);
+}
+
+#banner-titles {
+  margin-top: -25%;
+  display: flex;
+  flex-direction: column !important;
+  text-align: start;
+}
+
+#banner-titles p {
+  margin: 0;
+}
+
+#banner-subtitle {
+  font-family: "Regular";
+  font-size: 1.5vh;
+  color: var(--light-grey);
+  margin-bottom: 0.5em;
+}
+#banner-title {
+  color: var(--light-grey);
+}
+
+#banner-booktrip-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16vw;
+  height: 4vh;
+  border-radius: 20px;
+  font-family: "TitleBold";
+  background-color: var(--light-grey);
+  color: black;
+  font-size: 16px;
+  position: relative;
+  top: 100px;
+}
+
+#banner-booktrip-button:hover {
+  background-color: var(--black);
+  color: var(--light-grey);
+  cursor: pointer;
+}
+.banner-item-2 {
+  flex: 1;
+  position: relative;
+}
+
+#knowmore-container {
+  position: absolute;
+  display: flex;
+  bottom: 10px;
+  right: 10px;
+  width: 60%;
+  height: 30%;
+  background-color: white;
+  border-radius: 50px;
+}
+
+#knowmore-container > h4 {
+  font-family: "TitleBold";
+  font-size: 1.5vw;
+  margin-top: 30px;
+  margin-left: 30px;
+}
+#knowmore-icon {
+  position: absolute;
+  right: 60px;
+  top: 32px;
+  font-size: 1.5vw;
+}
+
+#knowmore-places {
+  display: flex;
+  width: 90%;
+  height: 60%;
+  position: absolute;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--light-grey);
+  border-radius: 10px;
+  bottom: 8%;
+}
+#knowmore-places-images {
+  width: 50%;
+  margin-top: 7%;
+}
+.knowmore-image {
+  width: 33%;
+  height: 55%;
+  border-radius: 50%;
+  border: 5px solid var(--light-grey);
+}
+#knowmore-image2,
+#knowmore-image3 {
+  margin-left: -12px;
+}
+#knowmore-places-titles {
+  display: block;
+  width: 50%;
+  height: 90%;
+  background-color: white;
+}
+#knowmore-places-titles > h4 {
+  font-family: "titleBold";
+  font-size: 1.2vw;
+}
+#knowmore-places-titles > p {
+  font-family: "Regular";
+  font-size: 1.2vw;
+  color: gray;
+  margin: 0;
+}

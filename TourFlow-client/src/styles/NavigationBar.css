@@ -1,0 +1,198 @@
+.nav-bar {
+  display: flex;
+  width: 100%;
+  height: 70px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-item {
+  padding: 15px 20px;
+  border-radius: 5px;
+  width: 100%;
+  color: black;
+  text-align: center;
+  margin: 0 10px;
+  display: flex;
+  font-family: "Regular";
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-item:hover {
+  background-color: var(--black);
+  color: whitesmoke;
+  cursor: pointer;
+}
+
+.flex-item {
+  padding: 10px;
+  margin-left: 20px;
+  color: white;
+  text-align: center;
+}
+
+.item-1 {
+  flex: 2;
+}
+
+.item-2 {
+  flex: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.item-2.active {
+  display: flex; /* Hiện menu khi được kích hoạt */
+  flex-direction: column; /* Đặt menu theo chiều dọc */
+}
+.item-2.noactive {
+  display: none; /* Hiện menu khi được kích hoạt */
+  flex-direction: column; /* Đặt menu theo chiều dọc */
+}
+.item-3 {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Regular";
+}
+/* #nav-login {
+  display: flex;
+  width: 70%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}*/
+#nav-login h6 {
+  margin-left: 10px;
+  margin-top: 12px;
+  white-space: nowrap; /* Ngăn cách chuỗi bị xuống dòng */
+  overflow: hidden; /* Ẩn phần văn bản tràn */
+  text-overflow: ellipsis;
+  flex-grow: 1;
+  font-weight: 900;
+}
+#nav-login {
+  display: block;
+  width: 100%;
+  height: 50px;
+  background-color: var(--light-grey);
+  color: black;
+  display: flex;
+  font-family: "Regular";
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  overflow: hidden;
+  padding: 10px 20px 10px 0px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+#nav-login img {
+  width: 50px; /* Chiều rộng của ảnh đại diện */
+  height: 50px; /* Chiều cao của ảnh đại diện */
+  border-radius: 50%; /* Làm tròn ảnh */
+  margin-right: 10px; /* Khoảng cách giữa ảnh và tên */
+}
+#nav-login:hover {
+  background-color: var(--black);
+  cursor: pointer;
+  color: var(--light-grey);
+}
+
+#nav-bar-toggle {
+  font-size: 28px;
+  display: none;
+}
+
+.custom-link {
+  text-decoration: none; /* Remove underline */
+  color: inherit;
+}
+
+#user_icon {
+  margin-left: 40px;
+}
+
+.flex-item.item-2.active {
+  display: flex;
+  flex-direction: column; /* Vertical menu for small screens */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Full width */
+  height: 100vh; /* Full height */
+  background: #ffffff; /* Background color */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.nav-item {
+  padding: 1rem 0;
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+}
+
+.nav-item:hover {
+  color: white; /* Highlight color on hover */
+}
+
+.custom-link {
+  text-decoration: none;
+  display: block;
+}
+
+/* Hamburger Button */
+#nav-bar-toggle {
+  display: none;
+  cursor: pointer;
+  font-size: 2rem;
+  color: #333;
+  background: none;
+  border: none;
+  z-index: 101; /* Above the menu */
+}
+
+#nav-bar-toggle:hover {
+  color: white;
+}
+
+@media (max-width: 1251px) {
+  #nav-bar-toggle {
+    display: block; /* Hiển thị hamburger icon */
+  }
+  #nav-bar-toggle:hover {
+    cursor: pointer;
+  }
+
+  .flex-item.item-2 {
+    display: none; /* Ẩn menu item khi chưa mở */
+    /* flex-direction: row; */
+    gap: 15px; /* Khoảng cách giữa các item */
+  }
+
+  .flex-item.item-2.active {
+    display: flex; /* Hiển thị menu khi menu mở */
+  }
+}
+
+/* Ở màn hình > 890px, menu sẽ hiển thị ngang */
+@media (min-width: 1252px) {
+  #nav-bar-toggle {
+    display: none; /* Ẩn hamburger icon khi màn hình lớn hơn 890px */
+  }
+
+  .flex-item.item-2 {
+    display: flex; /* Hiển thị menu items */
+    z-index: 100;
+    flex-direction: row;
+    gap: 20px; /* Khoảng cách giữa các item */
+  }
+}

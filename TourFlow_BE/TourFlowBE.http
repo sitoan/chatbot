@@ -1,0 +1,6 @@
+@TourFlowBE_HostAddress = http://localhost:5175
+
+GET {{TourFlowBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

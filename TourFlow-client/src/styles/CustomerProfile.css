@@ -1,0 +1,73 @@
+#log_out {
+  margin-top: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  width: 100px;
+  height: 40px;
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+  font-family: "TitleBold";
+}
+#log_out:hover {
+  cursor: pointer;
+  background-color: aliceblue;
+  color: black;
+}
+#redirect_logout {
+  text-decoration: none; /* Remove underline */
+  color: inherit;
+}
+/* Styles for the table container */
+.table-container {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  overflow-x: auto;
+}
+
+/* Styling the table */
+.tour-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+/* Styling for table header */
+.tour-table th {
+  background-color: #98dbff;
+  color: black;
+  padding: 12px;
+  text-align: left;
+}
+
+/* Styling for table rows */
+.tour-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Alternate row coloring */
+.tour-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover effect for rows */
+.tour-table tr:hover {
+  background-color: #ddd;
+}
+
+/* Responsiveness: Make table scrollable on smaller screens */
+@media (max-width: 600px) {
+  .tour-table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
+}
