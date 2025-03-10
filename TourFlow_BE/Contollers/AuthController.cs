@@ -24,40 +24,100 @@ namespace TourFlow_gitBE.Contollers
         }
 
         [HttpGet]
+// public async Task<IActionResult> Get()
+// {
+//     var result = await (from user in _dbContext.TourflowUsers
+//                         join order in _dbContext.TourOrders on user.Id equals order.TourflowUserId
+//                         join tour in _dbContext.Tours on order.TourBooked equals tour.Id
+//                         join city in _dbContext.CityDestinations on tour.CityDestinationId equals city.Id
+//                         where user.IsAdmin == false
+//                         select new 
+//                         {
+//                             userId = user.Id,
+//                             userName = user.TourflowUserName,
+//                             userEmail = user.Email,
+//                             avatar = user.AvatarUrl,
+//                             bookDate = order.BookDate,
+//                             cityDestination = city.City
+//                         })
+//                         .GroupBy(x => new {x.userId, x.userName, x.userEmail, x.avatar })
+//                         .Select(g => new
+//                         {
+//                             g.Key.userId,   
+//                             g.Key.userName,
+//                             g.Key.userEmail,
+//                             g.Key.avatar,
+//                             tours = g.Select(x => new 
+//                             {
+//                                 cityDestination = x.cityDestination,
+//                                 bookDate = x.bookDate
+//                             }).ToList()
+//                         })
+//                         .ToListAsync();
+
+//     return Ok(result);
+// }
 public async Task<IActionResult> Get()
 {
-    var result = await (from user in _dbContext.TourflowUsers
-                        join order in _dbContext.TourOrders on user.Id equals order.TourflowUserId
-                        join tour in _dbContext.Tours on order.TourBooked equals tour.Id
-                        join city in _dbContext.CityDestinations on tour.CityDestinationId equals city.Id
-                        where user.IsAdmin == false
-                        select new 
-                        {
-                            userId = user.Id,
-                            userName = user.TourflowUserName,
-                            userEmail = user.Email,
-                            avatar = user.AvatarUrl,
-                            bookDate = order.BookDate,
-                            cityDestination = city.City
-                        })
-                        .GroupBy(x => new {x.userId, x.userName, x.userEmail, x.avatar })
-                        .Select(g => new
-                        {
-                            g.Key.userId,   
-                            g.Key.userName,
-                            g.Key.userEmail,
-                            g.Key.avatar,
-                            tours = g.Select(x => new 
-                            {
-                                cityDestination = x.cityDestination,
-                                bookDate = x.bookDate
-                            }).ToList()
-                        })
-                        .ToListAsync();
+    var result = await _dbContext.TourflowUsers
+        .Where(user => user.IsAdmin == false)
+        .GroupJoin(
+            _dbContext.TourOrders,
+            user => user.Id,
+            order => order.TourflowUserId,
+            (user, orders) => new { user, orders }
+        )
+        .SelectMany(
+            uo => uo.orders.DefaultIfEmpty(),  // Left join đảm bảo lấy user dù không có order
+            (uo, order) => new { uo.user, order }
+        )
+        .GroupJoin(
+            _dbContext.Tours,
+            uo => uo.order != null ? uo.order.TourBooked : (int?)null,
+            tour => tour.Id,
+            (uo, tours) => new { uo.user, uo.order, tours }
+        )
+        .SelectMany(
+            uot => uot.tours.DefaultIfEmpty(), // Left join với Tours
+            (uot, tour) => new { uot.user, uot.order, tour }
+        )
+        .GroupJoin(
+            _dbContext.CityDestinations,
+            ut => ut.tour != null ? ut.tour.CityDestinationId : (int?)null,
+            city => city.Id,
+            (ut, cities) => new { ut.user, ut.order, ut.tour, cities }
+        )
+        .SelectMany(
+            utc => utc.cities.DefaultIfEmpty(), // Left join với CityDestinations
+            (utc, city) => new
+            {
+                userId = utc.user.Id,
+                userName = utc.user.TourflowUserName,
+                userEmail = utc.user.Email,
+                avatar = utc.user.AvatarUrl,
+                cityDestination = city != null ? city.City : null,
+                bookDate = utc.order != null ? utc.order.BookDate : (DateTime?)null
+            }
+        )
+        .GroupBy(x => new { x.userId, x.userName, x.userEmail, x.avatar })
+        .Select(g => new
+        {
+            g.Key.userId,
+            g.Key.userName,
+            g.Key.userEmail,
+            g.Key.avatar,
+            tours = g.Where(x => x.cityDestination != null)
+                     .Select(x => new
+                     {
+                         cityDestination = x.cityDestination,
+                         bookDate = x.bookDate
+                     })
+                     .ToList()
+        })
+        .ToListAsync();
 
     return Ok(result);
 }
-
         
         [AllowAnonymous]
         [HttpPost("google-signin")]

@@ -29,7 +29,7 @@ class TextCleaner:
         try:
             day = int(parts[0]) if parts[0] != '' else 1
             month = int(parts[1]) if len(parts) > 1 else current_date.month
-            year = int(parts[2]) if len(parts) > 2 else current_date.year + 1
+            year = int(parts[2]) if len(parts) > 2 else current_date.year 
 
             print(f"Cleaned date 2: {datetime(year, month, day).strftime(Config.DATE_FORMAT)}")
             return datetime(year, month, day).strftime(Config.DATE_FORMAT)

@@ -73,7 +73,7 @@ stories:
     - requested_slot: departure_point
   - intent: find_tour
     entities:
-    - departure_point: Ho Chi Minh City
+    - city: Ho Chi Minh City
   - slot_was_set:
     - departure_point: Ho Chi Minh City
   - action: tour_form
@@ -93,7 +93,7 @@ stories:
     - requested_slot: destination
   - intent: find_tour
     entities:
-    - destination: Mũi Né
+    - city: Mũi Né
   - slot_was_set:
     - destination: Mũi Né
   - action: tour_form

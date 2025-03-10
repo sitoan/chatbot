@@ -113,9 +113,11 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        if slot_value is not None:
-            return self._validate_and_confirm("departure_point", slot_value, dispatcher)
-        return {}
+        requested_slot = tracker.get_slot("requested_slot")
+        print(f"Requested slot (departure_point): {requested_slot}")
+        if slot_value is None or requested_slot != "departure_point":
+            return {"departure_point": None}
+        return self._validate_and_confirm("departure_point", slot_value, dispatcher)
 
     def validate_destination(
         self,
@@ -124,9 +126,9 @@ class ValidateTourForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict,
     ) -> Dict[Text, Any]:
-        if slot_value is not None:
-            return self._validate_and_confirm("destination", slot_value, dispatcher)
-        return {}
+        if slot_value is None or tracker.get_slot("requested_slot") != "destination":
+            return {"destination": None}
+        return self._validate_and_confirm("destination", slot_value, dispatcher)
 
     # Xác thực ngày đi với pattern date
     # - Đảm bảo format ngày hợp lệ
@@ -151,7 +153,7 @@ class ValidateTourForm(FormValidationAction):
                 dispatcher, 
                 TextCleaner.clean_date
             )
-        return {}
+        return {"departure_date": None}
 
     # Xác thực số lượng người với pattern people
     # - Hỗ trợ cả chữ và số (hai người, 2 khách)
@@ -176,7 +178,7 @@ class ValidateTourForm(FormValidationAction):
                 dispatcher, 
                 TextCleaner.clean_people_count
             )
-        return {}
+        return {"number_of_people": None}
 
     # Xác thực ngân sách với pattern budget
     # - Hỗ trợ nhiều format (5 triệu, 500k, 2m)
@@ -197,7 +199,7 @@ class ValidateTourForm(FormValidationAction):
             
             budget = TextCleaner.clean_budget(slot_value)
             return self._validate_and_confirm("budget", budget, dispatcher)
-        return {}
+        return {"budget": None}
 
     # Xác thực thời gian với pattern duration
     # - Hỗ trợ nhiều format (3 ngày, 3 ngày 2 đêm, 2 tuần)
@@ -226,4 +228,4 @@ class ValidateTourForm(FormValidationAction):
                 return {"duration": None}
             
             return self._validate_and_confirm("duration", days , dispatcher)
-        return {}
+        return {"duration": None}

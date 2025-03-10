@@ -54,7 +54,7 @@ class TourManager:
             # Áp dụng các filters
             suitable_tours = TourManager._apply_filters(suitable_tours, filters)
 
-            print(f"Overall: {suitable_tours}")
+            # print(f"Overall: {suitable_tours}")
             
             # Sort kết quả theo ngày và giá
             return sorted(
@@ -104,7 +104,7 @@ class TourManager:
         """
         filtered_tours = tours
 
-        print(f"Base: {filtered_tours}")
+        # print(f"Base: {filtered_tours}")
 
         # Lọc theo điểm khởi hành
         # So sánh case-insensitive và bỏ khoảng trắng thừa
@@ -115,7 +115,7 @@ class TourManager:
                 if departure.lower().strip() in tour["departureLocation"].lower().strip()
             ]
         
-        print(f"After filter departure: {filtered_tours}")
+        # print(f"After filter departure: {filtered_tours}")
 
         # Lọc theo điểm đến (city hoặc country)
         if destination := filters.get("destination"):
@@ -126,7 +126,7 @@ class TourManager:
                    destination.lower().strip() in tour["country"].lower().strip()
             ]
 
-        print(f"After filter destination: {filtered_tours}")
+        # print(f"After filter destination: {filtered_tours}")
 
         # Lọc theo ngày khởi hành
         # Chỉ lấy các tour có ngày khởi hành >= ngày yêu cầu
@@ -141,7 +141,7 @@ class TourManager:
             except ValueError:
                 pass
 
-        print(f"After filter start date: {filtered_tours}")
+        # print(f"After filter start date: {filtered_tours}")
 
         # Lọc theo số ngày
         # Chỉ lấy các tour có số ngày <= yêu cầu
@@ -152,7 +152,7 @@ class TourManager:
                 if int(tour["duration"]) <= int(duration)
             ]
 
-        print(f"After filter duration: {filtered_tours}")
+        # print(f"After filter duration: {filtered_tours}")
 
         # Lọc theo giá
         # Chỉ lấy các tour có giá <= budget
@@ -163,7 +163,7 @@ class TourManager:
                 if float(tour["price"]) <= float(price)
             ]
 
-        print(f"After filter price: {filtered_tours}")
+        # print(f"After filter price: {filtered_tours}")
 
         # Lọc theo số chỗ trống
         # Chỉ lấy các tour có đủ chỗ theo yêu cầu

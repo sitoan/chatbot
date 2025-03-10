@@ -2,7 +2,6 @@ version: '3.1'
 intents:
 - greet
 - customer_inform
-# - tour_inform
 - find_tour
 - request_customer_form
 - request_tour_form 
@@ -29,9 +28,11 @@ forms:
 entities:
 - name
 - phone_number
-- departure_point
+- city:
+    roles:
+    - from
+    - to
 - departure_date
-- destination
 - number_of_people
 - budget
 - duration
@@ -44,52 +45,65 @@ slots:
     mappings:
     - type: from_entity
       entity: name
+      intent: customer_inform
   phone_number:
     type: text
     mappings:
     - type: from_entity
       entity: phone_number    
+      intent: customer_inform
   departure_point:
     type: text
     influence_conversation: true
     mappings:
     - type: from_entity
-      entity: departure_point
+      entity: city
+      role: from
+      intent: find_tour
   departure_date:
     type: text 
     influence_conversation: true
     mappings:
     - type: from_entity
       entity: departure_date
+      intent: find_tour
   destination:
     type: text
     influence_conversation: true
     mappings: 
     - type: from_entity
-      entity: destination
+      entity: city
+      role: to
+      intent: find_tour
   number_of_people:
     type: text
     influence_conversation: true
     mappings:
     - type: from_entity
       entity: number_of_people
+      intent: find_tour
   budget:
     type: text
     influence_conversation: true
     mappings:
     - type: from_entity
       entity: budget
+      intent: find_tour
   duration:
     type: text
     influence_conversation: true
     mappings:
     - type: from_entity
       entity: duration
+      intent: find_tour
   tour_number:
     type: text
     mappings:
     - type: from_entity
       entity: tour_number
+      intent: 
+        - ask_tour_details
+        - choose_tour
 
 
 
@@ -126,7 +140,7 @@ responses:
   - text: "Kính chào quý khách! Tôi là trợ lý ảo chuyên hỗ trợ tìm kiếm tour du lịch. Quý khách có nhu cầu gì không ạ?"
   - text: "Chào mừng bạn đến với dịch vụ tìm kiếm tour của chúng tôi. Tôi có thể giúp gì cho chuyến đi sắp tới của bạn?"
   utter_confirm_tour_form:
-  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nĐiểm đến: {destination}\nSố người tham gia: {number_of_people}\nNgân sách dự kiến: {budget}\nĐộ dài chuyến đi: {duration}."
+  - text: "Cảm ơn bạn đã cung cấp thông tin. Tôi xin xác nhận lại:\nĐiểm đến: {destination}\nSố người tham gia: {number_of_people}\nNgân sách dự kiến: {budget} vnd\nĐộ dài chuyến đi: {duration}."
   utter_ask_for_choose_tour:
   - text: "Bạn có quan tâm đến tour nào bên trên không? hãy cho tôi biết số hiệu của tour đó để có để được tư vấn thêm"
   utter_confirm_choices:

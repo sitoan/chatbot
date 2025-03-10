@@ -31,45 +31,41 @@ namespace TourFlowBE.Controller
             {
                 return BadRequest("page or limit must be greater than 0");
             }
-            var tours = (from tour in _dbContext.Tours 
+            
+            var query = from tour in _dbContext.Tours
                         join cityDestination in _dbContext.CityDestinations 
                         on tour.CityDestinationId equals cityDestination.Id
                         join countryDestination in _dbContext.CountryDestinations
-                        on cityDestination.CountryDestinationId equals countryDestination.Id 
-                        select new {
+                        on cityDestination.CountryDestinationId equals countryDestination.Id
+                        select new
+                        {
                             tour.Id,
                             tour.DepartureLocation,
                             cityDestination.City,
                             countryDestination.Country,
                             tour.StartDate,
                             tour.EndDate,
-                            Duration = tour.EndDate - tour.StartDate,
+                            Duration = _dbContext.TourPlans.Count(tp => tp.TourId == tour.Id),
                             tour.Price,
-                            tour.AvailableSlots, 
+                            tour.AvailableSlots,
                             FirstImageUrl = _dbContext.Imgs
                                 .Where(img => img.CityDestinationId == cityDestination.Id)
                                 .Select(img => img.Url)
-                                .FirstOrDefault() 
-                        }).ToList(); 
+                                .FirstOrDefault()
+                        };
 
-            var totalItems = tours.Count;
+            var totalItems = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalItems / (double)limit);
-            var paginatedItems = tours.Skip((page - 1) * limit)
-                                    .Take(limit);
-            var response = new
-                            {
-                                data = paginatedItems,
-                                currentPage = page,
-                                totalPages = totalPages
-                            };
-            return Ok(response);
+            var paginatedItems = await query.Skip((page - 1) * limit).Take(limit).ToListAsync();
+
+            return Ok(new
+            {
+                data = paginatedItems,
+                currentPage = page,
+                totalPages = totalPages
+            });
         }
 
-        
-
-        
-
-   
 
         [HttpGet("destination/{destinationid}")]
         public async Task<IActionResult> GetToursByDestinationId(
@@ -180,6 +176,47 @@ namespace TourFlowBE.Controller
                 return NotFound();
             }
 
+        }
+
+        [HttpGet("gettop5forai")]
+        public async Task<IActionResult> GetTop5AI()
+        { 
+            var tours = await (from tour in _dbContext.Tours 
+                join cityDestination in _dbContext.CityDestinations 
+                on tour.CityDestinationId equals cityDestination.Id
+                join countryDestination in _dbContext.CountryDestinations
+                on cityDestination.CountryDestinationId equals countryDestination.Id  
+                select new {
+                    tour.Id,
+                    tour.DepartureLocation,
+                    cityDestination.City,
+                    countryDestination.Country,
+                    tour.StartDate,
+                    tour.EndDate,
+                    Duration = tour.EndDate - tour.StartDate, 
+                    tour.Price,
+                    tour.AvailableSlots, 
+                    FirstImageUrl = _dbContext.Imgs
+                        .Where(img => img.CityDestinationId == cityDestination.Id)
+                        .Select(img => img.Url)
+                        .FirstOrDefault() 
+                })
+                .Take(5)
+                .ToListAsync();
+
+                var formattedTours = tours.Select(t => new {
+                    t.Id,
+                    t.DepartureLocation,
+                    t.City,
+                    t.Country,
+                    StartDate = t.StartDate?.ToString("dd-MM-yyyy"),  
+                    EndDate = t.EndDate?.ToString("dd-MM-yyyy"),
+                    Duration = t.Duration?.Days+1,
+                    t.Price,
+                    t.AvailableSlots,
+                    t.FirstImageUrl
+                }).ToList(); 
+            return Ok(formattedTours);
         }
         [HttpPost]
         [Authorize(Roles = "True")]

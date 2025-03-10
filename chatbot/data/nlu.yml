@@ -21,349 +21,357 @@ nlu:
     - hey, có ai ở đây không?
     - xin chào bạn nhé
     - hello, có ai rảnh không?
+    
 - intent: find_tour
   examples: |
-    - Tour đi [Hòn Tre](destination)
-    - Tour đi từ [Hòn Mun](destination)
-    - Tôi muốn đi từ [Hà Nội](departure_point)
-    - Tôi muốn đi vào [ngày 20/11](departure_date)
-    - Khởi hành [tháng 2](departure_date) nhé
-    - Khởi hành từ [Đà Nẵng](departure_point)
-    - Tour bắt đầu từ [ngày 15/01](departure_date) được không
-    - Tôi cần đi vào [tháng 12](departure_date)
-    - Ngày khởi hành là [15/01/2024](departure_date)
-    - Tôi muốn đi [Phú Quốc](destination)
-    - Cho tôi đặt tour đi [Đà Lạt](destination)
-    - Điểm đến của tôi là [Sapa](destination)
-    - Tôi muốn đi [Hạ Long](destination)
-    - Tôi đặt tour cho [2 người]
-    - Tôi có khoảng [10 triệu](budget) để đi
-    - Ngân sách của tôi là dưới [5 triệu](budget)
-    - Tôi muốn tìm tour khoảng [3 triệu](budget) một người
-    - Ngân sách tổng là [20 triệu](budget) nhé
-    - Tôi muốn đi từ [Hà Nội](departure_point) đến [Phú Quốc](destination)
-    - Khởi hành từ [Đà Nẵng](departure_point) đi [Nha Trang](destination) được không
-    - Tôi đang ở [Hồ Chí Minh](departure_point), muốn đặt tour đi [Đà Lạt](destination)
-    - Xuất phát từ [Hải Phòng](departure_point) đi [Sapa](destination) nhé
-    - Có tour nào đi [Mũi Né](destination) không
-    - Có tour nào đi [Côn Đảo](destination) không
-    - Có tour nào đi [Hòn Gai](destination) không
-    - Có tour nào đi [Nha Trang](destination) không
-    - Có tour nào đi [Đà Lạt](destination) không
-    - Có tour nào đi [Tam Đảo](destination) không
-    - [20/11](departure_date)
-    - [tháng 12](departure_date)
-    - [2 người](number_of_people)
-    - [5](number_of_people)
-    - [1 người](number_of_people)
-    - [100 nghìn](budget)
-    - Tour đi [Hòn Gai](destination)
-    - Tour đi [Phong Nha](destination)
-    - Tour đi từ [Bạch Long Vĩ](destination)
-    - dưới [5 triệu](budget)
-    - [3.5 triệu](budget)
-    - [20 tr](budget)
-    - [2.5 triệu](budget)
-    - [10 người](number_of_people)
-    - [4](number_of_people)
-    - [ngày 15](departure_date)
-    - [15/01/2024](departure_date)
-    - [tháng 9](departure_date)
-    - Tôi cần tour từ [Hà Nội] đến [Hạ Long](destination)
-    - Bạn có tour nào khoảng [3tr](budget) không
-    - Tour đi [Đèo Hải Vân](destination)
-    - Chúng tôi có [5 người](number_of_people)
-    - Tour này có thể đặt cho nhóm [10 người](number_of_people) không
-    - Tour đi [3 ngày 2 đêm](duration)
-    - Chuyến này kéo dài khoảng [5 ngày](duration) đúng không
-    - [Hà Nội](departure_point) đến [Phú Quốc](destination)
-    - [TP.HCM](departure_point) đi [Đà Lạt](destination)
-    - [Hải Phòng](departure_point) [Cù Lao Chàm](destination)
-    - [Nha Trang](departure_point) [Hạ Long](destination)
-    - [Đà Nẵng](departure_point) [Côn Đảo](destination)
-    - Tôi muốn đi trong [1 tuần](duration)
-    - Tôi muốn đi [ngày 15/11](departure_date), nhóm có [4 người](number_of_people)
-    - [3 ngày 2 đêm](duration)
-    - [1 tuần](duration)
-    - [2 ngày 3 đêm](duration)
-    - [5 ngày 4 đêm](duration)
-    - [1 tháng](duration)
-    - Ngày [20/12](departure_date) có tour nào cho [2 người](number_of_people) không
-    - Gia đình tôi [5 người](number_of_people) muốn đi vào [tháng 1](departure_date)
-    - Chúng tôi đi [3 người](number_of_people) vào [ngày 8](departure_date)
-    - Có tour [ngày 3](departure_date) cho nhóm [10 người](number_of_people) không
-    - Tôi muốn đi từ [Hà Nội](departure_point) đến [Đà Lạt](destination), khởi hành [ngày 25/12](departure_date), nhóm [4 người](number_of_people), ngân sách khoảng [15 triệu](budget), đi trong [5 ngày](duration)
-    - Khởi hành từ [Đà Nẵng](departure_point), [ngày 20/11](departure_date), đi [Nha Trang](destination), [2 người](number_of_people), ngân sách dưới [10 triệu](budget), tour [3 ngày](duration)
-    - Chúng tôi [5 người](number_of_people) muốn đi từ [Hồ Chí Minh](departure_point) đến [Đèo Hải Vân](destination), [ngày 1/1/2024](departure_date), trong [4 ngày](duration), chi phí khoảng [20 triệu](budget)
-    - [Hà Nội](departure_point)
-    - [Đà Nẵng](destination)
-    - Tour đi từ [Phong Nha](destination)
-    - [Ngày 20/11](departure_date), [2 người](number_of_people)
-    - [Tháng 12](departure_date), [5 người](number_of_people)
-    - [Ngày 19](departure_date), [10 người](number_of_people)
-    - [tháng 4](departure_date), [1 người](number_of_people)
-    - [15/01/2024](departure_date), [4 người](number_of_people)
-    - [TP.HCM](destination)
-    - [Nha Trang](departure_point)
-    - [Hải Phòng](destination)
-    - Tôi cần tour đi [Côn Đảo](destination) từ [Hải Phòng](departure_point), [ngày 10/12](departure_date), nhóm [3 người](number_of_people), chi phí khoảng [5 triệu](budget), thời gian là [3 ngày](duration)
-    - Khởi hành từ [Hà Nội](departure_point) [ngày 15/11](departure_date), đi [Bãi Dài](destination), nhóm [2 người](number_of_people), ngân sách [7 triệu](budget), tour [2 ngày](duration)
-    - Tôi có khoảng [10 triệu](budget) cho tour [3 ngày 2 đêm](duration)
-    - [Hà Nội](destination)
-    - [Sài Gòn](departure_point)
-    - [Đà Nẵng](departure_point)
-    - [Đà Nẵng](departure_point) [Sapa](destination)
-    - [Hải Phòng](departure_point) [Côn Đảo](destination)
-    - [Ba Vì](departure_point) [Hà Giang](destination)
-    - [tháng 5](departure_date), [10 người](number_of_people)
-    - [ngày 20/12](departure_date), [1 người](number_of_people)
-    - Tour đi từ [Hà Giang](destination)
-    - [năm 2024](departure_date), [6 người](number_of_people)
-    - [Cù Lao Chàm](departure_point) [Lý Sơn](destination)
-    - [Yên Tử](departure_point) [Yên Tử](destination)
-    - [Nam Du](departure_point) [Bạch Long Vĩ](destination)
-    - [Đèo Hải Vân](departure_point) [Ba Vì](destination)
-    - [Bãi Dài](departure_point) [Phong Nha](destination)
-    - [Hải Phòng](departure_point)
-    - [Huế](departure_point)
-    - [Cần Thơ](departure_point)
-    - [3 ngày](duration)
-    - [2 ngày](duration)
-    - [5 ngày](duration)
-    - [7 ngày 6 đêm](duration)
-    - [10 ngày](duration)
-    - [Vũng Tàu](departure_point)
-    - [Hạ Long](departure_point)
-    - [Vịnh Ninh Vân](destination)
-    - [10 triệu](budget)
-    - Dưới [5 triệu](budget)
-    - [10 triệu](budget), [3 ngày 2 đêm](duration)
-    - Dưới [900000k](budget), [2 ngày](duration)
-    - [3.5 tr](budget), [1 tuần](duration)
-    - [2000k](budget), [5 ngày](duration)
-    - [15 tr](budget), [1 tháng](duration)
-    - [30tr](budget), [7 ngày](duration)
-    - [3.1 triệu](budget)
-    - [20 triệu](budget)
-    - [500000k](budget)
-    - [30 triệu](budget)
-    - Khoảng [15 triệu](budget)
-    - [5.5 tr](budget)
-    - [Cù Lao Chàm](destination)
-    - [Hòn Mun](destination)
-    - [Đèo Hải Vân](destination)
-    - [Nam Du](destination)
-    - [Phong Nha](destination)
-    - Ngân sách là [15 triệu](budget), chuyến đi kéo dài [5 ngày 4 đêm](duration)
-    - [Vịnh Ninh Vân](departure_point)
-    - [Sapa](destination)
-    - [Đà Lạt](destination)
-    - [Côn Đảo](departure_point)
-    - [Hòn Tre](destination)
-    - [5 khách](number_of_people)
-    - [10 khách](number_of_people)
-    - [4 khách](number_of_people)
-    - Tour đi [Cù Lao Chàm](destination)
-    - [3 người](number_of_people)
-    - [6 khách](number_of_people)
-    - [Đèo Hải Vân](departure_point)
-    - [Lý Sơn](destination)
-    - [Hà Nội](destination), [20/11](departure_date), [2 người](number_of_people), [10 triệu](budget), [3 ngày](duration)
-    - [TP.HCM](destination), [tháng 12](departure_date), [5 người](number_of_people), [15 triệu](budget), [1 tuần](duration)
-    - [Hạ Long](destination), [ngày 15](departure_date), [10 người](number_of_people), dưới [5 triệu](budget), [2 ngày](duration)
-    - [Phong Nha](destination), [25/1](departure_date), [1 người](number_of_people), [20 triệu](budget), [5 ngày](duration)
-    - [Hải Phòng](destination), [15/01/2024](departure_date), [4 người](number_of_people), [3.5 tr](budget), [1 tháng](duration)
-    - [Mũi Né](destination), năm [2024](departure_date), [6 người](number_of_people), [10 triệu](budget), [7 ngày](duration)
-    - [Bình Hưng](destination)
-    - [Yên Tử](departure_point)
-    - [Bạch Long Vĩ](destination)
-    - [Bãi Dài](departure_point)
-    - [Yên Tử](destination)
-    - Bạn có tour giá dưới [5 triệu](budget) trong [2 ngày](duration) không
-    - [Phú Quốc](destination)
-    - [Nam Du](departure_point)
-    - [Ngày 19](departure_date)
-    - [tháng 5](departure_date)
-    - [Tháng 9](departure_date)
-    - [Vịnh Ninh Vân](destination)
-    - Tour đi từ [Vịnh Lan Hạ](destination)
-    - [15](departure_date)
-    - [8](departure_date)
-    - [Tháng 12](departure_date)
-    - Dưới [5 triệu](budget), [2 ngày](duration)
-    - [3 triệu](budget), [1 tuần](duration)
-    - [20 triệu](budget), [5 ngày](duration)
-    - [2.5 triệu](budget), [1 tháng](duration)
-    - Tôi muốn tìm tour [1 tuần](duration) với chi phí [20 triệu](budget)
-    - Tour [3 ngày](duration) tầm [20tr](budget) có không bạn
-    - Thời gian đi là [4 ngày 3 đêm](duration), ngân sách [10 triệu](budget)
-    - Tour [2 ngày](duration) có không bạn
-    - [Hải Phòng](destination), [ngày 2](departure_date), [10 người](number_of_people), dưới [5 triệu](budget), [2 ngày](duration)
-    - [Nha Trang](destination), [22/1](departure_date), [1 người](number_of_people), [9.5tr](budget), [5 ngày](duration)
-    - [Đà Nẵng](destination), [15/01/2024](departure_date), [4 người](number_of_people), [20 triệu](budget), [1 tháng](duration)
-    - Tôi đi [một người](number_of_people) trong [1 tuần](duration)
-    - Gia đình tôi có [4 người](number_of_people) muốn đi trong [2 ngày 1 đêm](duration)
-    - Bạn có tour nào đi [Côn Đảo](destination) không
-    - Tour bắt đầu ở [Hồ Chí Minh](departure_point) nhé
-    - Xuất phát từ [Nha Trang](departure_point) được không
-    - Tôi cần đi từ [Hải Phòng](departure_point)
-    - có tour nào khoảng [30tr](budget) không
-    - [Lý Sơn](departure_point)
-    - [1/1/2025](departure_date)
-    - [Ba Vì](destination)
-    - [10 người](number_of_people)
-    - khoảng [25 triệu](budget)
-    - [5 ngày 4 đêm](duration)
+    - Tour đi đến [Hòn Tre]{"entity":"city","role":"to"}
+    - Tour đi đến [Đà Lạt]{"entity":"city","role":"to"}
+    - Tour đi đến [Sapa]{"entity":"city","role":"to"}
+    - Tour đi từ [Hòn Mun]{"entity":"city","role":"from"}
+    - Tour đi từ [Hòn Tre]{"entity":"city","role":"from"}
+    - Tour đi từ [Sài Gòn]{"entity":"city","role":"from"}
+    - Tôi muốn đi từ [Hà Nội]{"entity":"city","role":"from"}
+    - Tôi muốn đi vào [ngày 20/11]{"entity":"departure_date" }
+    - Khởi hành [tháng 2]{"entity":"departure_date"} nhé
+    - Khởi hành từ [Đà Nẵng]{"entity":"city","role":"from"}
+    - Tour bắt đầu từ [ngày 15/01]{"entity":"departure_date"} được không
+    - Tôi cần đi vào [tháng 12]{"entity":"departure_date"} 
+    - Ngày khởi hành là [15/01/2024]{"entity":"departure_date"}
+    - Tôi muốn đi [Phú Quốc]{"entity":"city","role":"to"}
+    - Cho tôi đặt tour đi [Đà Lạt]{"entity":"city","role":"to"}
+    - Điểm đến của tôi là [Sapa]{"entity":"city","role":"to"}
+    - Tôi muốn đi [Hạ Long]{"entity":"city","role":"to"}
+    - Tôi đang tìm tour khoảng [5 triệu]{"entity":"budget"}
+    - Tôi đang tìm tour khoảng [25 triệu]{"entity":"budget"}
+    - Tôi đang tìm tour có giá khoảng [20 triệu]{"entity":"budget"}
+    - Tôi đặt tour cho [2 người]{"entity":"number_of_people"}
+    - Tôi có khoảng [10 triệu]{"entity":"budget"} để đi
+    - Ngân sách của tôi là dưới [5 triệu]{"entity":"budget"}
+    - Tôi muốn tìm tour khoảng [3 triệu]{"entity":"budget"} một người
+    - Ngân sách tổng là [20 triệu]{"entity":"budget"} nhé
+    - Tôi muốn đi từ [Hà Nội]{"entity":"city","role":"from"} đến [Phú Quốc]{"entity":"city","role":"to"}
+    - Khởi hành từ [Đà Nẵng]{"entity":"city","role":"from"} đi [Nha Trang]{"entity":"city","role":"to"} được không
+    - Tôi đang ở [Hồ Chí Minh]{"entity":"city","role":"from"}, muốn đặt tour đi [Đà Lạt]{"entity":"city","role":"to"}
+    - Xuất phát từ [Hải Phòng]{"entity":"city","role":"from"} đi [Sapa]{"entity":"city","role":"to"} nhé
+    - Có tour nào đi [Mũi Né]{"entity":"city","role":"to"} không
+    - Có tour nào đi [Côn Đảo]{"entity":"city","role":"to"} không
+    - Có tour nào đi [Hòn Gai]{"entity":"city","role":"to"} không
+    - Có tour nào đi [Nha Trang]{"entity":"city","role":"to"} không
+    - Có tour nào đi [Đà Lạt]{"entity":"city","role":"to"} không
+    - Có tour nào đi [Tam Đảo]{"entity":"city","role":"to"} không
+    - [20/11]{"entity":"departure_date"}
+    - [tháng 12]{"entity":"departure_date"}
+    - [2 người]{"entity":"number_of_people"}
+    - [5]{"entity":"number_of_people"}
+    - [1 người]{"entity":"number_of_people"}
+    - [100 nghìn]{"entity":"budget"}
+    - Tour đi [Hòn Gai]{"entity":"city","role":"to"}
+    - Tour đi [Phong Nha]{"entity":"city","role":"to"}
+    - Tour đi từ [Bạch Long Vĩ]{"entity":"city","role":"to"}
+    - dưới [5 triệu]{"entity":"budget"}
+    - [3.5 triệu]{"entity":"budget"}
+    - [20 tr]{"entity":"budget"}
+    - [2.5 triệu]{"entity":"budget"}
+    - [10 người]{"entity":"number_of_people"}"
+    - [4]{"entity":"number_of_people"}
+    - [ngày 15]{"entity":"departure_date"}
+    - [15/01/2024]{"entity":"departure_date"}
+    - [tháng 9]{"entity":"departure_date"}
+    - Tôi cần tour từ [Hà Nội] đến [Hạ Long]{"entity":"city","role":"to"}
+    - Bạn có tour nào khoảng [3tr]{"entity":"budget"} không
+    - Tour đi [Đèo Hải Vân]{"entity":"city","role":"to"}
+    - Chúng tôi có [5 người]{"entity":"number_of_people"}"
+    - Tour này có thể đặt cho nhóm [10 người]{"entity":"number_of_people"}" không
+    - Tour đi [3 ngày 2 đêm]{"entity":"duration"}
+    - Chuyến này kéo dài khoảng [5 ngày]{"entity":"duration"} đúng không
+    - [Hà Nội]{"entity":"city","role":"from"} đến [Phú Quốc]{"entity":"city","role":"to"}
+    - [TP.HCM]{"entity":"city","role":"from"} đi [Đà Lạt]{"entity":"city","role":"to"}
+    - [Hải Phòng]{"entity":"city","role":"from"} [Cù Lao Chàm]{"entity":"city","role":"to"}
+    - [Nha Trang]{"entity":"city","role":"from"} [Hạ Long]{"entity":"city","role":"to"}
+    - [Đà Nẵng]{"entity":"city","role":"from"} [Côn Đảo]{"entity":"city","role":"to"}
+    - Tôi muốn đi trong [1 tuần]{"entity":"duration"}
+    - Tôi muốn đi [ngày 15/11]{"entity":"departure_date"}, nhóm có [4 người]{"entity":"number_of_people"}
+    - [3 ngày 2 đêm]{"entity":"duration"}
+    - [1 tuần]{"entity":"duration"}
+    - [2 ngày 3 đêm]{"entity":"duration"}
+    - [5 ngày 4 đêm]{"entity":"duration"}
+    - [1 tháng]{"entity":"duration"}
+    - Ngày [20/12]{"entity":"departure_date"} có tour nào cho [2 người]{"entity":"number_of_people"}" không
+    - Gia đình tôi [5 người]{"entity":"number_of_people"}" muốn đi vào [tháng 1]{"entity":"departure_date"}
+    - Chúng tôi đi [3 người]{"entity":"number_of_people"}" vào [ngày 8]{"entity":"departure_date"}
+    - Có tour [ngày 3]{"entity":"departure_date"} cho nhóm [10 người]{"entity":"number_of_people"}" không
+    - Tôi muốn đi từ [Hà Nội]{"entity":"city","role":"from"} đến [Đà Lạt]{"entity":"city","role":"to"}, khởi hành [ngày 25/12]{"entity":"departure_date"}, nhóm [4 người]{"entity":"number_of_people"}", ngân sách khoảng [15 triệu]{"entity":"budget"}, đi trong [5 ngày]{"entity":"duration"}
+    - Khởi hành từ [Đà Nẵng]{"entity":"city","role":"from"}, [ngày 20/11]{"entity":"departure_date"}, đi [Nha Trang]{"entity":"city","role":"to"}, [2 người]{"entity":"number_of_people"}", ngân sách dưới [10 triệu]{"entity":"budget"}, tour [3 ngày]{"entity":"duration"}
+    - Chúng tôi [5 người]{"entity":"number_of_people"}" muốn đi từ [Hồ Chí Minh]{"entity":"city","role":"from"} đến [Đèo Hải Vân]{"entity":"city","role":"to"}, [ngày 1/1/2024]{"entity":"departure_date"}, trong [4 ngày]{"entity":"duration"}, chi phí khoảng [20 triệu]{"entity":"budget"}
+    - [Hà Nội]{"entity":"city","role":"from"}
+    - [Đà Nẵng]{"entity":"city","role":"to"}
+    - Tour đi từ [Phong Nha]{"entity":"city","role":"to"}
+    - [Ngày 20/11]{"entity":"departure_date"}, [2 người]{"entity":"number_of_people"}"
+    - [Tháng 12]{"entity":"departure_date"}, [5 người]{"entity":"number_of_people"}"
+    - [Ngày 19]{"entity":"departure_date"}, [10 người]{"entity":"number_of_people"}
+    - [tháng 4]{"entity":"departure_date"}, [1 người]{"entity":"number_of_people"}
+    - [15/01/2024]{"entity":"departure_date"}, [4 người]{"entity":"number_of_people"}"
+    - [TP.HCM]{"entity":"city","role":"to"}
+    - [Nha Trang]{"entity":"city","role":"from"}
+    - [Hải Phòng]{"entity":"city","role":"to"}
+    - Tôi cần tour đi [Côn Đảo]{"entity":"city","role":"to"} từ [Hải Phòng]{"entity":"city","role":"from"}, [ngày 10/12]{"entity":"departure_date"}, nhóm [3 người]{"entity":"number_of_people"}", chi phí khoảng [5 triệu]{"entity":"budget"}, thời gian là [3 ngày]{"entity":"duration"}
+    - Khởi hành từ [Hà Nội]{"entity":"city","role":"from"} [ngày 15/11]{"entity":"departure_date"}, đi [Bãi Dài]{"entity":"city","role":"to"}, nhóm [2 người]{"entity":"number_of_people"}", ngân sách [7 triệu]{"entity":"budget"}, tour [2 ngày]{"entity":"duration"}
+    - Tôi có khoảng [10 triệu]{"entity":"budget"} cho tour [3 ngày 2 đêm]{"entity":"duration"}
+    - [Hà Nội]{"entity":"city","role":"to"}
+    - [Sài Gòn]{"entity":"city","role":"from"}
+    - [Đà Nẵng]{"entity":"city","role":"from"}
+    - [Đà Nẵng]{"entity":"city","role":"from"} [Sapa]{"entity":"city","role":"to"}
+    - [Hải Phòng]{"entity":"city","role":"from"} [Côn Đảo]{"entity":"city","role":"to"}
+    - [Ba Vì]{"entity":"city","role":"from"} [Hà Giang]{"entity":"city","role":"to"}
+    - [tháng 5]{"entity":"departure_date"}, [10 người]{"entity":"number_of_people"}
+    - [ngày 20/12]{"entity":"departure_date"}, [1 người]{"entity":"number_of_people"}"
+    - Tour đi từ [Hà Giang]{"entity":"city","role":"to"}
+    - [năm 2024]{"entity":"departure_date"}, [6 người]{"entity":"number_of_people"}"
+    - [Cù Lao Chàm]{"entity":"city","role":"from"} [Lý Sơn]{"entity":"city","role":"to"}
+    - [Yên Tử]{"entity":"city","role":"from"} [Yên Tử]{"entity":"city","role":"to"}
+    - [Nam Du]{"entity":"city","role":"from"} [Bạch Long Vĩ]{"entity":"city","role":"to"}
+    - [Đèo Hải Vân]{"entity":"city","role":"from"} [Ba Vì]{"entity":"city","role":"to"}
+    - [Bãi Dài]{"entity":"city","role":"from"} [Phong Nha]{"entity":"city","role":"to"}
+    - [Hải Phòng]{"entity":"city","role":"from"}
+    - [Huế]{"entity":"city","role":"from"}
+    - [Cần Thơ]{"entity":"city","role":"from"}
+    - [3 ngày]{"entity":"duration"}
+    - [2 ngày]{"entity":"duration"}
+    - [5 ngày]{"entity":"duration"}
+    - [7 ngày 6 đêm]{"entity":"duration"}
+    - [10 ngày]{"entity":"duration"}
+    - [Vũng Tàu]{"entity":"city","role":"from"}
+    - [Hạ Long]{"entity":"city","role":"from"}
+    - [Vịnh Ninh Vân]{"entity":"city","role":"to"}
+    - [10 triệu]{"entity":"budget"}
+    - Dưới [5 triệu]{"entity":"budget"}
+    - [10 triệu]{"entity":"budget"}, [3 ngày 2 đêm]{"entity":"duration"}
+    - Dưới [900000k]{"entity":"budget"}, [2 ngày]{"entity":"duration"}
+    - [3.5 tr]{"entity":"budget"}, [1 tuần]{"entity":"duration"}
+    - [2000k]{"entity":"budget"}, [5 ngày]{"entity":"duration"}
+    - [15 tr]{"entity":"budget"}, [1 tháng]{"entity":"duration"}
+    - [30tr]{"entity":"budget"}, [7 ngày]{"entity":"duration"}
+    - [3.1 triệu]{"entity":"budget"}
+    - [20 triệu]{"entity":"budget"}
+    - [500000k]{"entity":"budget"}
+    - [30 triệu]{"entity":"budget"}
+    - Khoảng [15 triệu]{"entity":"budget"}
+    - [5.5 tr]{"entity":"budget"}
+    - [Cù Lao Chàm]{"entity":"city","role":"to"}
+    - [Hòn Mun]{"entity":"city","role":"to"}
+    - [Đèo Hải Vân]{"entity":"city","role":"to"}
+    - [Nam Du]{"entity":"city","role":"to"}
+    - [Phong Nha]{"entity":"city","role":"to"}
+    - Ngân sách là [15 triệu]{"entity":"budget"}, chuyến đi kéo dài [5 ngày 4 đêm]{"entity":"duration"}
+    - [Vịnh Ninh Vân]{"entity":"city","role":"from"}
+    - [Sapa]{"entity":"city","role":"to"}
+    - [Đà Lạt]{"entity":"city","role":"to"}
+    - [Côn Đảo]{"entity":"city","role":"from"}
+    - [Hòn Tre]{"entity":"city","role":"to"}
+    - [5 khách]{"entity":"number_of_people"}
+    - [10 khách]{"entity":"number_of_people"}"
+    - [4 khách]{"entity":"number_of_people"}
+    - Tour đi [Cù Lao Chàm]{"entity":"city","role":"to"}
+    - [3 người]{"entity":"number_of_people"}
+    - [6 khách]{"entity":"number_of_people"}
+    - [Đèo Hải Vân]{"entity":"city","role":"from"}
+    - [Lý Sơn]{"entity":"city","role":"to"}
+    - [Hà Nội]{"entity":"city","role":"to"}, [20/11]{"entity":"departure_date"}, [2 người]{"entity":"number_of_people"}, [10 triệu]{"entity":"budget"}, [3 ngày]{"entity":"duration"}
+    - [TP.HCM]{"entity":"city","role":"to"}, [tháng 12]{"entity":"departure_date"}, [5 người]{"entity":"number_of_people"}, [15 triệu]{"entity":"budget"}, [1 tuần]{"entity":"duration"}
+    - [Hạ Long]{"entity":"city","role":"to"}, [ngày 15]{"entity":"departure_date"}, [10 người]{"entity":"number_of_people"}", dưới [5 triệu]{"entity":"budget"}, [2 ngày]{"entity":"duration"}
+    - [Phong Nha]{"entity":"city","role":"to"}, [25/1]{"entity":"departure_date"}, [1 người]{"entity":"number_of_people"}, [20 triệu]{"entity":"budget"}, [5 ngày]{"entity":"duration"}
+    - [Hải Phòng]{"entity":"city","role":"to"}, [15/01/2024]{"entity":"departure_date"}, [4 người]{"entity":"number_of_people"}, [3.5 tr]{"entity":"budget"}, [1 tháng]{"entity":"duration"}
+    - [Mũi Né]{"entity":"city","role":"to"}, năm [2024]{"entity":"departure_date"}, [6 người]{"entity":"number_of_people"}, [10 triệu]{"entity":"budget"}, [7 ngày]{"entity":"duration"}
+    - [Bình Hưng]{"entity":"city","role":"to"}
+    - [Yên Tử]{"entity":"city","role":"from"}
+    - [Bạch Long Vĩ]{"entity":"city","role":"to"}
+    - [Bãi Dài]{"entity":"city","role":"from"}
+    - [Yên Tử]{"entity":"city","role":"to"}
+    - Bạn có tour giá dưới [5 triệu]{"entity":"budget"} trong [2 ngày]{"entity":"duration"} không
+    - [Phú Quốc]{"entity":"city","role":"to"}
+    - [Nam Du]{"entity":"city","role":"from"}
+    - [Ngày 19]{"entity":"departure_date"}
+    - [tháng 5]{"entity":"departure_date"}
+    - [Tháng 9]{"entity":"departure_date"}
+    - [Vịnh Ninh Vân]{"entity":"city","role":"to"}
+    - Tour đi từ [Vịnh Lan Hạ]{"entity":"city","role":"to"}
+    - [15]{"entity":"departure_date"}
+    - [8]{"entity":"departure_date"}
+    - [Tháng 12]{"entity":"departure_date"}
+    - Dưới [5 triệu]{"entity":"budget"}, [2 ngày]{"entity":"duration"}
+    - [3 triệu]{"entity":"budget"}, [1 tuần]{"entity":"duration"}
+    - [20 triệu]{"entity":"budget"}, [5 ngày]{"entity":"duration"}
+    - [2.5 triệu]{"entity":"budget"}, [1 tháng]{"entity":"duration"}
+    - Tôi muốn tìm tour [1 tuần]{"entity":"duration"} với chi phí [20 triệu]{"entity":"budget"}
+    - Tour [3 ngày]{"entity":"duration"} tầm [20tr]{"entity":"budget"} có không bạn
+    - Thời gian đi là [4 ngày 3 đêm]{"entity":"duration"}, ngân sách [10 triệu]{"entity":"budget"}
+    - Tour [2 ngày]{"entity":"duration"} có không bạn
+    - [Hải Phòng]{"entity":"city","role":"to"}, [ngày 2]{"entity":"departure_date"}, [10 người]{"entity":"number_of_people"}, dưới [5 triệu]{"entity":"budget"}, [2 ngày]{"entity":"duration"}
+    - [Nha Trang]{"entity":"city","role":"to"}, [22/1]{"entity":"departure_date"}, [1 người]{"entity":"number_of_people"}, [9.5tr]{"entity":"budget"}, [5 ngày]{"entity":"duration"}
+    - [Đà Nẵng]{"entity":"city","role":"to"}, [15/01/2024]{"entity":"departure_date"}, [4 người]{"entity":"number_of_people"}", [20 triệu]{"entity":"budget"}, [1 tháng]{"entity":"duration"}
+    - Tôi đi [một người]{"entity":"number_of_people"}" trong [1 tuần]{"entity":"duration"}
+    - Gia đình tôi có [4 người]{"entity":"number_of_people"}" muốn đi trong [2 ngày 1 đêm]{"entity":"duration"}
+    - Bạn có tour nào đi [Côn Đảo]{"entity":"city","role":"to"} không
+    - Tour bắt đầu ở [Hồ Chí Minh]{"entity":"city","role":"from"} nhé
+    - Xuất phát từ [Nha Trang]{"entity":"city","role":"from"} được không
+    - Tôi cần đi từ [Hải Phòng]{"entity":"city","role":"from"}
+    - có tour nào khoảng [30tr]{"entity":"budget"} không
+    - [Lý Sơn]{"entity":"city","role":"from"}
+    - [1/1/2025]{"entity":"departure_date"}
+    - [Ba Vì]{"entity":"city","role":"to"}
+    - [10 người]{"entity":"number_of_people"}"
+    - khoảng [25 triệu]{"entity":"budget"}
+    - [5 ngày 4 đêm]{"entity":"duration"}
 - intent: customer_inform
   examples: |
-    - tôi tên là [Nguyễn Văn A](name)
-    - tên tôi là [Trần Văn H](name)
-    - số điện thoại của tôi là [0912345678](phone_number)
-    - bạn có thể gọi cho tôi qua số [0987654321](phone_number)
-    - tôi tên là [Lê Thị B](name), số điện thoại [0909090909](phone_number)
-    - [Phạm Văn C](name) đây
-    - tôi là [Nguyễn Thị D](name), bạn có thể liên lạc với tôi qua số [0911111111](phone_number)
-    - tên tôi là [Hoàng Văn E](name), số điện thoại của tôi là [0922222222](phone_number)
-    - bạn có thể gọi tôi qua số [0933333333](phone_number), tôi là [Phạm Thị F](name)
-    - xin chào, tôi là [Trần Văn G](name) và số điện thoại của tôi là [0944444444](phone_number)
-    - tên của tôi là [Lê Văn H](name), hãy gọi cho tôi theo số [0955555555](phone_number)
-    - số điện thoại của tôi là [0966666666](phone_number), và tôi tên là [Nguyễn Văn I](name)
-    - [Trần Thị J](name) đây, bạn có thể liên hệ với tôi qua số [0977777777](phone_number)
-    - tôi tên là [Hoàng Văn K](name), số liên lạc của tôi là [0988888888](phone_number)
-    - [Nguyễn Văn L](name) đang nghe, số điện thoại của tôi là [0999999999](phone_number)
-    - bạn có thể gọi tôi qua số [0908080808](phone_number), tôi là [Lê Thị M](name)
-    - [Trần Văn N](name), số điện thoại của tôi là [0907070707](phone_number)
-    - xin chào, tôi là [Phạm Văn O](name), số điện thoại của tôi là [0910101010](phone_number)
-    - tên tôi là [Lê Thị P](name), hãy gọi cho tôi theo số [0912121212](phone_number)
-    - tôi là [Hoàng Văn Q](name), số liên lạc của tôi là [0914141414](phone_number)
-    - [Nguyễn Thị R](name) đây, bạn có thể liên hệ với tôi qua số [0916161616](phone_number)
-    - số điện thoại của tôi là [0918181818](phone_number), và tên tôi là [Phạm Văn S](name)
-    - [Lê Văn T](name) đang nghe, số điện thoại của tôi là [0920202020](phone_number)
-    - xin chào, bạn có thể gọi tôi qua số [0922222222](phone_number), tôi là [Trần Văn U](name)
-    - tôi tên là [Hoàng Thị V](name), số điện thoại của tôi là [0924242424](phone_number)
-    - [Phạm Văn W](name), hãy gọi tôi theo số [0926262626](phone_number)
-    - [Nguyễn Văn A](name) đây
-    - tôi tên [Hoàng Thị B](name)
-    - chỉ cần gọi tôi là [Trần Văn C](name)
-    - bạn có thể liên hệ với [Lê Thị D](name)
-    - [Phạm Văn E](name) ở đây
-    - số điện thoại của tôi là [0901234567](phone_number)
-    - hãy gọi vào số [0912345678](phone_number)
-    - bạn có thể gọi số [0923456789](phone_number) của tôi
-    - liên lạc qua [0934567890](phone_number)
-    - đây là số của tôi [0945678901](phone_number)
-    - số máy của tôi là [0956789012](phone_number)
-    - tôi tên là [Nguyễn Thị F](name) và số liên lạc của tôi là [0967890123](phone_number)
-    - chỉ cần gọi cho tôi qua [0978901234](phone_number)
-    - xin chào, tôi là [Trần Văn G](name)
-    - bạn có thể tìm tôi theo tên [Hoàng Văn H](name)
-    - tôi thường được gọi là [Phạm Thị I](name)
-    - [Lê Văn J](name) đây, rất vui được gặp bạn
-    - liên lạc với [Nguyễn Văn K](name) theo số [0989012345](phone_number)
-    - nếu cần, hãy gọi số [0990123456](phone_number)
-    - tôi là [Trần Thị L](name), số điện thoại [0911123456](phone_number)
-    - gọi [Hoàng Văn M](name) qua số [0922234567](phone_number)
-    - xin chào, đây là [Nguyễn Thị N](name)
-    - [Trần Văn O](name) xin chào
-    - tôi là [Lê Thị P](name), liên hệ qua số [0901010101](phone_number)
-    - chỉ cần gọi số [0912020202](phone_number)
-    - bạn có thể gọi tôi qua số này [0923030303](phone_number)
-    - đây là số của tôi: [0934040404](phone_number)
-    - [Nguyễn Văn Q](name) ở đây
-    - bạn có thể liên hệ với tôi qua [0945050505](phone_number)
-    - tôi tên là [Hoàng Thị R](name), bạn có thể gọi tôi
-    - hãy tìm [Lê Văn S](name) theo số [0956060606](phone_number)
-    - [Phạm Văn T](name) đang nghe
-    - số của tôi là [0967070707](phone_number), hãy gọi bất cứ khi nào
-    - bạn có thể liên hệ với [Nguyễn Thị U](name)
-    - đây là [Trần Văn V](name), tôi ở đây
-    - liên hệ số [0978080808](phone_number) của tôi
-    - [Lê Văn W](name) đang chờ bạn gọi
-    - bạn có thể tìm thấy tôi qua tên [Hoàng Văn X](name)
-    - tôi tên là [Nguyễn Văn Y](name), gọi cho tôi qua số [0989090909](phone_number)
-    - [Phạm Thị Z](name) xin chào, số điện thoại là [0990101010](phone_number)
-    - nếu cần liên lạc, hãy gọi tôi qua số [0909090909](phone_number)
-    - xin chào, đây là [Lê Thị A](name)
-    - [Trần Văn B](name) xin chào, đây là [Nguyễn Thị C](name)
-    - tôi tên là [Hoàng Thị D](name), hãy gọi cho tôi qua so [0911111111](phone_number)- bạn cứ gọi tôi là [Nguyễn Văn A](name)
-    - [Hoàng Thị B](name), số điện thoại của tôi không cần thiết lắm
-    - nếu cần gọi tôi, bạn có thể tìm [Trần Văn C](name)
-    - tên tôi là [Lê Thị D](name), liên hệ qua số điện thoại [0911231234](phone_number)
-    - số của tôi là [0933211234](phone_number), tên [Phạm Văn E](name)
-    - hãy gọi số này [0921123456](phone_number)
-    - [Nguyễn Thị F](name), rất vui được gặp bạn
-    - không cần biết số, chỉ cần biết tôi là [Lê Văn G](name)
-    - muốn gặp [Trần Văn H](name) thì gọi số [0987654321](phone_number)
-    - số máy [0941234321](phone_number), người sử dụng là [Hoàng Văn I](name)
-    - nếu không tiện gọi điện, bạn cứ tìm tôi qua tên [Nguyễn Thị J](name)
-    - tên của tôi đơn giản là [Lê Thị K](name), số điện thoại của tôi không quan trọng lắm
-    - cứ gọi [Phạm Văn L](name) nếu có chuyện gì cần
-    - xin chào, đây là số của tôi [0954321234](phone_number)
-    - tôi là [Hoàng Thị M](name), không tiện chia sẻ số điện thoại bây giờ
-    - gọi cho [Nguyễn Văn N](name) qua số [0901012345](phone_number)
-    - [Lê Văn O](name), bạn có thể liên hệ bất cứ khi nào
-    - số điện thoại của tôi đã thay đổi, nhưng tên tôi vẫn là [Trần Văn P](name)
-    - [Phạm Thị Q](name), tôi không có số điện thoại nào
-    - tên tôi là [Hoàng Văn R](name), gọi số [0914141414](phone_number)
-    - tôi không tiện cho số, nhưng tên là [Nguyễn Thị S](name)
-    - cứ liên lạc với [Trần Văn T](name) qua email hoặc số điện thoại [0929292929](phone_number)
-    - tên của tôi là [Hoàng Thị U](name), bạn sẽ thấy số điện thoại trong danh bạ
-    - tôi không muốn cho biết số điện thoại, nhưng tên là [Lê Văn V](name)
-    - [Phạm Văn W](name) xin chào, bạn cần gì?
-    - số điện thoại cũ của tôi là [0938383838](phone_number), nhưng bạn có thể gọi số mới
-    - bạn hãy thử gọi tên [Nguyễn Văn X](name) nếu muốn liên hệ với tôi
-    - liên lạc qua số này [0949494949](phone_number) và hỏi tôi [Lê Thị Y](name)
-    - [Trần Văn Z](name), tôi ở đây nếu bạn cần
-    - số điện thoại này [0910102020](phone_number) là của tôi, [Nguyễn Thị AA](name)
-    - không tiện nói nhiều, cứ gọi số [0909092929](phone_number)
-    - nếu tìm thấy số này [0929291010](phone_number), bạn sẽ gặp tôi, [Lê Văn BB](name)
-    - tên tôi là [Hoàng Thị CC](name), bạn muốn liên lạc qua số nào?
-    - tôi đổi số điện thoại, nhưng tên vẫn là [Phạm Văn DD](name)
-    - bạn có thể gọi tôi [Nguyễn Văn EE](name), số điện thoại [0933939393](phone_number)
-    - tôi tên là [Trần Văn FF](name), chỉ cần nhớ như vậy thôi
-    - số của tôi là [0919192929](phone_number), nhớ hỏi [Lê Thị GG](name)
-    - [Nguyễn Văn A](name)
-    - [Lê Thanh C](name)
-    - [Trần Thị E](name)
-    - [Nguyễn Thị B](name)
-    - [Huỳnh Minh D](name)
-    - [0987654321](phone_number)
-    - [0321234567](phone_number)
-    - [0934567890](phone_number)
-    - [0123456789](phone_number)
-    - [0869876543](phone_number)
-    - [Trần Thị B](name)
-    - [Nguyễn Thị D](name)
-    - [Huỳnh Minh E](name)
-    - [Lâm Hữu F](name)
-    - [Võ Thị G](name)
-    - [0901234567](phone_number)
-    - [0912345678](phone_number)
-    - [0823456789](phone_number)
-    - [0334567890](phone_number)
-    - [0976543210](phone_number)
-    - [0887654321](phone_number)
-    - [0791234567](phone_number)
-    - [0854321098](phone_number)
-    - [0825678901](phone_number)
-    - [0918765432](phone_number)
-    - [Phạm Quang H](name)
-    - [Đặng Quốc I](name)
-    - [Bùi Kim J](name)
-    - [Trương Hoàng K](name)
-    - [Ngô Tuan L](name)
-    - [Dương Thảo M](name)
-    - [Mai Nhật N](name)
-    - [Hồ Kiều O](name)
-    - [Nguyễn Kim P](name)
-    - gọi số này [0928282828](phone_number) sẽ gặp tôi, [Hoàng Văn HH](name)
-    - [Nhật Toàn](name)
-    - [0909009090](phone_number)
-    - [Quang Vinh](name)
-    - [0913997275](phone_number)
+    - tôi tên là [Nguyễn Văn A]{"entity":"name"}
+    - tên tôi là [Trần Văn H]{"entity":"name"}
+    - số điện thoại của tôi là [0912345678]{"entity":"phone_number"}
+    - bạn có thể gọi cho tôi qua số [0987654321]{"entity":"phone_number"}
+    - tôi tên là [Lê Thị B]{"entity":"name"}, số điện thoại [0909090909]{"entity":"phone_number"}
+    - [Phạm Văn C]{"entity":"name"} đây
+    - tôi là [Nguyễn Thị D]{"entity":"name"}, bạn có thể liên lạc với tôi qua số [0911111111]{"entity":"phone_number"}
+    - tên tôi là [Hoàng Văn E]{"entity":"name"}, số điện thoại của tôi là [0922222222]{"entity":"phone_number"}
+    - bạn có thể gọi tôi qua số [0933333333]{"entity":"phone_number"}, tôi là [Phạm Thị F]{"entity":"name"}
+    - xin chào, tôi là [Trần Văn G]{"entity":"name"} và số điện thoại của tôi là [0944444444]{"entity":"phone_number"}
+    - tên của tôi là [Lê Văn H]{"entity":"name"}, hãy gọi cho tôi theo số [0955555555]{"entity":"phone_number"}
+    - số điện thoại của tôi là [0966666666]{"entity":"phone_number"}, và tôi tên là [Nguyễn Văn I]{"entity":"name"}
+    - [Trần Thị J]{"entity":"name"} đây, bạn có thể liên hệ với tôi qua số [0977777777]{"entity":"phone_number"}
+    - tôi tên là [Hoàng Văn K]{"entity":"name"}, số liên lạc của tôi là [0988888888]{"entity":"phone_number"}
+    - [Nguyễn Văn L]{"entity":"name"} đang nghe, số điện thoại của tôi là [0999999999]{"entity":"phone_number"}
+    - bạn có thể gọi tôi qua số [0908080808]{"entity":"phone_number"}, tôi là [Lê Thị M]{"entity":"name"}
+    - [Trần Văn N]{"entity":"name"}, số điện thoại của tôi là [0907070707]{"entity":"phone_number"}
+    - xin chào, tôi là [Phạm Văn O]{"entity":"name"}, số điện thoại của tôi là [0910101010]{"entity":"phone_number"}
+    - tên tôi là [Lê Thị P]{"entity":"name"}, hãy gọi cho tôi theo số [0912121212]{"entity":"phone_number"}
+    - tôi là [Hoàng Văn Q]{"entity":"name"}, số liên lạc của tôi là [0914141414]{"entity":"phone_number"}
+    - [Nguyễn Thị R]{"entity":"name"} đây, bạn có thể liên hệ với tôi qua số [0916161616]{"entity":"phone_number"}
+    - số điện thoại của tôi là [0918181818]{"entity":"phone_number"}, và tên tôi là [Phạm Văn S]{"entity":"name"}
+    - [Lê Văn T]{"entity":"name"} đang nghe, số điện thoại của tôi là [0920202020]{"entity":"phone_number"}
+    - xin chào, bạn có thể gọi tôi qua số [0922222222]{"entity":"phone_number"}, tôi là [Trần Văn U]{"entity":"name"}
+    - tôi tên là [Hoàng Thị V]{"entity":"name"}, số điện thoại của tôi là [0924242424]{"entity":"phone_number"}
+    - [Phạm Văn W]{"entity":"name"}, hãy gọi tôi theo số [0926262626]{"entity":"phone_number"}
+    - [Nguyễn Văn A]{"entity":"name"} đây
+    - tôi tên [Hoàng Thị B]{"entity":"name"}
+    - chỉ cần gọi tôi là [Trần Văn C]{"entity":"name"}
+    - bạn có thể liên hệ với [Lê Thị D]{"entity":"name"}
+    - [Phạm Văn E]{"entity":"name"} ở đây
+    - số điện thoại của tôi là [0901234567]{"entity":"phone_number"}
+    - hãy gọi vào số [0912345678]{"entity":"phone_number"}
+    - bạn có thể gọi số [0923456789]{"entity":"phone_number"} của tôi
+    - liên lạc qua [0934567890]{"entity":"phone_number"}
+    - đây là số của tôi [0945678901]{"entity":"phone_number"}
+    - số máy của tôi là [0956789012]{"entity":"phone_number"}
+    - tôi tên là [Nguyễn Thị F]{"entity":"name"} và số liên lạc của tôi là [0967890123]{"entity":"phone_number"}
+    - chỉ cần gọi cho tôi qua [0978901234]{"entity":"phone_number"}
+    - xin chào, tôi là [Trần Văn G]{"entity":"name"}
+    - bạn có thể tìm tôi theo tên [Hoàng Văn H]{"entity":"name"}
+    - tôi thường được gọi là [Phạm Thị I]{"entity":"name"}
+    - [Lê Văn J]{"entity":"name"} đây, rất vui được gặp bạn
+    - liên lạc với [Nguyễn Văn K]{"entity":"name"} theo số [0989012345]{"entity":"phone_number"}
+    - nếu cần, hãy gọi số [0990123456]{"entity":"phone_number"}
+    - tôi là [Trần Thị L]{"entity":"name"}, số điện thoại [0911123456]{"entity":"phone_number"}
+    - gọi [Hoàng Văn M]{"entity":"name"} qua số [0922234567]{"entity":"phone_number"}
+    - xin chào, đây là [Nguyễn Thị N]{"entity":"name"}
+    - [Trần Văn O]{"entity":"name"} xin chào
+    - tôi là [Lê Thị P]{"entity":"name"}, liên hệ qua số [0901010101]{"entity":"phone_number"}
+    - chỉ cần gọi số [0912020202]{"entity":"phone_number"}
+    - bạn có thể gọi tôi qua số này [0923030303]{"entity":"phone_number"}
+    - đây là số của tôi: [0934040404]{"entity":"phone_number"}
+    - [Nguyễn Văn Q]{"entity":"name"} ở đây
+    - bạn có thể liên hệ với tôi qua [0945050505]{"entity":"phone_number"}
+    - tôi tên là [Hoàng Thị R]{"entity":"name"}, bạn có thể gọi tôi
+    - hãy tìm [Lê Văn S]{"entity":"name"} theo số [0956060606]{"entity":"phone_number"}
+    - [Phạm Văn T]{"entity":"name"} đang nghe
+    - số của tôi là [0967070707]{"entity":"phone_number"}, hãy gọi bất cứ khi nào
+    - bạn có thể liên hệ với [Nguyễn Thị U]{"entity":"name"}
+    - đây là [Trần Văn V]{"entity":"name"}, tôi ở đây
+    - liên hệ số [0978080808]{"entity":"phone_number"} của tôi
+    - [Lê Văn W]{"entity":"name"} đang chờ bạn gọi
+    - bạn có thể tìm thấy tôi qua tên [Hoàng Văn X]{"entity":"name"}
+    - tôi tên là [Nguyễn Văn Y]{"entity":"name"}, gọi cho tôi qua số [0989090909]{"entity":"phone_number"}
+    - [Phạm Thị Z]{"entity":"name"} xin chào, số điện thoại là [0990101010]{"entity":"phone_number"}
+    - nếu cần liên lạc, hãy gọi tôi qua số [0909090909]{"entity":"phone_number"}
+    - xin chào, đây là [Lê Thị A]{"entity":"name"}
+    - [Trần Văn B]{"entity":"name"} xin chào, đây là [Nguyễn Thị C]{"entity":"name"}
+    - tôi tên là [Hoàng Thị D]{"entity":"name"}, hãy gọi cho tôi qua so [0911111111]{"entity":"phone_number"}- bạn cứ gọi tôi là [Nguyễn Văn A]{"entity":"name"}
+    - [Hoàng Thị B]{"entity":"name"}, số điện thoại của tôi không cần thiết lắm
+    - nếu cần gọi tôi, bạn có thể tìm [Trần Văn C]{"entity":"name"}
+    - tên tôi là [Lê Thị D]{"entity":"name"}, liên hệ qua số điện thoại [0911231234]{"entity":"phone_number"}
+    - số của tôi là [0933211234]{"entity":"phone_number"}, tên [Phạm Văn E]{"entity":"name"}
+    - hãy gọi số này [0921123456]{"entity":"phone_number"}
+    - [Nguyễn Thị F]{"entity":"name"}, rất vui được gặp bạn
+    - không cần biết số, chỉ cần biết tôi là [Lê Văn G]{"entity":"name"}
+    - muốn gặp [Trần Văn H]{"entity":"name"} thì gọi số [0987654321]{"entity":"phone_number"}
+    - số máy [0941234321]{"entity":"phone_number"}, người sử dụng là [Hoàng Văn I]{"entity":"name"}
+    - nếu không tiện gọi điện, bạn cứ tìm tôi qua tên [Nguyễn Thị J]{"entity":"name"}
+    - tên của tôi đơn giản là [Lê Thị K]{"entity":"name"}, số điện thoại của tôi không quan trọng lắm
+    - cứ gọi [Phạm Văn L]{"entity":"name"} nếu có chuyện gì cần
+    - xin chào, đây là số của tôi [0954321234]{"entity":"phone_number"}
+    - tôi là [Hoàng Thị M]{"entity":"name"}, không tiện chia sẻ số điện thoại bây giờ
+    - gọi cho [Nguyễn Văn N]{"entity":"name"} qua số [0901012345]{"entity":"phone_number"}
+    - [Lê Văn O]{"entity":"name"}, bạn có thể liên hệ bất cứ khi nào
+    - số điện thoại của tôi đã thay đổi, nhưng tên tôi vẫn là [Trần Văn P]{"entity":"name"}
+    - [Phạm Thị Q]{"entity":"name"}, tôi không có số điện thoại nào
+    - tên tôi là [Hoàng Văn R]{"entity":"name"}, gọi số [0914141414]{"entity":"phone_number"}
+    - tôi không tiện cho số, nhưng tên là [Nguyễn Thị S]{"entity":"name"}
+    - cứ liên lạc với [Trần Văn T]{"entity":"name"} qua email hoặc số điện thoại [0929292929]{"entity":"phone_number"}
+    - tên của tôi là [Hoàng Thị U]{"entity":"name"}, bạn sẽ thấy số điện thoại trong danh bạ
+    - tôi không muốn cho biết số điện thoại, nhưng tên là [Lê Văn V]{"entity":"name"}
+    - [Phạm Văn W]{"entity":"name"} xin chào, bạn cần gì?
+    - số điện thoại cũ của tôi là [0938383838]{"entity":"phone_number"}, nhưng bạn có thể gọi số mới
+    - bạn hãy thử gọi tên [Nguyễn Văn X]{"entity":"name"} nếu muốn liên hệ với tôi
+    - liên lạc qua số này [0949494949]{"entity":"phone_number"} và hỏi tôi [Lê Thị Y]{"entity":"name"}
+    - [Trần Văn Z]{"entity":"name"}, tôi ở đây nếu bạn cần
+    - số điện thoại này [0910102020]{"entity":"phone_number"} là của tôi, [Nguyễn Thị AA]{"entity":"name"}
+    - không tiện nói nhiều, cứ gọi số [0909092929]{"entity":"phone_number"}
+    - nếu tìm thấy số này [0929291010]{"entity":"phone_number"}, bạn sẽ gặp tôi, [Lê Văn BB]{"entity":"name"}
+    - tên tôi là [Hoàng Thị CC]{"entity":"name"}, bạn muốn liên lạc qua số nào?
+    - tôi đổi số điện thoại, nhưng tên vẫn là [Phạm Văn DD]{"entity":"name"}
+    - bạn có thể gọi tôi [Nguyễn Văn EE]{"entity":"name"}, số điện thoại [0933939393]{"entity":"phone_number"}
+    - tôi tên là [Trần Văn FF]{"entity":"name"}, chỉ cần nhớ như vậy thôi
+    - số của tôi là [0919192929]{"entity":"phone_number"}, nhớ hỏi [Lê Thị GG]{"entity":"name"}
+    - [Nguyễn Văn A]{"entity":"name"}
+    - [Lê Thanh C]{"entity":"name"}
+    - [Trần Thị E]{"entity":"name"}
+    - [Nguyễn Thị B]{"entity":"name"}
+    - [Huỳnh Minh D]{"entity":"name"}
+    - [0987654321]{"entity":"phone_number"}
+    - [0321234567]{"entity":"phone_number"}
+    - [0934567890]{"entity":"phone_number"}
+    - [0123456789]{"entity":"phone_number"}
+    - [0869876543]{"entity":"phone_number"}
+    - [Trần Thị B]{"entity":"name"}
+    - [Nguyễn Thị D]{"entity":"name"}
+    - [Huỳnh Minh E]{"entity":"name"}
+    - [Lâm Hữu F]{"entity":"name"}
+    - [Võ Thị G]{"entity":"name"}
+    - [0901234567]{"entity":"phone_number"}
+    - [0912345678]{"entity":"phone_number"}
+    - [0823456789]{"entity":"phone_number"}
+    - [0334567890]{"entity":"phone_number"}
+    - [0976543210]{"entity":"phone_number"}
+    - [0887654321]{"entity":"phone_number"}
+    - [0791234567]{"entity":"phone_number"}
+    - [0854321098]{"entity":"phone_number"}
+    - [0825678901]{"entity":"phone_number"}
+    - [0918765432]{"entity":"phone_number"}
+    - [Phạm Quang H]{"entity":"name"}
+    - [Đặng Quốc I]{"entity":"name"}
+    - [Bùi Kim J]{"entity":"name"}
+    - [Trương Hoàng K]{"entity":"name"}
+    - [Ngô Tuan L]{"entity":"name"}
+    - [Dương Thảo M]{"entity":"name"}
+    - [Mai Nhật N]{"entity":"name"}
+    - [Hồ Kiều O]{"entity":"name"}
+    - [Nguyễn Kim P]{"entity":"name"}
+    - gọi số này [0928282828]{"entity":"phone_number"} sẽ gặp tôi, [Hoàng Văn HH]{"entity":"name"}
+    - [Nhật Toàn]{"entity":"name"}
+    - [0909009090]{"entity":"phone_number"}
+    - [Quang Vinh]{"entity":"name"}
+    - [0913997275]{"entity":"phone_number"}
 - intent: ask_tour_details
   examples: |
-    - Tour [9](tour_number) có bao gồm ăn uống không?
+    - Tour [9]{"entity":"tour_number"} có bao gồm ăn uống không?
     - có bao gồm vé vào cửa các điểm tham quan không?
     - Tour có bao gồm xe đưa đón không?
     - Có ăn sáng trong tour không?
@@ -380,127 +388,127 @@ nlu:
     - có ghé thăm Thung Lũng Tình Yêu không?
     - Tour này có thăm các làng nghề truyền thống không?
     - Tour các điểm trong tour là gì?
-    - Lịch trình của tour [4](tour_number) nhé?
+    - Lịch trình của tour [4]{"entity":"tour_number"} nhé?
     - Ngày thứ 2 của tour làm gì?
     - Ngày thứ ba trong tour đi đâu?
-    - Ngày đầu tiên tour [3](tour_number) có tham quan gì không?
+    - Ngày đầu tiên tour [3]{"entity":"tour_number"} có tham quan gì không?
     - Ngày 2 của tour sẽ đến đâu?
     - Ngày cuối cùng của tour tham quan những gì?
     - Chuyến đi này có các hoạt động nào vào ngày thứ 2?
     - Chúng tôi làm gì vào ngày thứ ba của tour?
-    - Ngày 4 tour [10](tour_number) tham quan những điểm gì?
+    - Ngày 4 tour [10]{"entity":"tour_number"} tham quan những điểm gì?
     - Tour này bắt đầu từ ngày nào?
     - Ngày khởi hành của tour này là khi nào?
-    - Tour [7](tour_number) bắt đầu vào ngày nào?
+    - Tour [7]{"entity":"tour_number"} bắt đầu vào ngày nào?
     - Có khởi hành vào cuối tuần không?
     - Tour này bắt đầu vào tháng mấy?
     - Tour này có khởi hành vào dịp Tết không?
-    - Ngày bắt đầu tour [5](tour_number) là khi nào?
+    - Ngày bắt đầu tour [5]{"entity":"tour_number"} là khi nào?
     - Lịch trình tour này như thế nào?
-    - Lịch trình của tour số [7](tour_number) ra sao?
-    - Ngày đầu tiên của tour số [5](tour_number) đi đâu?
-    - Lịch trình tour số [1](tour_number) thế nào?
-    - Tour [7](tour_number) này có lịch trình cụ thể gì?
+    - Lịch trình của tour số [7]{"entity":"tour_number"} ra sao?
+    - Ngày đầu tiên của tour số [5]{"entity":"tour_number"} đi đâu?
+    - Lịch trình tour số [1]{"entity":"tour_number"} thế nào?
+    - Tour [7]{"entity":"tour_number"} này có lịch trình cụ thể gì?
     - Ngày thứ nhất của tour sẽ tham quan ở đâu?
     - Chương trình tour chi tiết như thế nào?
-    - Tour số [5](tour_number)  có lịch trình gì đặc biệt không?
+    - Tour số [5]{"entity":"tour_number"}  có lịch trình gì đặc biệt không?
     - Giá tour này là bao nhiêu?
     - Tour này có giá bao nhiêu một người?
-    - Tour số [16](tour_number) có giá khoảng bao nhiêu?
+    - Tour số [16]{"entity":"tour_number"} có giá khoảng bao nhiêu?
     - Tôi muốn biết giá tour này
     - Tour này có giá là bao nhiêu cho 2 người?
     - Chi phí tour này là bao nhiêu?
-    - Tour số [3](tour_number) có giá bao nhiêu?
-    - Tour [9](tour_number) có bao gồm bữa trưa không?
+    - Tour số [3]{"entity":"tour_number"} có giá bao nhiêu?
+    - Tour [9]{"entity":"tour_number"} có bao gồm bữa trưa không?
     - Tour này có hỗ trợ ăn uống trong suốt hành trình không?
     - Tour này có bao gồm dịch vụ đưa đón từ sân bay không?
     - Có bao gồm vé vào các điểm tham quan nổi tiếng không?
-    - Tour [15](tour_number) có bao gồm các hoạt động vui chơi ngoài trời không?
+    - Tour [15]{"entity":"tour_number"} có bao gồm các hoạt động vui chơi ngoài trời không?
     - Tour này có bao gồm phí tham quan các điểm nổi bật không?
     - Tour này có phục vụ bữa tối không?
-    - Tour [11](tour_number) có đi thăm các đảo không?
+    - Tour [11]{"entity":"tour_number"} có đi thăm các đảo không?
     - Tour này có tham quan các khu di tích lịch sử không?
-    - Tour [19](tour_number) có bao gồm tham quan các khu nghỉ dưỡng không?
+    - Tour [19]{"entity":"tour_number"} có bao gồm tham quan các khu nghỉ dưỡng không?
     - Tour này có đến các điểm du lịch nổi tiếng không?
-    - Tour số [6](tour_number) có đi tham quan các thác nước không?
-    - Các điểm tham quan trong tour [2](tour_number) có gì đặc biệt không?
+    - Tour số [6]{"entity":"tour_number"} có đi tham quan các thác nước không?
+    - Các điểm tham quan trong tour [2]{"entity":"tour_number"} có gì đặc biệt không?
     - Tour này có tham quan các làng văn hóa không?
     - Tour này có ghé thăm các bãi tắm không?
-    - Tour [8](tour_number) sẽ đi đâu trong ngày đầu tiên?
-    - Ngày 3 của tour [4](tour_number) có thăm quan những địa điểm nào?
-    - Tour [12](tour_number) bắt đầu hành trình từ đâu?
-    - Ngày thứ 2 của tour [14](tour_number) tham quan những địa điểm nào?
-    - Tour số [9](tour_number) có lịch trình như thế nào vào ngày cuối cùng?
-    - Lịch trình của tour số [13](tour_number) bắt đầu từ đâu?
+    - Tour [8]{"entity":"tour_number"} sẽ đi đâu trong ngày đầu tiên?
+    - Ngày 3 của tour [4]{"entity":"tour_number"} có thăm quan những địa điểm nào?
+    - Tour [12]{"entity":"tour_number"} bắt đầu hành trình từ đâu?
+    - Ngày thứ 2 của tour [14]{"entity":"tour_number"} tham quan những địa điểm nào?
+    - Tour số [9]{"entity":"tour_number"} có lịch trình như thế nào vào ngày cuối cùng?
+    - Lịch trình của tour số [13]{"entity":"tour_number"} bắt đầu từ đâu?
     - Ngày thứ 3 trong tour này sẽ ghé qua các điểm nào?
     - Tour này có tham quan các địa điểm nổi tiếng vào ngày 2 không?
-    - Chương trình tour số [5](tour_number) có tổ chức các hoạt động ngoài trời vào ngày cuối cùng không?
+    - Chương trình tour số [5]{"entity":"tour_number"} có tổ chức các hoạt động ngoài trời vào ngày cuối cùng không?
     - Tour này bắt đầu vào ngày nào trong tháng này?
-    - Ngày khởi hành của tour số [7](tour_number) là khi nào?
-    - Tour [9](tour_number) bắt đầu vào dịp lễ nào?
+    - Ngày khởi hành của tour số [7]{"entity":"tour_number"} là khi nào?
+    - Tour [9]{"entity":"tour_number"} bắt đầu vào dịp lễ nào?
     - Tour này có khởi hành vào mùa hè không?
     - Bạn có thể cho tôi biết ngày bắt đầu tour này không?
-    - Tour [5](tour_number) này bắt đầu vào ngày nào trong tuần?
-    - Tour [4](tour_number) có lịch khởi hành cố định không?
-    - Tour [12](tour_number) có giá bao nhiêu cho 3 người?
-    - Tour [7](tour_number) này có giá như thế nào cho một gia đình?
-    - Chi phí tour [10](tour_number) là bao nhiêu cho 4 người?
-    - Tour [6](tour_number) có giá bao nhiêu cho một nhóm du khách?
+    - Tour [5]{"entity":"tour_number"} này bắt đầu vào ngày nào trong tuần?
+    - Tour [4]{"entity":"tour_number"} có lịch khởi hành cố định không?
+    - Tour [12]{"entity":"tour_number"} có giá bao nhiêu cho 3 người?
+    - Tour [7]{"entity":"tour_number"} này có giá như thế nào cho một gia đình?
+    - Chi phí tour [10]{"entity":"tour_number"} là bao nhiêu cho 4 người?
+    - Tour [6]{"entity":"tour_number"} có giá bao nhiêu cho một nhóm du khách?
     - Giá tour đi Phú Quốc này là bao nhiêu?
-    - Tour [13](tour_number) có giá bao nhiêu cho trẻ em?
+    - Tour [13]{"entity":"tour_number"} có giá bao nhiêu cho trẻ em?
     - Tour này có khuyến mãi gì về giá không?
-    - Tôi muốn biết chi phí của tour [16](tour_number) cho nhóm 5 người.
-    - Giá tour số [4](tour_number) có bao gồm mọi chi phí không?
+    - Tôi muốn biết chi phí của tour [16]{"entity":"tour_number"} cho nhóm 5 người.
+    - Giá tour số [4]{"entity":"tour_number"} có bao gồm mọi chi phí không?
     - Tour này có tổ chức các hoạt động team building không?
-    - Tour [8](tour_number) có tham gia các trò chơi nước không?
+    - Tour [8]{"entity":"tour_number"} có tham gia các trò chơi nước không?
     - Trong tour này, chúng tôi có thể tham gia các hoạt động văn hóa không?
     - Tour này có thăm quan các công viên quốc gia không?
     - Tour này có tổ chức các hoạt động thể thao mạo hiểm không?
-    - Tour [9](tour_number) có gì vậy?
-    - Cho mình hỏi tour [1](tour_number) nhé?
-    - Cung cấp thông tin tour [5](tour_number) giúp mình với.
-    - Tour [12](tour_number) thế nào?
-    - Tour [7](tour_number) có gì đặc biệt?
-    - Tour [10](tour_number) có gì hay không?
-    - Tour [6](tour_number) cho mình biết được không?
-    - Thêm thông tin tour [8](tour_number) đi.
-    - Tour [2](tour_number) ra sao?
-    - Tour [4](tour_number) có gì không?
-    - Tour [15](tour_number) là tour gì vậy?
-    - Chia sẻ thông tin tour [3](tour_number) được không?
-    - Tour [13](tour_number) có lịch trình như thế nào?
-    - Tour [14](tour_number) chi tiết đi.
-    - Tour [16](tour_number) có giá thế nào?
-    - Tour [17](tour_number) tham quan những đâu?
+    - Tour [9]{"entity":"tour_number"} có gì vậy?
+    - Cho mình hỏi tour [1]{"entity":"tour_number"} nhé?
+    - Cung cấp thông tin tour [5]{"entity":"tour_number"} giúp mình với.
+    - Tour [12]{"entity":"tour_number"} thế nào?
+    - Tour [7]{"entity":"tour_number"} có gì đặc biệt?
+    - Tour [10]{"entity":"tour_number"} có gì hay không?
+    - Tour [6]{"entity":"tour_number"} cho mình biết được không?
+    - Thêm thông tin tour [8]{"entity":"tour_number"} đi.
+    - Tour [2]{"entity":"tour_number"} ra sao?
+    - Tour [4]{"entity":"tour_number"} có gì không?
+    - Tour [15]{"entity":"tour_number"} là tour gì vậy?
+    - Chia sẻ thông tin tour [3]{"entity":"tour_number"} được không?
+    - Tour [13]{"entity":"tour_number"} có lịch trình như thế nào?
+    - Tour [14]{"entity":"tour_number"} chi tiết đi.
+    - Tour [16]{"entity":"tour_number"} có giá thế nào?
+    - Tour [17]{"entity":"tour_number"} tham quan những đâu?
     - Cho mình xem thông tin tour [19].
-    - Tour [9](tour_number) có gì nổi bật không?
-    - Tour [10](tour_number) tham quan điểm gì?
-    - Bạn có thông tin tour [5](tour_number) không?
+    - Tour [9]{"entity":"tour_number"} có gì nổi bật không?
+    - Tour [10]{"entity":"tour_number"} tham quan điểm gì?
+    - Bạn có thông tin tour [5]{"entity":"tour_number"} không?
     - tour này có lịch trình như thế nào
     - ngày thứ 3 tour có thăm quan những điểm nào
     - chi phí cụ thể của tour này là bao nhiêu
     - chi phí này bao gồm những gi
-    - tour số [7](tour_number) này có gì
+    - tour số [7]{"entity":"tour_number"} này có gì
     - tour này có những điểm tham quan nào liên quan đến tôn giáo không
     - tổng giá tour này cho 10 người là bao nhiêu
 - intent: choose_tour
   examples: |
-    - tôi muốn hỏi tour số [9](tour_number)
-    - Tôi muốn tìm hiểu tour số [1](tour_number).
-    - Bạn có thể cung cấp thông tin của tour [5](tour_number) được không?
-    - Tôi quan tâm đến tour [12](tour_number).
-    - tour số [7](tour_number).
-    - tour số [3](tour_number).
-    - tour số [6](tour_number).
-    - tour số [10](tour_number).
-    - Tour [10](tour_number).
-    - Tour [2](tour_number).
-    - Tour [5](tour_number).
-    - Tour [16](tour_number).
-    - Bạn có thể cho thông tin tour [6](tour_number) được không?
-    - Tôi muốn tìm hiểu về tour [8](tour_number).
-    - Tôi có thể tham khảo tour [2](tour_number) được không?
-    - tour [9](tour_number)
+    - tôi muốn hỏi tour số [9]{"entity":"tour_number"}
+    - Tôi muốn tìm hiểu tour số [1]{"entity":"tour_number"}.
+    - Bạn có thể cung cấp thông tin của tour [5]{"entity":"tour_number"} được không?
+    - Tôi quan tâm đến tour [12]{"entity":"tour_number"}.
+    - tour số [7]{"entity":"tour_number"}.
+    - tour số [3]{"entity":"tour_number"}.
+    - tour số [6]{"entity":"tour_number"}.
+    - tour số [10]{"entity":"tour_number"}.
+    - Tour [10]{"entity":"tour_number"}.
+    - Tour [2]{"entity":"tour_number"}.
+    - Tour [5]{"entity":"tour_number"}.
+    - Tour [16]{"entity":"tour_number"}.
+    - Bạn có thể cho thông tin tour [6]{"entity":"tour_number"} được không?
+    - Tôi muốn tìm hiểu về tour [8]{"entity":"tour_number"}.
+    - Tôi có thể tham khảo tour [2]{"entity":"tour_number"} được không?
+    - tour [9]{"entity":"tour_number"}
 - synonym: Hà Nội
   examples: |
     - ha noi

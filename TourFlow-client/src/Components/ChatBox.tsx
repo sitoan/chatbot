@@ -32,7 +32,18 @@ const ChatBox = () => {
       title: "Bạn muốn đặt tour ?",
       payload: "/request_customer_form",
     },
+    {
+      title: "Xoá lịch sử trò chuyện",
+      payload: "/clean_slots",
+    },
   ];
+
+  const handleClick = (index: number) => {
+    if (index === buttons.length - 1) {
+      setMessageList([]); // Xóa danh sách tin nhắn
+      console.log("Message list cleared!");
+    }
+  };
 
   const postMessageToAIService = async (
     sender: string | null,
@@ -41,18 +52,14 @@ const ChatBox = () => {
     try {
       // const res = await fetch("http://localhost:5111/api/home", {
       //test api
-      const res = await fetch(
-        "http://10.106.21.246:5005/webhooks/rest/webhook",
-        {
-          // const res = await fetch("http://localhost:5005/webhooks/rest/webhook", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ sender, message }),
-          mode: "cors",
-        }
-      );
+      const res = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sender, message }),
+        mode: "cors",
+      });
       if (!res.ok) {
         console.log("POST FAILED");
         throw new Error("Network response was not ok");
@@ -93,14 +100,13 @@ const ChatBox = () => {
   };
 
   const processRecieveMessage = (message: string) => {
-    if (Number(message)) {
+    if (Number(message) && Number(message) < 1000) {
       return Number(message);
     } else {
       const sentences = message.split("*");
       return cleanArray(sentences).join("<br>");
     }
   };
-
   const addMessageBox = (message: string, index: any, className: string) => {
     const processedMessage: any = processRecieveMessage(message);
     {
@@ -162,6 +168,7 @@ const ChatBox = () => {
             className="button"
             key={index}
             onClick={() => {
+              handleClick(index);
               postMessageToAIService(
                 sessionStorage.getItem("id"),
                 button.payload

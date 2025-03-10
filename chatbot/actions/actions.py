@@ -1,13 +1,16 @@
 
 from datetime import datetime
+import re
 from typing import Dict, Text, List, Any
 import requests
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
+from .text_cleaner import TextCleaner
+
 from .tour_manager import TourManager
-from .config import Config
+from .config import NUMBERS, Config
 
 class ActionClearSlots(Action):
     """Action to clear all slots."""
@@ -23,7 +26,7 @@ class ActionClearSlots(Action):
     ) -> List[Dict[Text, Any]]:
         slots = [
             "departure_point", "destination", "number_of_people",
-            "departure_date", "budget", "duration"
+            "departure_date", "budget", "duration", "name", "phone_number"
         ]
         return [SlotSet(slot, None) for slot in slots if tracker.get_slot(slot) is not None]
 
@@ -66,13 +69,13 @@ class ActionShowTours(Action):
                 intent=intent
             )
 
-            print(f"After sort: {suitable_tours}")
+            # print(f"After sort: {suitable_tours}")
 
             if not suitable_tours:
                 dispatcher.utter_message(text="Xin lỗi, không tìm thấy tour phù hợp với yêu cầu của bạn.")
                 return []
 
-            self._display_tours(dispatcher, suitable_tours, slots)
+            self._display_tours(dispatcher, suitable_tours)
             return []
 
         except requests.RequestException as e:
@@ -88,13 +91,11 @@ class ActionShowTours(Action):
             self,
             dispatcher: CollectingDispatcher,
             tours: List[Dict[str, Any]],
-            filters: Dict[str, Any]
         ) -> None:
             """Display formatted tour information."""
             dispatcher.utter_message(
                 text=f"Tour gợi ý dựa theo yêu cầu của bạn: "
             )
-            print(filters)
 
             for tour in tours:
                 dispatcher.utter_message(text=f"""
@@ -184,19 +185,27 @@ class ActionPostUserAnswer(Action):
         start_date = tracker.get_slot("departure_date")
         if start_date:  # Kiểm tra nếu có giá trị
             start_date = datetime.strptime(start_date, Config.DATE_FORMAT)
-            start_date = start_date.strftime("%Y-%m-%d")
-  
+            start_date = start_date.strftime("%Y-%m-%d")\
+
+        budget = tracker.get_slot("budget")
+        if budget is not None:
+            budget = TextCleaner.clean_budget(budget)
+        
+        number_of_people = tracker.get_slot("number_of_people")
+        if number_of_people is not None:
+            number_of_people = TextCleaner.clean_people_count(number_of_people)
+
 
         data = {
-            'userId': tracker.sender_id,
-            'PhoneNumber': tracker.get_slot("tour_number"),
-            'TourId': tracker.get_slot("phone_number"),
+            'userId': int(tracker.sender_id) if tracker.sender_id else None,
+            'PhoneNumber': tracker.get_slot("phone_number"),
+            'TourId': int(tracker.get_slot("tour_number")) if tracker.get_slot("tour_number") else None,
             'StarPos': tracker.get_slot("departure_point"),
             'EndPos': tracker.get_slot("destination"),
             'StartDate': start_date,
-            'Duration': tracker.get_slot("duration"),
-            'Budget': tracker.get_slot("budget"),
-            'AvailableSlot': tracker.get_slot("number_of_people")
+            'Duration': str(tracker.get_slot("duration")) if tracker.get_slot("duration") else None,
+            'Budget': budget,
+            'AvailableSlot': number_of_people
         }
 
         print(data)
