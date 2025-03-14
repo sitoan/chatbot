@@ -4666,11 +4666,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlow_gitBE/TourFlowBE.csproj",
+      "projectUniqueName": "/Users/vinhpham/Documents/HSU/TourFlow_BE/TourFlowBE.csproj",
       "projectName": "TourFlowBE",
-      "projectPath": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlow_gitBE/TourFlowBE.csproj",
+      "projectPath": "/Users/vinhpham/Documents/HSU/TourFlow_BE/TourFlowBE.csproj",
       "packagesPath": "/Users/vinhpham/.nuget/packages/",
-      "outputPath": "/Users/vinhpham/Documents/HSU/DoAnChuyenNganhA/TourFlow_gitBE/obj/",
+      "outputPath": "/Users/vinhpham/Documents/HSU/TourFlow_BE/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/vinhpham/.nuget/NuGet/NuGet.Config"
