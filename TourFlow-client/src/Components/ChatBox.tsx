@@ -52,7 +52,7 @@ const ChatBox = () => {
     try {
       // const res = await fetch("http://localhost:5111/api/home", {
       //test api
-      const res = await fetch("http://localhost:5005/webhooks/rest/webhook", {
+      const res = await fetch("http://172.0.0.77:5005/webhooks/rest/webhook", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,27 +110,56 @@ const ChatBox = () => {
   const addMessageBox = (message: string, index: any, className: string) => {
     const processedMessage: any = processRecieveMessage(message);
     {
-      if (typeof processedMessage != "number") {
+      // if (typeof processedMessage != "number") {
+      //   return (
+      //     <div
+      //       dangerouslySetInnerHTML={{ __html: processedMessage }}
+      //       key={index}
+      //       className={`message_box ${className}`}
+      //     />
+      //   );
+      // } else {
+      //   return (
+      //     <Link to={`/tourdetail?id=${processedMessage}`} key={index}>
+      //       <div
+      //         key={index}
+      //         className={`message_box  ${className}  clickable_message`}
+      //         onClick={() => {
+      //           console.log("Tour ", processedMessage);
+      //         }}
+      //       >
+      //         {"Explore more about tour: " + processedMessage.toString()}
+      //       </div>
+      //     </Link>
+      //   );
+      // }
+      if (
+        !isNaN(Number(processedMessage.slice(2))) &&
+        Number(processedMessage.slice(2)) < 10000000
+      ) {
+        const id = processedMessage.slice(2);
+        return (
+          <Link to={`/tourdetail?id=${id}`} key={index}>
+            <div
+              key={index}
+              className={`message_box  ${className}  clickable_message`}
+              onClick={() => {
+                console.log("Tour ", id);
+              }}
+            >
+              {"Explore more about tour: " + id.toString()}
+            </div>
+          </Link>
+        );
+      } else {
+        console.log("hu");
+
         return (
           <div
             dangerouslySetInnerHTML={{ __html: processedMessage }}
             key={index}
             className={`message_box ${className}`}
           />
-        );
-      } else {
-        return (
-          <Link to={`/tourdetail?id=${processedMessage}`} key={index}>
-            <div
-              key={index}
-              className={`message_box  ${className}  clickable_message`}
-              onClick={() => {
-                console.log("Tour ", processedMessage);
-              }}
-            >
-              {"Explore more about tour: " + processedMessage.toString()}
-            </div>
-          </Link>
         );
       }
     }
@@ -183,7 +212,7 @@ const ChatBox = () => {
       <input
         type="text"
         id="chat_input"
-        placeholder="input yout message"
+        placeholder="your message"
         value={val}
         onChange={handleChange}
         onKeyDown={(e: any) => {
