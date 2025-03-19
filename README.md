@@ -17,6 +17,6 @@
 - Open another terminal and change directory to chatbot/TourFlow-client
 - Run the command below
   ```
-  npm pip install
+  npm install
   npm run dev    
   ```
