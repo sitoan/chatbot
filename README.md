@@ -1,8 +1,8 @@
 ## AFTER CLONING THE WHOLE PROJECT
 
 ## Backend
-- Change the connection string to connect to your sqlserver in TourFlow_BE/Models/TourFlowContext.cs line 35 to replace your USERNAME and PASSWORD
-- Change directory to chatbot/TourFlow_BE
+- Change the connection string to connect to your sqlserver in <mark>TourFlow_BE/Models/TourFlowContext.cs line 35 to replace your USERNAME and PASSWORD<mark/>
+- Change directory to <mark>chatbot/TourFlow_BE<mark/>
 - Run the commands below
   ```
   dotnet ef migrations add InitialCreate
