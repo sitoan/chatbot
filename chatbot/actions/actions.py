@@ -8,7 +8,6 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
 from .text_cleaner import TextCleaner
-
 from .tour_manager import TourManager
 from .config import NUMBERS, Config
 
@@ -63,6 +62,16 @@ class ActionShowTours(Action):
 
             slots = {k: v for k, v in slots.items() if v is not None}
             
+            subtitle = {
+                "xuất phát": slots.get("departure"),
+                "điểm đến": slots.get("destination"),
+                "ngày khởi hành": slots.get("start_date"),
+                "khoảng thời gian": slots.get("duration"),
+                "ngân sách": slots.get("price"),
+                "số người tham gia": slots.get("available_slot")
+            }
+            subtitle = " - ".join([f"{k}: {v}" for k, v in subtitle.items() if v is not None])
+            
             suitable_tours = TourManager.filter_tours(
                 tours_data=tours_data,
                 filters=slots,
@@ -72,10 +81,10 @@ class ActionShowTours(Action):
             # print(f"After sort: {suitable_tours}")
 
             if not suitable_tours:
-                dispatcher.utter_message(text="Xin lỗi, không tìm thấy tour phù hợp với yêu cầu của bạn.")
+                dispatcher.utter_message(text=f"Xin lỗi, không tìm thấy tour phù hợp với yêu cầu của bạn. {subtitle}")
                 return []
 
-            self._display_tours(dispatcher, suitable_tours)
+            self._display_tours(dispatcher, suitable_tours, subtitle)
             return []
 
         except requests.RequestException as e:
@@ -91,10 +100,11 @@ class ActionShowTours(Action):
             self,
             dispatcher: CollectingDispatcher,
             tours: List[Dict[str, Any]],
+            subtitles: Dict[str, str]
         ) -> None:
             """Display formatted tour information."""
             dispatcher.utter_message(
-                text=f"Tour gợi ý dựa theo yêu cầu của bạn: "
+                text=f"Tour gợi ý dựa theo yêu cầu của bạn: {subtitles}"
             )
 
             for tour in tours:
@@ -106,7 +116,7 @@ class ActionShowTours(Action):
     * Giá tour: {tour['price']:,.0f} VND
     * Số chỗ còn trống: {tour['availableSlots']}
     """)
-                dispatcher.utter_message(text=f"{tour['id']}")
+                dispatcher.utter_message(text=f"id{tour['id']}")
 
 class ActionAnswerTour(Action):
     """Action to show detailed tour plan and answer questions."""
@@ -154,13 +164,14 @@ class ActionAnswerTour(Action):
         """Create prompt for AI service."""
         return f"""
         Bạn trong vai trò 1 nhân viên tư vấn tour du lịch, dựa vào tour bên trên hãy giải đáp các thắc mắc một cách tự nhiên, 
-        thoải mái, chi tiết từng mốc thời gian và cung cấp thêm các thông tin về các địa điểm tham quan để lôi cuốn khách hàng 
-        nhưng các thông tin đưa ra phải đảm bảo độ chính xác.
+        thoải mái, ngắn gọn những phải chi tiết từng mốc thời gian và địa điểm.
+        Các thông tin đưa ra phải đảm bảo độ chính xác và chỉ trả lời bằng các đoạn văn (không bao gồm bất kỳ markdown).
         thắc mắc của user: {user_question}
         """
 
     def _get_ai_response(self, tour_data: str, prompt: str) -> str:
         """Get response from AI service."""
+        print(f'tour_data ${tour_data}')
         response = requests.post(
             f"{Config.AI_SERVER}/post",
             json={"data": tour_data, "prompt": prompt}

@@ -8,19 +8,11 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk import Action, Tracker, FormValidationAction
 
-# Lớp ValidateCustomerForm xử lý việc xác thực thông tin khách hàng
-# Được tách riêng để:
-# 1. Tăng tính module hóa - dễ dàng mở rộng hoặc sửa đổi logic xác thực khách hàng
-# 2. Tách biệt concerns giữa xác thực thông tin khách hàng và thông tin tour
 class ValidateCustomerForm(FormValidationAction):
-    """Form validation for customer information."""
     
     def name(self) -> Text:
         return "validate_customer_form"
 
-    # Xác thực tên khách hàng
-    # - Không cần pattern matching vì tên có thể đa dạng
-    # - Chỉ xác nhận lại với người dùng để đảm bảo chính xác
     def validate_name(
         self,
         slot_value: Any,
@@ -32,10 +24,6 @@ class ValidateCustomerForm(FormValidationAction):
         print(f"Validated name: {slot_value}")
         return {"name": slot_value}
     
-    # Xác thực số điện thoại với các yêu cầu:
-    # 1. Phải match với pattern số điện thoại VN
-    # 2. Chuẩn hóa format (loại bỏ dấu gạch, chuyển +84 thành 0)
-    # 3. Thông báo lỗi rõ ràng nếu không hợp lệ
     def validate_phone_number(
         self,
         slot_value: Any,
@@ -58,21 +46,12 @@ class ValidateCustomerForm(FormValidationAction):
         print(f"Validated phone number: {clean_phone}")
         return {"phone_number": str(clean_phone)}
 
-# Lớp ValidateTourForm xử lý việc xác thực thông tin đặt tour
-# Được thiết kế với:
-# 1. Phương thức helper _validate_and_confirm để tái sử dụng logic chung
-# 2. Validation pattern riêng cho từng loại thông tin
-# 3. Text cleaning để chuẩn hóa dữ liệu nhập vào
 class ValidateTourForm(FormValidationAction):
     """Form validation for tour booking."""
     
     def name(self) -> Text:
         return "validate_tour_form"
 
-    # Helper method để tránh lặp code trong các hàm validate
-    # - Tái sử dụng logic xác nhận và thông báo
-    # - Cho phép thêm hàm validation tùy chỉnh
-    # - Dễ dàng thay đổi message format
     def _validate_and_confirm(
         self, 
         slot_name: str, 
@@ -103,9 +82,7 @@ class ValidateTourForm(FormValidationAction):
         dispatcher.utter_message(text=f"Xác nhận {response_text[slot_name]}: {slot_value}")
         return {slot_name: slot_value}
 
-    # Các điểm đến/đi không cần validation pattern
-    # - Cho phép nhập tự do vì tên địa điểm có thể đa dạng
-    # - Chỉ xác nhận lại với người dùng
+
     def validate_departure_point(
         self,
         slot_value: Any,
@@ -130,9 +107,7 @@ class ValidateTourForm(FormValidationAction):
             return {"destination": None}
         return self._validate_and_confirm("destination", slot_value, dispatcher)
 
-    # Xác thực ngày đi với pattern date
-    # - Đảm bảo format ngày hợp lệ
-    # - Chuẩn hóa các cách viết ngày khác nhau
+
     def validate_departure_date(
         self,
         slot_value: Any,
@@ -155,9 +130,7 @@ class ValidateTourForm(FormValidationAction):
             )
         return {"departure_date": None}
 
-    # Xác thực số lượng người với pattern people
-    # - Hỗ trợ cả chữ và số (hai người, 2 khách)
-    # - Chuẩn hóa về dạng số
+
     def validate_number_of_people(
         self,
         slot_value: Any,
@@ -180,9 +153,7 @@ class ValidateTourForm(FormValidationAction):
             )
         return {"number_of_people": None}
 
-    # Xác thực ngân sách với pattern budget
-    # - Hỗ trợ nhiều format (5 triệu, 500k, 2m)
-    # - Chuẩn hóa về dạng số
+
     def validate_budget(
         self,
         slot_value: Any,
@@ -201,10 +172,7 @@ class ValidateTourForm(FormValidationAction):
             return self._validate_and_confirm("budget", budget, dispatcher)
         return {"budget": None}
 
-    # Xác thực thời gian với pattern duration
-    # - Hỗ trợ nhiều format (3 ngày, 3 ngày 2 đêm, 2 tuần)
-    # - Giới hạn từ 1-90 ngày
-    # - Chuẩn hóa về số ngày
+
     def validate_duration(
         self,
         slot_value: Any,

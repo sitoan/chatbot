@@ -163,7 +163,6 @@ cython_debug/
 #.idea/
 # Rasa specific files
 # NLU model artifacts
-models/
 # Temporary training files
 tmp/
 # End-to-end testing results

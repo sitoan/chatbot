@@ -60,6 +60,8 @@ slots:
       entity: city
       role: from
       intent: find_tour
+    - type: from_entity
+      entity: city 
   departure_date:
     type: text 
     influence_conversation: true

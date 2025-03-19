@@ -1,0 +1,23 @@
+#admin_navbar {
+  width: 70%;
+  margin-top: 70px !important;
+  margin: auto;
+  height: 90px;
+  display: flex;
+  font-family: "Regular";
+}
+#admin_navbar > li {
+  flex: 1;
+  list-style-type: none;
+  display: flex;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+#admin_navbar > li:hover {
+  background-color: black;
+  color: whitesmoke;
+  cursor: pointer;
+}

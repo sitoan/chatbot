@@ -19,6 +19,10 @@ pipeline:
   - name: ResponseSelector
     epochs: 250
     batch_size: [16, 32]
+  - name: RegexEntityExtractor
+    case_sensitive: True
+    use_lookup_tables: True
+    use_regexes: True
 
 policies: 
   - name: MemoizationPolicy
