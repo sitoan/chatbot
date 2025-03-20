@@ -32,7 +32,7 @@
   ```
 - Load environment variables (.env file)
   ```
-  Get-Content .env | foreach { $name, $value = $_.split('='); [System.Environment]::SetEnvironmentVariable($name, $value) }
+  source .env
   ```
 - Change directory to <mark>chatbot/chatbot<mark/> 
 - Train Rasa Model, this will generate a model file in the models/ directory
