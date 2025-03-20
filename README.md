@@ -24,7 +24,7 @@
 - Create virtualenv (recommended)
   ```
   python -m venv venv
-  source venv/bin/activate
+  venv\Scripts\activate
   ```
 - Install dependencies
   ```
@@ -32,7 +32,7 @@
   ```
 - Load environment variables (.env file)
   ```
-  source .env
+  Get-Content .env | foreach { $name, $value = $_.split('='); [System.Environment]::SetEnvironmentVariable($name, $value) }
   ```
 - Change directory to <mark>chatbot/chatbot<mark/> 
 - Train Rasa Model, this will generate a model file in the models/ directory
