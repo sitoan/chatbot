@@ -14,7 +14,7 @@
   `dotnet run`
 
 ## Frontend
-- Open another terminal and change directory to chatbot/frontend
+- Open another terminal and change directory to <mark>chatbot/frontend<mark/>
 - Run the command below
   ```
   npm install
