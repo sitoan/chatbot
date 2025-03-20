@@ -1,7 +1,7 @@
 ## AFTER CLONING THE WHOLE PROJECT
 
 ## Backend
-- Change the connection string to connect to your sqlserver in <mark>backend/Models/TourFlowContext.cs line 35 to replace your USERNAME and PASSWORD<mark/>
+- Change the connection string to connect to your sqlserver in <mark>TourFlow_BE/Models/TourFlowContext.cs line 35 to replace your USERNAME and PASSWORD<mark/>
 - Change directory to <mark>chatbot/backend<mark/>
 - Run the commands below
   ```
