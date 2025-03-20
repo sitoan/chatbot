@@ -20,3 +20,40 @@
   npm install
   npm run dev    
   ```
+## Chatbot
+- Create virtualenv (recommended)
+  ```
+  python -m venv venv
+  source venv/bin/activate
+  ```
+- Install dependencies
+  ```
+  pip install -r requirements.txt
+  ```
+- Load environment variables (.env file)
+  ```
+  source .env
+  ```
+- Change directory to <mark>chatbot/chatbot<mark/> 
+- Train Rasa Model, this will generate a model file in the models/ directory
+  ```
+  rasa train
+  ```
+- Need 2 terminal windows to run the Rasa server and the custom action server
+  
+Terminal 1 – Run Rasa Server
+  ```
+  rasa run -m models --enable-api --cors "*"
+  ```
+
+Terminal 2 – Run Custom Actions
+  ```
+  rasa run actions
+  ```
+
+## AI_service
+- Change directory to <mark>chatbot/ai_service<mark/>
+- Run
+  ```
+  python main.py
+  ```
